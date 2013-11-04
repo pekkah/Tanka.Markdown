@@ -1,20 +1,13 @@
 ﻿namespace Tanka.MarkdownTests
 {
     using System;
-    using System.Linq;
-    using FluentAssertions;
     using Markdown;
     using TestStack.BDDfy;
     using TestStack.BDDfy.Scanners.StepScanners.Fluent;
     using Xunit;
 
-    public class ParseHeadingBlocks
+    public class ParseHeadingBlocks : MarkdownParserFactsBase
     {
-        private MarkdownParser _parser;
-        private string _markdown;
-
-        public MarkdownDocument Document { get; set; }
-
         [Fact]
         public void H1_blocks_starting_with_hash()
         {
@@ -69,34 +62,6 @@
                     Text = "Second"
                 }))
                 .BDDfy();
-        }
-
-        private void ThenDocumentChildAtIndexShouldMatch<T>(int index, object expected) where T: Block
-        {
-            var child = Document.Blocks.ElementAtOrDefault(index);
-            child.Should().NotBeNull("Should have child block of type {0} at {1}", typeof(T).FullName, index);
-
-            child.ShouldHave().AllRuntimeProperties().EqualTo(expected);
-        }
-
-        private void ThenDocumentChildrenShouldHaveCount(int count)
-        {
-            Document.Blocks.Should().HaveCount(count);
-        }
-
-        private void GivenMarkdownParserWithDefaults()
-        {
-            _parser = new MarkdownParser();                
-        }
-
-        private void GivenTheMarkdown(string markdown)
-        {
-            _markdown = markdown;
-        }
-
-        private void WhenTheMarkdownIsParsed()
-        {
-            Document = _parser.Parse(_markdown);
         }
     }
 }

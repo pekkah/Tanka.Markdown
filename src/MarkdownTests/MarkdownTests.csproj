@@ -51,9 +51,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MarkdownParserFactsBase.cs" />
+    <Compile Include="ParagraphFacts.cs" />
     <Compile Include="ParseHeadingBlocks.cs" />
+    <Compile Include="ParagraphFactoryFacts.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StringParserFacts.cs" />
+    <Compile Include="LineReaderFacts.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Markdown\Markdown.csproj">

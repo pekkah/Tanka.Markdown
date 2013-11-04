@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Security.Cryptography.X509Certificates;
-    using System.Text;
+    using Microsoft.SqlServer.Server;
 
     public class MarkdownParser
     {
@@ -14,130 +14,51 @@
                 throw new ArgumentNullException("markdown");
 
             var blocks = new List<Block>();
-            var reader = new StringReader(markdown);
-
+            
+            var reader = new LineReader(markdown);
             string currentLine = reader.ReadLine();
-            Block block = StartBlock(currentLine);
+            string nextLine = reader.PeekLine();
+
+            Block currentBlock = StartBlock(currentLine, nextLine);
 
             do
             {
-                // add line will return true if the line ends the block
-                if (block.IsEndLine(currentLine))
+                if (currentBlock.IsEndLine(currentLine, nextLine))
                 {
-                    block.End(currentLine);
-                    blocks.Add(block);
+                    // end current block
+                    currentBlock.End(currentLine);
+                    blocks.Add(currentBlock);
+                    
+                    if (reader.EndOfDocument)
+                        break;
 
-                    // start a new block
-                    block = StartBlock(currentLine);
+                    // start new block
+                    currentLine = reader.ReadLine();
+                    nextLine = reader.PeekLine();
+                    currentBlock = StartBlock(currentLine, nextLine);
                 }
                 else
                 {
-                    block.AddLine(currentLine);
+                    currentBlock.AddLine(currentLine);
                 }
-            } while ((currentLine = reader.ReadLine()) != null);
+
+                
+            } while (reader.EndOfDocument);
+            
 
             return new MarkdownDocument(blocks);
         }
 
-        private Block StartBlock(string startLine)
+        private Block StartBlock(string startLine, string nextLine)
         {
             var headingFactory = new HeadingFactory();
 
-            if (headingFactory.IsMatch(startLine))
+            if (headingFactory.IsMatch(startLine, nextLine))
             {
                 return headingFactory.Create();
             }
 
             return new Paragraph(); ;
-        }
-    }
-
-    public abstract class Block
-    {
-        public abstract bool IsEndLine(string currentLine);
-
-        public abstract void End(string currentLine);
-
-        public abstract void AddLine(string currentLine);
-    }
-
-    public abstract class BlockFactoryBase
-    {
-        public abstract bool IsMatch(string currentLine);
-
-        public abstract Block Create();
-    }
-
-    public class HeadingFactory : BlockFactoryBase
-    {
-        public override bool IsMatch(string currentLine)
-        {
-            if (currentLine.StartsWith("#"))
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        public override Block Create()
-        {
-            return new Heading();
-        }
-    }
-
-    public class Paragraph : Block
-    {
-        private readonly StringBuilder _builder;
-
-        public Paragraph()
-        {
-            _builder = new StringBuilder();
-        }
-
-        public override bool IsEndLine(string currentLine)
-        {
-            if (string.IsNullOrEmpty(currentLine))
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        public override void End(string currentLine)
-        {
-            // do not add the empty line to the paragraph
-        }
-
-        public override void AddLine(string currentLine)
-        {
-            _builder.AppendLine(currentLine);
-        }
-    }
-
-    public class Heading : Block
-    {
-        public int Level { get; private set; }
-
-        public string Text { get; private set; }
-
-        public override bool IsEndLine(string currentLine)
-        {
-            return true;
-        }
-
-        public override void End(string currentLine)
-        {
-            int hashesEnd = currentLine.LastIndexOf('#') + 1;
-            string hashes = currentLine.Substring(0, hashesEnd);
-            Level = hashes.Length <= 6 ? hashes.Length : 6;
-            Text = currentLine.Substring(hashesEnd).Trim();
-        }
-
-        public override void AddLine(string currentLine)
-        {
-            throw new NotImplementedException();
         }
     }
 }
