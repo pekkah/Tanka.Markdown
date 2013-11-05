@@ -1,6 +1,7 @@
 ﻿namespace Tanka.MarkdownTests
 {
     using System;
+    using System.Text;
     using Markdown;
     using TestStack.BDDfy;
     using TestStack.BDDfy.Scanners.StepScanners.Fluent;
@@ -60,6 +61,44 @@
                 {
                     Level = 1,
                     Text = "Second"
+                }))
+                .BDDfy();
+        }
+
+        [Fact]
+        public void Setext_level_one_headings()
+        {
+            var builder = new StringBuilder();
+            builder.AppendLine("Heading text");
+            builder.AppendLine("============");
+
+            this.Given(t => t.GivenMarkdownParserWithDefaults())
+                .And(t => t.GivenTheMarkdown(builder.ToString()))
+                .When(t => t.WhenTheMarkdownIsParsed())
+                .Then(t => t.ThenDocumentChildrenShouldHaveCount(1))
+                .And(t => ThenDocumentChildAtIndexShouldMatch<Heading>(0, new
+                {
+                    Level = 1,
+                    Text = "Heading text"
+                }))
+                .BDDfy();
+        }
+
+        [Fact]
+        public void Setext_level_two_headings()
+        {
+            var builder = new StringBuilder();
+            builder.AppendLine("Heading text");
+            builder.AppendLine("-----------");
+
+            this.Given(t => t.GivenMarkdownParserWithDefaults())
+                .And(t => t.GivenTheMarkdown(builder.ToString()))
+                .When(t => t.WhenTheMarkdownIsParsed())
+                .Then(t => t.ThenDocumentChildrenShouldHaveCount(1))
+                .And(t => ThenDocumentChildAtIndexShouldMatch<Heading>(0, new
+                {
+                    Level = 2,
+                    Text = "Heading text"
                 }))
                 .BDDfy();
         }

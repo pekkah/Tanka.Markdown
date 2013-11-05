@@ -14,8 +14,11 @@
                 /***********************************
                 * Setext Heading
                 * ===============
+                * 
+                * Setext Heading
+                * --------------
                 *********************************/
-                if (nextLine.StartsWith("=="))
+                if (IsSetextHeadingMarker(nextLine))
                     return false;
             }
 
@@ -23,7 +26,18 @@
             if (currentLine.StartsWith(" "))
                 return false;
 
+            if (IsSetextHeadingMarker(currentLine))
+                return false;
+
             return true;
+        }
+
+        private bool IsSetextHeadingMarker(string line)
+        {
+            if (line.StartsWith("==") || line.StartsWith("--"))
+                return true;
+
+            return false;
         }
 
         public override Block Create()

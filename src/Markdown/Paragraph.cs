@@ -26,10 +26,12 @@
             return false;
         }
 
-        public override void End(string currentLine)
+        public override bool End(string currentLine)
         {
             // last line before the empty or null line
             AddLine(currentLine);
+
+            return true;
         }
 
         public override void AddLine(string currentLine)
