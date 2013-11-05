@@ -41,9 +41,11 @@
   <ItemGroup>
     <Compile Include="Block.cs" />
     <Compile Include="BlockFactoryBase.cs" />
+    <Compile Include="Blockquote.cs" />
+    <Compile Include="BlockquoteFactory.cs" />
     <Compile Include="Heading.cs" />
     <Compile Include="HeadingFactory.cs" />
-    <Compile Include="Markdown.cs" />
+    <Compile Include="MarkdownParser.cs" />
     <Compile Include="MarkdownDocument.cs" />
     <Compile Include="Paragraph.cs" />
     <Compile Include="ParagraphFactory.cs" />

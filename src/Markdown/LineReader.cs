@@ -22,6 +22,11 @@
             get { return _currentLineNumber; }
         }
 
+        public bool EndOfDocument
+        {
+            get { return PeekLine() == null; }
+        }
+
         private void LoadLines(string document)
         {
             if (_lines == null)
@@ -39,7 +44,7 @@
             if (EndOfDocument)
                 return null;
 
-            var currentLine = _lines[_currentLineNumber];
+            string currentLine = _lines[_currentLineNumber];
 
             _currentLineNumber++;
             return currentLine;
@@ -49,14 +54,6 @@
         {
             for (int i = 0; i < count; i++)
                 yield return ReadLine();
-        }
-
-        public bool EndOfDocument
-        {
-            get
-            {
-                return PeekLine() == null;
-            }
         }
 
         public string PeekLine()

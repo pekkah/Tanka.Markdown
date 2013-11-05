@@ -36,7 +36,7 @@
 
         public override void AddLine(string currentLine)
         {
-            var line = currentLine.Trim(' ', '\r', '\n');
+            string line = currentLine.Trim(' ', '\r', '\n');
 
             _builder.Append(line);
         }

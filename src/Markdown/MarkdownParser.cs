@@ -6,12 +6,11 @@
 
     public class MarkdownParser
     {
-        public List<BlockFactoryBase> BlockFactories { get; private set; }
-
         public MarkdownParser()
         {
-            BlockFactories  = new List<BlockFactoryBase>
+            BlockFactories = new List<BlockFactoryBase>
             {
+                new BlockquoteFactory(),
                 new SetextHeadingOneFactory(),
                 new SetextHeadingTwoFactory(),
                 new HeadingFactory(),
@@ -19,45 +18,45 @@
             };
         }
 
+        public List<BlockFactoryBase> BlockFactories { get; private set; }
+
         public MarkdownDocument Parse(string markdown)
         {
             if (string.IsNullOrEmpty(markdown))
                 throw new ArgumentNullException("markdown");
 
             var blocks = new List<Block>();
-
             var reader = new LineReader(markdown);
-            string currentLine = reader.ReadLine();
-            string nextLine = reader.PeekLine();
 
-            Block currentBlock = StartBlock(currentLine, nextLine);
+            Block currentBlock = null;
 
-            do
+            while (reader.EndOfDocument == false)
             {
+                string currentLine = reader.ReadLine();
+                string nextLine = reader.PeekLine();
+
+                // start new block if current null
+                if (currentBlock == null)
+                    currentBlock = StartBlock(currentLine, nextLine);
+
                 if (currentBlock.IsEndLine(currentLine, nextLine))
                 {
                     // end current block
-                    var skipNextLine = currentBlock.End(currentLine);
+                    bool skipNextLine = currentBlock.End(currentLine);
                     blocks.Add(currentBlock);
+
+                    // reset current block
+                    currentBlock = null;
 
                     // some blocks have special end markers which should be skipped
                     if (skipNextLine)
                         reader.ReadLine();
-
-                    if (reader.EndOfDocument)
-                        break;
-
-                    // start new block
-                    currentLine = reader.ReadLine();
-                    nextLine = reader.PeekLine();
-                    currentBlock = StartBlock(currentLine, nextLine);
                 }
                 else
                 {
                     currentBlock.AddLine(currentLine);
                 }
-            } while (reader.EndOfDocument);
-
+            }
 
             return new MarkdownDocument(blocks);
         }

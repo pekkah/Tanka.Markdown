@@ -6,7 +6,7 @@
     using TestStack.BDDfy.Scanners.StepScanners.Fluent;
     using Xunit;
 
-    public class ParagraphFacts: MarkdownParserFactsBase
+    public class ParagraphFacts : MarkdownParserFactsBase
     {
         [Fact]
         public void SingleLineOfText()
@@ -28,7 +28,6 @@
         [Fact]
         public void MultipleLinesOfText()
         {
-            
         }
     }
 }

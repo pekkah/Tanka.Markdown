@@ -13,10 +13,7 @@
 
         public IEnumerable<Block> Blocks
         {
-            get
-            {
-                return _blocks;
-            }
+            get { return _blocks; }
         }
     }
 }

@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="MarkdownParserFactsBase.cs" />
     <Compile Include="ParagraphFacts.cs" />
+    <Compile Include="ParseBlockQuotes.cs" />
     <Compile Include="ParseHeadingBlocks.cs" />
     <Compile Include="ParagraphFactoryFacts.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

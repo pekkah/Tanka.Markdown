@@ -1,5 +1,6 @@
 ﻿namespace Tanka.MarkdownTests
 {
+    using System;
     using System.Linq;
     using FluentAssertions;
     using Markdown;
@@ -17,6 +18,13 @@
             child.Should().NotBeNull("Should have child block of type {0} at {1}", typeof (T).FullName, index);
 
             child.ShouldHave().AllRuntimeProperties().EqualTo(expected);
+        }
+
+        protected void ThenDocumentChildAtIndexShouldBe(int index, Type expectedType)
+        {
+            Block child = Document.Blocks.ElementAtOrDefault(index);
+            child.Should().NotBeNull("Should have child block of type {0} at {1}", expectedType.FullName, index);
+            child.GetType().ShouldBeEquivalentTo(expectedType);
         }
 
         protected void ThenDocumentChildrenShouldHaveCount(int count)

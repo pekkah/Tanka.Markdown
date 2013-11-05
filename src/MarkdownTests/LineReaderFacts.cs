@@ -1,6 +1,5 @@
 ﻿namespace Tanka.MarkdownTests
 {
-    using System;
     using System.Collections.Generic;
     using System.Text;
     using FluentAssertions;
@@ -118,9 +117,9 @@
 
         private void WhenReadLines(int count)
         {
-            var lines = _reader.ReadLines(count);
+            IEnumerable<string> lines = _reader.ReadLines(count);
 
-            foreach (var line in lines)
+            foreach (string line in lines)
             {
                 _readQueue.Enqueue(line);
             }
