@@ -45,6 +45,8 @@
     <Compile Include="BlockquoteFactory.cs" />
     <Compile Include="Heading.cs" />
     <Compile Include="HeadingFactory.cs" />
+    <Compile Include="ListBlock.cs" />
+    <Compile Include="ListBlockFactory.cs" />
     <Compile Include="MarkdownParser.cs" />
     <Compile Include="MarkdownDocument.cs" />
     <Compile Include="Paragraph.cs" />

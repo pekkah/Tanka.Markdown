@@ -14,6 +14,7 @@
                 new SetextHeadingOneFactory(),
                 new SetextHeadingTwoFactory(),
                 new HeadingFactory(),
+                new ListBlockFactory(),
                 new ParagraphFactory()
             };
         }
