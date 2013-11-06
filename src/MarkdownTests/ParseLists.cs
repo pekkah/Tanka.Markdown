@@ -23,7 +23,7 @@
                 .And(t => ThenDocumentChildAtIndexShouldMatch<ListBlock>(0, new
                 {
                     Count = 3
-                }))
+                }, l => l.Items))
                 .BDDfy();
         }
 
@@ -42,7 +42,7 @@
                 .And(t => ThenDocumentChildAtIndexShouldMatch<ListBlock>(0, new
                 {
                     Count = 3
-                }))
+                }, l => l.Items))
                 .BDDfy();
         }
 
@@ -61,7 +61,7 @@
                 .And(t => ThenDocumentChildAtIndexShouldMatch<ListBlock>(0, new
                 {
                     Count = 3
-                }))
+                }, l => l.Items))
                 .BDDfy();
         }
     }

@@ -39,13 +39,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Block.cs" />
+    <Compile Include="BlockBuilder.cs" />
     <Compile Include="BlockFactoryBase.cs" />
     <Compile Include="Blockquote.cs" />
     <Compile Include="BlockquoteFactory.cs" />
     <Compile Include="Heading.cs" />
     <Compile Include="HeadingFactory.cs" />
-    <Compile Include="ListBlock.cs" />
+    <Compile Include="ListBlockBuilder.cs" />
     <Compile Include="ListBlockFactory.cs" />
     <Compile Include="MarkdownParser.cs" />
     <Compile Include="MarkdownDocument.cs" />

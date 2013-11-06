@@ -40,9 +40,9 @@
             return false;
         }
 
-        public override Block Create()
+        public override BlockBuilder Create()
         {
-            return new Paragraph();
+            return new ParagraphBuilder();
         }
     }
 }

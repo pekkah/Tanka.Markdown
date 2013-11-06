@@ -51,6 +51,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ListBlockFacts.cs" />
     <Compile Include="MarkdownParserFactsBase.cs" />
     <Compile Include="ParagraphFacts.cs" />
     <Compile Include="ParseBlockQuotes.cs" />

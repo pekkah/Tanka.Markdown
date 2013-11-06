@@ -31,9 +31,9 @@
             return IsListItem.Any(f => f(currentLine));
         }
 
-        public override Block Create()
+        public override BlockBuilder Create()
         {
-            return new ListBlock();
+            return new ListBlockBuilder();
         }
     }
 }

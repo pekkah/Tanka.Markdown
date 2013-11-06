@@ -10,9 +10,9 @@
             return false;
         }
 
-        public override Block Create()
+        public override BlockBuilder Create()
         {
-            return new Blockquote();
+            return new BlockquoteBuilder();
         }
     }
 }

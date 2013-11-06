@@ -4,16 +4,21 @@
 
     public class Paragraph : Block
     {
+        public string Content { get; private set; }
+
+        public Paragraph(string content)
+        {
+            Content = content;
+        }
+    }
+
+    public class ParagraphBuilder : BlockBuilder
+    {
         private readonly StringBuilder _builder;
 
-        public Paragraph()
+        public ParagraphBuilder()
         {
             _builder = new StringBuilder();
-        }
-
-        public string Content
-        {
-            get { return _builder.ToString(); }
         }
 
         public override bool IsEndLine(string currentLine, string nextLine)
@@ -39,6 +44,11 @@
             string line = currentLine.Trim(' ', '\r', '\n');
 
             _builder.Append(line);
+        }
+
+        public override Block Create()
+        {
+            return new Paragraph(_builder.ToString());
         }
     }
 }

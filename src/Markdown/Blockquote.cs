@@ -2,16 +2,25 @@
 {
     using System.Text;
 
-    public class Blockquote : Block
+    public class Blockquote: Block
+    {
+        public Blockquote(MarkdownDocument document)
+        {
+            Document = document;
+        }
+
+        public MarkdownDocument Document { get; protected set; }
+    }
+
+    public class BlockquoteBuilder : BlockBuilder
     {
         private readonly StringBuilder _documentBuilder;
 
-        public Blockquote()
+        public BlockquoteBuilder()
         {
             _documentBuilder = new StringBuilder();
         }
 
-        public MarkdownDocument Document { get; protected set; }
 
         public override bool IsEndLine(string currentLine, string nextLine)
         {
@@ -28,22 +37,19 @@
         {
             AddLine(currentLine);
 
-            ParseDocument();
-
             return false;
-        }
-
-        private void ParseDocument()
-        {
-            var parser = new MarkdownParser();
-
-            Document = parser.Parse(_documentBuilder.ToString());
         }
 
         public override void AddLine(string currentLine)
         {
             // trim '>' and whitespace from lines
             _documentBuilder.AppendLine(currentLine.TrimStart('>').Trim());
+        }
+
+        public override Block Create()
+        {
+            var parser = new MarkdownParser();
+            return new Blockquote(parser.Parse(_documentBuilder.ToString()));
         }
     }
 }

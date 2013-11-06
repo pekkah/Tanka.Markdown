@@ -1,5 +1,8 @@
 ﻿namespace Tanka.Markdown
 {
+    using System;
+    using System.Net.Mime;
+
     public class SetextHeadingOneFactory : BlockFactoryBase
     {
         public override bool IsMatch(string currentLine, string nextLine)
@@ -10,63 +13,53 @@
             if (nextLine.StartsWith("=="))
                 return true;
 
-            return false;
-        }
-
-        public override Block Create()
-        {
-            return new SetextHeadingOne();
-        }
-    }
-
-    public class SetextHeadingOne : Heading
-    {
-        public override bool IsEndLine(string currentLine, string nextLine)
-        {
-            return nextLine.StartsWith("==");
-        }
-
-        public override bool End(string currentLine)
-        {
-            Level = 1;
-            Text = currentLine.Trim();
-
-            return true;
-        }
-    }
-
-    public class SetextHeadingTwoFactory : BlockFactoryBase
-    {
-        public override bool IsMatch(string currentLine, string nextLine)
-        {
-            if (string.IsNullOrWhiteSpace(nextLine))
-                return false;
-
             if (nextLine.StartsWith("--"))
                 return true;
 
             return false;
         }
 
-        public override Block Create()
+        public override BlockBuilder Create()
         {
-            return new SetextHeadingTwo();
+            return new SetextHeadingBuilder();
         }
     }
 
-    public class SetextHeadingTwo : Heading
+    public class SetextHeadingBuilder : BlockBuilder
     {
+        private int _level;
+        private string _text;
+
         public override bool IsEndLine(string currentLine, string nextLine)
         {
-            return nextLine.StartsWith("--");
+            if (currentLine.StartsWith("=="))
+                return true;
+
+            if (currentLine.StartsWith("--"))
+                return true;
+
+            return false;
         }
 
         public override bool End(string currentLine)
         {
-            Level = 2;
-            Text = currentLine.Trim();
+            if (currentLine.StartsWith("=="))
+                _level = 1;
 
-            return true;
+            if (currentLine.StartsWith("--"))
+                _level = 2;
+
+            return false;
+        }
+
+        public override void AddLine(string currentLine)
+        {
+            _text = currentLine.Trim();
+        }
+
+        public override Block Create()
+        {
+            return new Heading(_level, _text);
         }
     }
 }

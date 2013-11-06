@@ -12,7 +12,6 @@
             {
                 new BlockquoteFactory(),
                 new SetextHeadingOneFactory(),
-                new SetextHeadingTwoFactory(),
                 new HeadingFactory(),
                 new ListBlockFactory(),
                 new ParagraphFactory()
@@ -29,7 +28,7 @@
             var blocks = new List<Block>();
             var reader = new LineReader(markdown);
 
-            Block currentBlock = null;
+            BlockBuilder currentBlockBuilder = null;
 
             while (reader.EndOfDocument == false)
             {
@@ -37,17 +36,17 @@
                 string nextLine = reader.PeekLine();
 
                 // start new block if current null
-                if (currentBlock == null)
-                    currentBlock = StartBlock(currentLine, nextLine);
+                if (currentBlockBuilder == null)
+                    currentBlockBuilder = StartBlock(currentLine, nextLine);
 
-                if (currentBlock.IsEndLine(currentLine, nextLine))
+                if (currentBlockBuilder.IsEndLine(currentLine, nextLine))
                 {
                     // end current block
-                    bool skipNextLine = currentBlock.End(currentLine);
-                    blocks.Add(currentBlock);
+                    bool skipNextLine = currentBlockBuilder.End(currentLine);
+                    blocks.Add(currentBlockBuilder.Create());
 
                     // reset current block
-                    currentBlock = null;
+                    currentBlockBuilder = null;
 
                     // some blocks have special end markers which should be skipped
                     if (skipNextLine)
@@ -55,14 +54,14 @@
                 }
                 else
                 {
-                    currentBlock.AddLine(currentLine);
+                    currentBlockBuilder.AddLine(currentLine);
                 }
             }
 
             return new MarkdownDocument(blocks);
         }
 
-        private Block StartBlock(string startLine, string nextLine)
+        private BlockBuilder StartBlock(string startLine, string nextLine)
         {
             return BlockFactories.First(f => f.IsMatch(startLine, nextLine)).Create();
         }
