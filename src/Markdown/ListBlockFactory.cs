@@ -6,17 +6,17 @@
 
     public class ListBlockFactory : BlockFactoryBase
     {
-        public static List<Func<string, bool>> IsListItem = new List<Func<string, bool>>()
+        public static List<Func<string, bool>> IsListItem = new List<Func<string, bool>>
         {
             item => item.StartsWith("* "),
             item => item.StartsWith("- "),
             item =>
             {
-                var indexOfDot = item.IndexOf('.');
+                int indexOfDot = item.IndexOf('.');
                 if (indexOfDot < 0)
                     return false;
 
-                var numberStr = item.Substring(0, indexOfDot);
+                string numberStr = item.Substring(0, indexOfDot);
                 int _ = 0;
 
                 return int.TryParse(numberStr, out _);

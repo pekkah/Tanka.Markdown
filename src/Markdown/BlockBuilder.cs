@@ -4,7 +4,7 @@
     {
         public abstract bool IsEndLine(string currentLine, string nextLine);
 
-        public abstract bool End(string currentLine);
+        public abstract bool End();
 
         public abstract void AddLine(string currentLine);
 
@@ -13,6 +13,5 @@
 
     public abstract class Block
     {
-        
     }
 }

@@ -8,6 +8,11 @@
     {
         private readonly IEnumerable<string> _items;
 
+        public ListBlock(IEnumerable<string> items)
+        {
+            _items = items;
+        }
+
         public int Count
         {
             get { return _items.Count(); }
@@ -15,15 +20,7 @@
 
         public IEnumerable<string> Items
         {
-            get
-            {
-                return _items;
-            }
-        }
-
-        public ListBlock(IEnumerable<string> items)
-        {
-            _items = items;
+            get { return _items; }
         }
     }
 
@@ -37,8 +34,6 @@
             _items = new List<string>();
         }
 
-        
-
         public override bool IsEndLine(string currentLine, string nextLine)
         {
             if (string.IsNullOrEmpty(nextLine))
@@ -47,10 +42,8 @@
             return false;
         }
 
-        public override bool End(string currentLine)
+        public override bool End()
         {
-            AddLine(currentLine);
-
             // finish hanging item
             _items.Add(_currentItemBuilder.ToString());
 
@@ -87,10 +80,10 @@
             if (line.StartsWith("-"))
                 return line.Substring(1).Trim();
 
-            var possiblyANumberEnd = line.IndexOf('.');
+            int possiblyANumberEnd = line.IndexOf('.');
             if (possiblyANumberEnd > -1)
             {
-                var possiblyANumber = line.Substring(0, possiblyANumberEnd);
+                string possiblyANumber = line.Substring(0, possiblyANumberEnd);
                 int _ = 0;
 
                 if (int.TryParse(possiblyANumber, out _))

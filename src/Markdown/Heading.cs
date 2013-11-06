@@ -1,18 +1,16 @@
 ﻿namespace Tanka.Markdown
 {
-    using System;
-
     public class Heading : Block
     {
-        public int Level { get; protected set; }
-
-        public string Text { get; protected set; }
-
         public Heading(int level, string text)
         {
             Level = level;
             Text = text;
         }
+
+        public int Level { get; protected set; }
+
+        public string Text { get; protected set; }
     }
 
     public class HeadingBuilder : BlockBuilder
@@ -25,19 +23,17 @@
             return true;
         }
 
-        public override bool End(string currentLine)
+        public override bool End()
         {
-            int hashesEnd = currentLine.LastIndexOf('#') + 1;
-            string hashes = currentLine.Substring(0, hashesEnd);
-            _level = hashes.Length <= 6 ? hashes.Length : 6;
-            _text = currentLine.Substring(hashesEnd).Trim();
-
             return false;
         }
 
         public override void AddLine(string currentLine)
         {
-            throw new NotImplementedException();
+            int hashesEnd = currentLine.LastIndexOf('#') + 1;
+            string hashes = currentLine.Substring(0, hashesEnd);
+            _level = hashes.Length <= 6 ? hashes.Length : 6;
+            _text = currentLine.Substring(hashesEnd).Trim();
         }
 
         public override Block Create()

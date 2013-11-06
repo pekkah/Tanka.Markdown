@@ -4,12 +4,12 @@
 
     public class Paragraph : Block
     {
-        public string Content { get; private set; }
-
         public Paragraph(string content)
         {
             Content = content;
         }
+
+        public string Content { get; private set; }
     }
 
     public class ParagraphBuilder : BlockBuilder
@@ -31,11 +31,8 @@
             return false;
         }
 
-        public override bool End(string currentLine)
+        public override bool End()
         {
-            // last line before the empty or null line
-            AddLine(currentLine);
-
             return true;
         }
 

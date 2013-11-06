@@ -1,7 +1,5 @@
 ﻿namespace Tanka.MarkdownTests
 {
-    using System.Security.Cryptography.X509Certificates;
-    using System.Text;
     using FluentAssertions;
     using Markdown;
     using Xunit;
@@ -17,7 +15,8 @@
             };
 
             var listBlockBuilder = new ListBlockBuilder();
-            listBlockBuilder.End(lines[0]);
+            listBlockBuilder.AddLine(lines[0]);
+            listBlockBuilder.End();
 
             var listBlock = listBlockBuilder.Create() as ListBlock;
             listBlock.Items.Should().ContainSingle(item => item == "item");
@@ -33,7 +32,8 @@
             };
 
             var listBlockBuilder = new ListBlockBuilder();
-            listBlockBuilder.End(lines[0]);
+            listBlockBuilder.AddLine(lines[0]);
+            listBlockBuilder.End();
 
             var listBlock = listBlockBuilder.Create() as ListBlock;
             listBlock.Items.Should().ContainSingle(item => item == "item");
@@ -49,11 +49,11 @@
             };
 
             var listBlockBuilder = new ListBlockBuilder();
-            listBlockBuilder.End(lines[0]);
+            listBlockBuilder.AddLine(lines[0]);
+            listBlockBuilder.End();
 
             var listBlock = listBlockBuilder.Create() as ListBlock;
             listBlock.Items.Should().ContainSingle(item => item == "item");
-        } 
-
+        }
     }
 }

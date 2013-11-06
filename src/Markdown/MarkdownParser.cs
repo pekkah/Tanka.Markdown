@@ -37,12 +37,13 @@
 
                 // start new block if current null
                 if (currentBlockBuilder == null)
-                    currentBlockBuilder = StartBlock(currentLine, nextLine);
+                    currentBlockBuilder = CreateBuilder(currentLine, nextLine);
 
                 if (currentBlockBuilder.IsEndLine(currentLine, nextLine))
                 {
                     // end current block
-                    bool skipNextLine = currentBlockBuilder.End(currentLine);
+                    currentBlockBuilder.AddLine(currentLine);
+                    bool skipNextLine = currentBlockBuilder.End();
                     blocks.Add(currentBlockBuilder.Create());
 
                     // reset current block
@@ -61,7 +62,7 @@
             return new MarkdownDocument(blocks);
         }
 
-        private BlockBuilder StartBlock(string startLine, string nextLine)
+        private BlockBuilder CreateBuilder(string startLine, string nextLine)
         {
             return BlockFactories.First(f => f.IsMatch(startLine, nextLine)).Create();
         }

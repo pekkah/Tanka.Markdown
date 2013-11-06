@@ -21,10 +21,11 @@
             child.ShouldHave().AllRuntimeProperties().EqualTo(expected);
         }
 
-        protected void ThenDocumentChildAtIndexShouldMatch<T>(int index, object expected, Expression<Func<T, object>> but) where T : Block
+        protected void ThenDocumentChildAtIndexShouldMatch<T>(int index, object expected,
+            Expression<Func<T, object>> but) where T : Block
         {
             var child = Document.Blocks.ElementAtOrDefault(index) as T;
-            child.Should().NotBeNull("Should have child block of type {0} at {1}", typeof(T).FullName, index);
+            child.Should().NotBeNull("Should have child block of type {0} at {1}", typeof (T).FullName, index);
 
             child.ShouldHave().AllPropertiesBut(but).EqualTo(expected);
         }

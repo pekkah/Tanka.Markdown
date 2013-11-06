@@ -2,7 +2,7 @@
 {
     using System.Text;
 
-    public class Blockquote: Block
+    public class Blockquote : Block
     {
         public Blockquote(MarkdownDocument document)
         {
@@ -33,10 +33,8 @@
             return true;
         }
 
-        public override bool End(string currentLine)
+        public override bool End()
         {
-            AddLine(currentLine);
-
             return false;
         }
 
