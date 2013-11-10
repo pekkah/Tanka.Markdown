@@ -1,4 +1,4 @@
-﻿namespace Tanka.Markdown
+﻿namespace Tanka.Markdown.Blocks
 {
     using System;
     using System.Collections.Generic;
@@ -31,7 +31,7 @@
             return IsListItem.Any(f => f(currentLine));
         }
 
-        public override BlockBuilder Create()
+        public override BlockBuilderBase Create()
         {
             return new ListBlockBuilder();
         }

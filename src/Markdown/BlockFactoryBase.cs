@@ -4,6 +4,6 @@
     {
         public abstract bool IsMatch(string currentLine, string nextLine);
 
-        public abstract BlockBuilder Create();
+        public abstract BlockBuilderBase Create();
     }
 }

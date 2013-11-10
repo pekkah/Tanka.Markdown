@@ -1,4 +1,4 @@
-﻿namespace Tanka.Markdown
+﻿namespace Tanka.Markdown.Blocks
 {
     using System;
 
@@ -40,7 +40,7 @@
             return false;
         }
 
-        public override BlockBuilder Create()
+        public override BlockBuilderBase Create()
         {
             return new ParagraphBuilder();
         }

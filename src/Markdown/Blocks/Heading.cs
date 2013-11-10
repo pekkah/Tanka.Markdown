@@ -1,4 +1,4 @@
-﻿namespace Tanka.Markdown
+﻿namespace Tanka.Markdown.Blocks
 {
     public class Heading : Block
     {
@@ -13,7 +13,7 @@
         public string Text { get; protected set; }
     }
 
-    public class HeadingBuilder : BlockBuilder
+    public class HeadingBuilder : BlockBuilderBase
     {
         private int _level;
         private string _text;

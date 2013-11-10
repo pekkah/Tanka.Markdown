@@ -1,4 +1,4 @@
-﻿namespace Tanka.Markdown
+﻿namespace Tanka.Markdown.Blocks
 {
     public class HeadingFactory : BlockFactoryBase
     {
@@ -12,7 +12,7 @@
             return false;
         }
 
-        public override BlockBuilder Create()
+        public override BlockBuilderBase Create()
         {
             return new HeadingBuilder();
         }

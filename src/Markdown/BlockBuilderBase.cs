@@ -1,6 +1,6 @@
 ﻿namespace Tanka.Markdown
 {
-    public abstract class BlockBuilder
+    public abstract class BlockBuilderBase
     {
         public abstract bool IsEndLine(string currentLine, string nextLine);
 
@@ -9,9 +9,5 @@
         public abstract void AddLine(string currentLine);
 
         public abstract Block Create();
-    }
-
-    public abstract class Block
-    {
     }
 }

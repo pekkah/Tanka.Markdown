@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Blocks;
 
     public class MarkdownParser
     {
@@ -20,7 +21,7 @@
 
         public List<BlockFactoryBase> BlockFactories { get; private set; }
 
-        public MarkdownDocument Parse(string markdown)
+        public Document Parse(string markdown)
         {
             if (string.IsNullOrEmpty(markdown))
                 throw new ArgumentNullException("markdown");
@@ -28,7 +29,7 @@
             var blocks = new List<Block>();
             var reader = new LineReader(markdown);
 
-            BlockBuilder currentBlockBuilder = null;
+            BlockBuilderBase currentBlockBuilder = null;
 
             while (reader.EndOfDocument == false)
             {
@@ -59,10 +60,10 @@
                 }
             }
 
-            return new MarkdownDocument(blocks);
+            return new Document(blocks);
         }
 
-        private BlockBuilder CreateBuilder(string startLine, string nextLine)
+        private BlockBuilderBase CreateBuilder(string startLine, string nextLine)
         {
             return BlockFactories.First(f => f.IsMatch(startLine, nextLine)).Create();
         }

@@ -1,4 +1,4 @@
-﻿namespace Tanka.Markdown
+﻿namespace Tanka.Markdown.Blocks
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -24,7 +24,7 @@
         }
     }
 
-    public class ListBlockBuilder : BlockBuilder
+    public class ListBlockBuilder : BlockBuilderBase
     {
         private readonly List<string> _items;
         private StringBuilder _currentItemBuilder;

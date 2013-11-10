@@ -1,7 +1,8 @@
-﻿namespace Tanka.MarkdownTests
+﻿namespace Tanka.MarkdownTests.Blocks
 {
     using FluentAssertions;
     using Markdown;
+    using Markdown.Blocks;
     using Xunit;
 
     public class ListBlockFacts

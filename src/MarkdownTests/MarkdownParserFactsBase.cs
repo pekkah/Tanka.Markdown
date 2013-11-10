@@ -11,7 +11,7 @@
         private string _markdown;
         private MarkdownParser _parser;
 
-        public MarkdownDocument Document { get; set; }
+        public Document Document { get; set; }
 
         protected void ThenDocumentChildAtIndexShouldMatch<T>(int index, object expected) where T : Block
         {

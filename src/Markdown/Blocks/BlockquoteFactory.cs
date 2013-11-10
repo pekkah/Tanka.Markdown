@@ -1,4 +1,4 @@
-﻿namespace Tanka.Markdown
+﻿namespace Tanka.Markdown.Blocks
 {
     public class BlockquoteFactory : BlockFactoryBase
     {
@@ -10,7 +10,7 @@
             return false;
         }
 
-        public override BlockBuilder Create()
+        public override BlockBuilderBase Create()
         {
             return new BlockquoteBuilder();
         }

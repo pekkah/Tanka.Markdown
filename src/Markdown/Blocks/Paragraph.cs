@@ -1,4 +1,4 @@
-﻿namespace Tanka.Markdown
+﻿namespace Tanka.Markdown.Blocks
 {
     using System.Text;
 
@@ -12,7 +12,7 @@
         public string Content { get; private set; }
     }
 
-    public class ParagraphBuilder : BlockBuilder
+    public class ParagraphBuilder : BlockBuilderBase
     {
         private readonly StringBuilder _builder;
 

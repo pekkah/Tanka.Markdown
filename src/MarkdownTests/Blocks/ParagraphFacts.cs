@@ -1,7 +1,8 @@
-﻿namespace Tanka.MarkdownTests
+﻿namespace Tanka.MarkdownTests.Blocks
 {
     using System.Text;
     using Markdown;
+    using Markdown.Blocks;
     using TestStack.BDDfy;
     using TestStack.BDDfy.Scanners.StepScanners.Fluent;
     using Xunit;

@@ -1,4 +1,4 @@
-﻿namespace Tanka.Markdown
+﻿namespace Tanka.Markdown.Blocks
 {
     public class SetextHeadingOneFactory : BlockFactoryBase
     {
@@ -16,13 +16,13 @@
             return false;
         }
 
-        public override BlockBuilder Create()
+        public override BlockBuilderBase Create()
         {
             return new SetextHeadingBuilder();
         }
     }
 
-    public class SetextHeadingBuilder : BlockBuilder
+    public class SetextHeadingBuilder : BlockBuilderBase
     {
         private int _level;
         private string _text;

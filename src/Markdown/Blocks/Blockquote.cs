@@ -1,18 +1,18 @@
-﻿namespace Tanka.Markdown
+﻿namespace Tanka.Markdown.Blocks
 {
     using System.Text;
 
     public class Blockquote : Block
     {
-        public Blockquote(MarkdownDocument document)
+        public Blockquote(Document document)
         {
             Document = document;
         }
 
-        public MarkdownDocument Document { get; protected set; }
+        public Document Document { get; protected set; }
     }
 
-    public class BlockquoteBuilder : BlockBuilder
+    public class BlockquoteBuilder : BlockBuilderBase
     {
         private readonly StringBuilder _documentBuilder;
 

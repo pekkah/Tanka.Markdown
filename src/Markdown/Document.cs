@@ -2,11 +2,11 @@
 {
     using System.Collections.Generic;
 
-    public class MarkdownDocument
+    public class Document
     {
         private readonly IEnumerable<Block> _blocks;
 
-        public MarkdownDocument(IEnumerable<Block> blocks)
+        public Document(IEnumerable<Block> blocks)
         {
             _blocks = blocks;
         }
