@@ -1,4 +1,4 @@
-﻿namespace Tanka.MarkdownTests.Blocks
+﻿namespace Tanka.MarkdownTests
 {
     using System.Text;
     using Markdown.Blocks;
@@ -6,28 +6,26 @@
     using TestStack.BDDfy.Scanners.StepScanners.Fluent;
     using Xunit;
 
-    public class ParagraphFacts : MarkdownParserFactsBase
+    public class ParseCodeblocks : MarkdownParserFactsBase
     {
         [Fact]
-        public void SingleLineOfText()
+        public void ListsWithItemsStartingWithStar()
         {
             var builder = new StringBuilder();
-            builder.AppendLine("first line");
+            builder.AppendLine("``` javascript");
+            builder.AppendLine("function() { }");
+            builder.AppendLine("```");
 
             this.Given(t => t.GivenMarkdownParserWithDefaults())
                 .And(t => t.GivenTheMarkdown(builder.ToString()))
                 .When(t => t.WhenTheMarkdownIsParsed())
                 .Then(t => t.ThenDocumentChildrenShouldHaveCount(1))
-                .And(t => ThenDocumentChildAtIndexShouldMatch<Paragraph>(0, new
+                .And(t => ThenDocumentChildAtIndexShouldMatch<Codeblock>(0, new
                 {
-                    Content = "first line"
+                    Language = "javascript",
+                    Code = "function() { }"
                 }))
                 .BDDfy();
-        }
-
-        [Fact]
-        public void MultipleLinesOfText()
-        {
         }
     }
 }

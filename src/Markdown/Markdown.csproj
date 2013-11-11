@@ -43,7 +43,11 @@
     <Compile Include="BlockBuilderBase.cs" />
     <Compile Include="BlockFactoryBase.cs" />
     <Compile Include="Blocks\Blockquote.cs" />
+    <Compile Include="Blocks\BlockquoteBuilder.cs" />
     <Compile Include="Blocks\BlockquoteFactory.cs" />
+    <Compile Include="Blocks\Codeblock.cs" />
+    <Compile Include="Blocks\CodeblockBuilder.cs" />
+    <Compile Include="Blocks\CodeblockBuilderFactory.cs" />
     <Compile Include="Blocks\Heading.cs" />
     <Compile Include="Blocks\HeadingFactory.cs" />
     <Compile Include="Blocks\ListBlockBuilder.cs" />

@@ -51,10 +51,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Blocks\CodeblockFacts.cs" />
     <Compile Include="Blocks\ListBlockFacts.cs" />
     <Compile Include="MarkdownParserFactsBase.cs" />
     <Compile Include="Blocks\ParagraphFacts.cs" />
-    <Compile Include="ParseBlockQuotes.cs" />
+    <Compile Include="ParseBlockquotes.cs" />
+    <Compile Include="ParseCodeblocks.cs" />
     <Compile Include="ParseHeadingBlocks.cs" />
     <Compile Include="ParagraphFactoryFacts.cs" />
     <Compile Include="ParseLists.cs" />

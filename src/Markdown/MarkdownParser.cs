@@ -15,6 +15,7 @@
                 new SetextHeadingOneFactory(),
                 new HeadingFactory(),
                 new ListBlockFactory(),
+                new CodeblockBuilderFactory(),
                 new ParagraphFactory()
             };
         }
