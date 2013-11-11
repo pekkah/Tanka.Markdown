@@ -48,10 +48,13 @@
     <Compile Include="Blocks\Codeblock.cs" />
     <Compile Include="Blocks\CodeblockBuilder.cs" />
     <Compile Include="Blocks\CodeblockBuilderFactory.cs" />
+    <Compile Include="Blocks\EmptyLineFactory.cs" />
     <Compile Include="Blocks\Heading.cs" />
     <Compile Include="Blocks\HeadingFactory.cs" />
     <Compile Include="Blocks\ListBlockBuilder.cs" />
     <Compile Include="Blocks\ListBlockFactory.cs" />
+    <Compile Include="Blocks\ParagraphBuilder.cs" />
+    <Compile Include="Blocks\SetextHeadingBuilder.cs" />
     <Compile Include="MarkdownParser.cs" />
     <Compile Include="Document.cs" />
     <Compile Include="Blocks\Paragraph.cs" />

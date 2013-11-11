@@ -57,7 +57,7 @@
             builder.AddLine(line);
 
             var block = builder.Create() as Codeblock;
-            block.Code.ShouldBeEquivalentTo(line);
+            block.Code.ShouldBeEquivalentTo("public string Hello = \"world\";\r\n");
         }
 
         [Fact]
@@ -87,7 +87,7 @@
             builder.AddLine(lines[2]);
 
             var block = builder.Create() as Codeblock;
-            block.Code.ShouldBeEquivalentTo(lines[1]);
+            block.Code.ShouldBeEquivalentTo("public int x = 0;\r\n");
             block.Language.ShouldAllBeEquivalentTo("generic");
         }
     }

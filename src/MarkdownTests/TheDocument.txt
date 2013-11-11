@@ -1,0 +1,20 @@
+﻿The Document
+==============================================================
+
+This document starts with Setext style heading level one and
+continues with two level paragraph. This parahraph.
+
+- setext headings
+- parahraphs
+- lists
+- normal headings
+- code blocks
+
+## Sample code
+``` javascript
+function() {
+	var hello = "world";
+}
+```
+
+> blockquotes

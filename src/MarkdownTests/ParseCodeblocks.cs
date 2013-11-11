@@ -9,7 +9,7 @@
     public class ParseCodeblocks : MarkdownParserFactsBase
     {
         [Fact]
-        public void ListsWithItemsStartingWithStar()
+        public void CodeblockWithLanguage()
         {
             var builder = new StringBuilder();
             builder.AppendLine("``` javascript");
@@ -23,7 +23,7 @@
                 .And(t => ThenDocumentChildAtIndexShouldMatch<Codeblock>(0, new
                 {
                     Language = "javascript",
-                    Code = "function() { }"
+                    Code = "function() { }\r\n"
                 }))
                 .BDDfy();
         }

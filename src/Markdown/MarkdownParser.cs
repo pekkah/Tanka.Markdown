@@ -7,15 +7,21 @@
 
     public class MarkdownParser
     {
+        private readonly bool _skipEmptyLines;
+
         public MarkdownParser()
         {
+            // default settings
+            _skipEmptyLines = true;
+
             BlockFactories = new List<BlockFactoryBase>
             {
                 new BlockquoteFactory(),
                 new SetextHeadingOneFactory(),
                 new HeadingFactory(),
-                new ListBlockFactory(),
                 new CodeblockBuilderFactory(),
+                new ListBlockFactory(),
+                new EmptyLineFactory(),
                 new ParagraphFactory()
             };
         }
@@ -60,6 +66,9 @@
                     currentBlockBuilder.AddLine(currentLine);
                 }
             }
+
+            if (_skipEmptyLines)
+                blocks = blocks.Where(b => b.GetType() != typeof(EmptyLine)).ToList();
 
             return new Document(blocks);
         }

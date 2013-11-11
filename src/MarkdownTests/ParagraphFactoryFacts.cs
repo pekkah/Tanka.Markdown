@@ -36,18 +36,6 @@
                 .BDDfy();
         }
 
-        [Fact]
-        public void SetextHeadingsAreNotParagraphs()
-        {
-            const string currentLine = "Current line";
-            const string nextLine = "=======";
-
-            this.Given(_ => _.GivenLines(currentLine, nextLine))
-                .When(_ => _.WhenMatched())
-                .Then(_ => _.ThenShouldNotMatch())
-                .BDDfy();
-        }
-
         private void GivenLines(string current, string next)
         {
             _current = current;

@@ -47,7 +47,7 @@
                 return;
             }
 
-            _codeBuilder.Append(currentLine);
+            _codeBuilder.AppendLine(currentLine);
         }
 
         public override Block Create()

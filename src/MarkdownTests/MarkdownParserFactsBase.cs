@@ -5,6 +5,7 @@
     using System.Linq.Expressions;
     using FluentAssertions;
     using Markdown;
+    using Markdown.Blocks;
 
     public class MarkdownParserFactsBase
     {
@@ -55,6 +56,21 @@
         protected void WhenTheMarkdownIsParsed()
         {
             Document = _parser.Parse(_markdown);
+        }
+
+        protected void ThenListAtIndexShouldMatch(int index, params string[] items)
+        {
+            var child = Document.Blocks.ElementAtOrDefault(index) as ListBlock;
+            child.Should().NotBeNull("Should have child block of type {0} at {1}", typeof(ListBlock).FullName, index);
+
+            var hasAll = true;
+            foreach (var item in items)
+            {
+                if (!child.Items.Contains(item))
+                    hasAll = false;
+            }
+
+            hasAll.ShouldBeEquivalentTo(true);
         }
     }
 }
