@@ -51,6 +51,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assertions\GenericCollectionAssertionsExtensions.cs" />
     <Compile Include="Blocks\CodeblockFacts.cs" />
     <Compile Include="Blocks\ListBlockFacts.cs" />
     <Compile Include="MarkdownParserFactsBase.cs" />
@@ -63,6 +64,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="LineReaderFacts.cs" />
     <Compile Include="SmokeTheDocument.cs" />
+    <Compile Include="Text\InlineTextParserFacts.cs" />
+    <Compile Include="Text\LinkSpanFactoryFacts.cs" />
+    <Compile Include="Text\StringTokenizerFacts.cs" />
+    <Compile Include="Text\TextSpanFactoryFacts.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Markdown\Markdown.csproj">
@@ -78,6 +83,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
