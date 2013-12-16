@@ -1,10 +1,11 @@
 ﻿namespace Tanka.MarkdownTests.Blocks
 {
     using System;
+    using System.Linq;
     using System.Text;
+    using FluentAssertions;
     using Markdown.Blocks;
-    using TestStack.BDDfy;
-    using TestStack.BDDfy.Scanners.StepScanners.Fluent;
+    using Markdown.Text;
     using Xunit;
 
     public class ParagraphFacts : MarkdownParserFactsBase
@@ -15,15 +16,15 @@
             var builder = new StringBuilder();
             builder.AppendLine("first line");
 
-            this.Given(t => t.GivenMarkdownParserWithDefaults())
-                .And(t => t.GivenTheMarkdown(builder.ToString()))
-                .When(t => t.WhenTheMarkdownIsParsed())
-                .Then(t => t.ThenDocumentChildrenShouldHaveCount(1))
-                .And(t => ThenDocumentChildAtIndexShouldMatch<Paragraph>(0, new
-                {
-                    Content = "first line"
-                }))
-                .BDDfy();
+            GivenMarkdownParserWithDefaults();
+            GivenTheMarkdown(builder.ToString());
+
+            WhenTheMarkdownIsParsed();
+
+            ThenDocumentChildrenShouldHaveCount(1);
+            ThenDocumentChildAtIndexShould<Paragraph>(
+                0,
+                p => p.Content.Single().As<TextSpan>().Content.ShouldBeEquivalentTo("first line"));
         }
 
         [Fact]
@@ -36,15 +37,13 @@
             var text = builder.ToString();
             var expectedText = text.Replace(Environment.NewLine, " ").TrimEnd();
 
-            this.Given(t => t.GivenMarkdownParserWithDefaults())
-                .And(t => t.GivenTheMarkdown(text))
-                .When(t => t.WhenTheMarkdownIsParsed())
-                .Then(t => t.ThenDocumentChildrenShouldHaveCount(1))
-                .And(t => ThenDocumentChildAtIndexShouldMatch<Paragraph>(0, new
-                {
-                    Content = expectedText
-                }))
-                .BDDfy();
+            GivenMarkdownParserWithDefaults();
+            GivenTheMarkdown(text);
+            WhenTheMarkdownIsParsed();
+            ThenDocumentChildrenShouldHaveCount(1);
+            ThenDocumentChildAtIndexShould<Paragraph>(
+                0,
+                p => p.Content.Single().As<TextSpan>().Content.ShouldBeEquivalentTo(expectedText));
         }
     }
 }

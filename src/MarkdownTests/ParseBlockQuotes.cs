@@ -2,26 +2,32 @@
 {
     using System.Text;
     using Markdown.Blocks;
-    using TestStack.BDDfy;
-    using TestStack.BDDfy.Scanners.StepScanners.Fluent;
+    using Xbehave;
     using Xunit;
 
     public class ParseBlockquotes : MarkdownParserFactsBase
     {
-        [Fact]
+        [Scenario]
         public void SingleLineOfQuotedText()
         {
             var builder = new StringBuilder();
             builder.AppendLine("> Quoted one line of text");
 
-            this.Given(t => t.GivenMarkdownParserWithDefaults())
-                .And(t => t.GivenTheMarkdown(builder.ToString()))
-                .When(t => t.WhenTheMarkdownIsParsed())
-                .Then(t => t.ThenDocumentChildAtIndexShouldBe(0, typeof (Blockquote)))
-                .BDDfy();
+            "Given markdown with a single line block quote"
+                .Given(() =>
+                {
+                    GivenMarkdownParserWithDefaults();
+                    GivenTheMarkdown(builder.ToString());
+                });
+
+            "When markdwn is parsed"
+                .When(WhenTheMarkdownIsParsed);
+
+            "Then document child at index 0 should be blockquote"
+                .Then(() => ThenDocumentChildAtIndexShouldBe(0, typeof (Blockquote)));
         }
 
-        [Fact]
+        [Scenario]
         public void MultipleLinesOfQuotedText()
         {
             var builder = new StringBuilder();
@@ -30,12 +36,18 @@
             builder.AppendLine("> Quoted line of text");
             builder.AppendLine("> Quoted line of text");
 
-            this.Given(t => t.GivenMarkdownParserWithDefaults())
-                .And(t => t.GivenTheMarkdown(builder.ToString()))
-                .When(t => t.WhenTheMarkdownIsParsed())
-                .Then(t => t.ThenDocumentChildAtIndexShouldBe(0, typeof (Blockquote)))
-                .And(t => t.ThenDocumentChildrenShouldHaveCount(1))
-                .BDDfy();
+            "Given markdown with a single line block quote"
+                .Given(() =>
+                {
+                    GivenMarkdownParserWithDefaults();
+                    GivenTheMarkdown(builder.ToString());
+                });
+
+            "When markdwn is parsed"
+                .When(WhenTheMarkdownIsParsed);
+
+            "Then document child at index 0 should be blockquote"
+                .Then(() => ThenDocumentChildAtIndexShouldBe(0, typeof (Blockquote)));
         }
     }
 }

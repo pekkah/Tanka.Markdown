@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Markdown", "Markdown\Markdo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarkdownTests", "MarkdownTests\MarkdownTests.csproj", "{71C5D177-F9DC-4671-B2F1-8158A67CEFFC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Markdown.Html", "Markdown.Html\Markdown.Html.csproj", "{F5F63C49-2FC2-4E55-B942-8495FFC54A7C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{71C5D177-F9DC-4671-B2F1-8158A67CEFFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{71C5D177-F9DC-4671-B2F1-8158A67CEFFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{71C5D177-F9DC-4671-B2F1-8158A67CEFFC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5F63C49-2FC2-4E55-B942-8495FFC54A7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5F63C49-2FC2-4E55-B942-8495FFC54A7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5F63C49-2FC2-4E55-B942-8495FFC54A7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5F63C49-2FC2-4E55-B942-8495FFC54A7C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

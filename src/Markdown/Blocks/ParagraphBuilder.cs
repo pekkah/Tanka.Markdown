@@ -1,6 +1,7 @@
 ﻿namespace Tanka.Markdown.Blocks
 {
     using System.Text;
+    using Text;
 
     public class ParagraphBuilder : BlockBuilderBase
     {
@@ -35,7 +36,8 @@
 
         public override Block Create()
         {
-            return new Paragraph(_builder.ToString().Trim());
+            var spans = new InlineTextParser().Parse(_builder.ToString().Trim());
+            return new Paragraph(spans);
         }
     }
 }

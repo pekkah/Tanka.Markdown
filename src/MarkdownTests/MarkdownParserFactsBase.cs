@@ -22,6 +22,14 @@
             child.ShouldHave().AllRuntimeProperties().EqualTo(expected);
         }
 
+        protected void ThenDocumentChildAtIndexShould<T>(int index, Action<T> assert) where T : Block
+        {
+            var child = Document.Blocks.ElementAtOrDefault(index) as T;
+            child.Should().NotBeNull("Should have child block of type {0} at {1}", typeof(T).FullName, index);
+
+            assert(child);
+        }
+
         protected void ThenDocumentChildAtIndexShouldMatch<T>(int index, object expected,
             Expression<Func<T, object>> but) where T : Block
         {

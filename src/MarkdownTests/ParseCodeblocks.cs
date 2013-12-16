@@ -2,13 +2,12 @@
 {
     using System.Text;
     using Markdown.Blocks;
-    using TestStack.BDDfy;
-    using TestStack.BDDfy.Scanners.StepScanners.Fluent;
+    using Xbehave;
     using Xunit;
 
     public class ParseCodeblocks : MarkdownParserFactsBase
     {
-        [Fact]
+        [Scenario]
         public void CodeblockWithLanguage()
         {
             var builder = new StringBuilder();
@@ -16,16 +15,22 @@
             builder.AppendLine("function() { }");
             builder.AppendLine("```");
 
-            this.Given(t => t.GivenMarkdownParserWithDefaults())
-                .And(t => t.GivenTheMarkdown(builder.ToString()))
-                .When(t => t.WhenTheMarkdownIsParsed())
-                .Then(t => t.ThenDocumentChildrenShouldHaveCount(1))
-                .And(t => ThenDocumentChildAtIndexShouldMatch<Codeblock>(0, new
+            "Given markdown with a codeblock"
+                .Given(() =>
+                {
+                    GivenMarkdownParserWithDefaults();
+                    GivenTheMarkdown(builder.ToString());
+                });
+                
+                "When markdown is parsed"
+                    .When(WhenTheMarkdownIsParsed);
+
+            "Then document child at index 0 should be codeblock and match"
+                .Then(() => ThenDocumentChildAtIndexShouldMatch<Codeblock>(0, new
                 {
                     Language = "javascript",
                     Code = "function() { }\r\n"
-                }))
-                .BDDfy();
+                }));
         }
     }
 }

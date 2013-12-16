@@ -1,12 +1,20 @@
 ﻿namespace Tanka.Markdown.Blocks
 {
+    using System.Collections.Generic;
+    using Text;
+
     public class Paragraph : Block
     {
-        public Paragraph(string content)
+        private readonly IEnumerable<ISpan> _content;
+
+        public Paragraph(IEnumerable<ISpan> content)
         {
-            Content = content;
+            _content = content;
         }
 
-        public string Content { get; private set; }
+        public IEnumerable<ISpan> Content
+        {
+            get { return _content; }
+        }
     }
 }

@@ -2,60 +2,51 @@
 {
     using FluentAssertions;
     using Markdown.Blocks;
-    using TestStack.BDDfy;
-    using TestStack.BDDfy.Scanners.StepScanners.Fluent;
+    using Xbehave;
     using Xunit;
 
     public class ParagraphFactoryFacts
     {
-        private string _current;
-        private bool _isMatch;
-        private string _next;
 
-        [Fact]
+        [Scenario]
         public void WithJustCurrent()
         {
             const string currentLine = "lorem ipsum of some text here";
             const string nextLine = null;
 
-            this.Given(_ => _.GivenLines(currentLine, nextLine))
-                .When(_ => _.WhenMatched())
-                .Then(_ => _.ThenShouldMatch())
-                .BDDfy();
+            ParagraphFactory factory = null;
+
+            "Given paragraph factory"
+                .Given(() => factory = new ParagraphFactory());
+
+            bool isMatch = false;
+
+            "When matching with line of text and next line empty"
+                .When(() => isMatch = factory.IsMatch(currentLine, nextLine));
+
+            "Then should match"
+                .Then(() => isMatch.ShouldBeEquivalentTo(true));
+
         }
 
-        [Fact]
+        [Scenario]
         public void MultipleLinesOfText()
         {
             const string currentLine = "Current line";
             const string nextLine = "Next line";
 
-            this.Given(_ => _.GivenLines(currentLine, nextLine))
-                .When(_ => _.WhenMatched())
-                .Then(_ => _.ThenShouldMatch())
-                .BDDfy();
-        }
+            ParagraphFactory factory = null;
 
-        private void GivenLines(string current, string next)
-        {
-            _current = current;
-            _next = next;
-        }
+            "Given paragraph factory"
+                .Given(() => factory = new ParagraphFactory());
 
-        private void WhenMatched()
-        {
-            var factory = new ParagraphFactory();
-            _isMatch = factory.IsMatch(_current, _next);
-        }
+            bool isMatch = false;
 
-        private void ThenShouldMatch()
-        {
-            _isMatch.ShouldBeEquivalentTo(true);
-        }
+            "When matching with line of text and next line empty"
+                .When(() => isMatch = factory.IsMatch(currentLine, nextLine));
 
-        private void ThenShouldNotMatch()
-        {
-            _isMatch.ShouldBeEquivalentTo(false);
+            "Then should match"
+                .Then(() => isMatch.ShouldBeEquivalentTo(true));
         }
     }
 }

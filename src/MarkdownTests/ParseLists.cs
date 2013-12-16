@@ -2,13 +2,12 @@
 {
     using System.Text;
     using Markdown.Blocks;
-    using TestStack.BDDfy;
-    using TestStack.BDDfy.Scanners.StepScanners.Fluent;
+    using Xbehave;
     using Xunit;
 
     public class ParseLists : MarkdownParserFactsBase
     {
-        [Fact]
+        [Scenario]
         public void ListsWithItemsStartingWithStar()
         {
             var builder = new StringBuilder();
@@ -16,18 +15,28 @@
             builder.AppendLine("* item 2");
             builder.AppendLine("* item 3");
 
-            this.Given(t => t.GivenMarkdownParserWithDefaults())
-                .And(t => t.GivenTheMarkdown(builder.ToString()))
-                .When(t => t.WhenTheMarkdownIsParsed())
-                .Then(t => t.ThenDocumentChildrenShouldHaveCount(1))
-                .And(t => ThenDocumentChildAtIndexShouldMatch<ListBlock>(0, new
+            "Given list in markdown"
+                .Given(() =>
+                {
+                    GivenMarkdownParserWithDefaults();
+                    GivenTheMarkdown(builder.ToString());
+                });
+                
+            "When markdown is parsed"
+                .When(WhenTheMarkdownIsParsed);
+
+            "Then count of document children should be 1"
+                .Then(() => ThenDocumentChildrenShouldHaveCount(1));
+
+            "And child at index 0 should be a list with 3 items"
+                .Then(() => ThenDocumentChildAtIndexShouldMatch<ListBlock>(0, new
                 {
                     Count = 3
-                }, l => l.Items))
-                .BDDfy();
+                }, l => l.Items));
+
         }
 
-        [Fact]
+        [Scenario]
         public void ListsWithItemsStartingWithHyphen()
         {
             var builder = new StringBuilder();
@@ -35,18 +44,27 @@
             builder.AppendLine("- item 2");
             builder.AppendLine("- item 3");
 
-            this.Given(t => t.GivenMarkdownParserWithDefaults())
-                .And(t => t.GivenTheMarkdown(builder.ToString()))
-                .When(t => t.WhenTheMarkdownIsParsed())
-                .Then(t => t.ThenDocumentChildrenShouldHaveCount(1))
-                .And(t => ThenDocumentChildAtIndexShouldMatch<ListBlock>(0, new
+            "Given list in markdown"
+                .Given(() =>
+                {
+                    GivenMarkdownParserWithDefaults();
+                    GivenTheMarkdown(builder.ToString());
+                });
+
+            "When markdown is parsed"
+                .When(WhenTheMarkdownIsParsed);
+
+            "Then count of document children should be 1"
+                .Then(() => ThenDocumentChildrenShouldHaveCount(1));
+
+            "And child at index 0 should be a list with 3 items"
+                .Then(() => ThenDocumentChildAtIndexShouldMatch<ListBlock>(0, new
                 {
                     Count = 3
-                }, l => l.Items))
-                .BDDfy();
+                }, l => l.Items));
         }
 
-        [Fact]
+        [Scenario]
         public void ListsWithItemsStartingWithNumber()
         {
             var builder = new StringBuilder();
@@ -54,15 +72,24 @@
             builder.AppendLine("2. item 2");
             builder.AppendLine("3. item 3");
 
-            this.Given(t => t.GivenMarkdownParserWithDefaults())
-                .And(t => t.GivenTheMarkdown(builder.ToString()))
-                .When(t => t.WhenTheMarkdownIsParsed())
-                .Then(t => t.ThenDocumentChildrenShouldHaveCount(1))
-                .And(t => ThenDocumentChildAtIndexShouldMatch<ListBlock>(0, new
+            "Given list in markdown"
+               .Given(() =>
+               {
+                   GivenMarkdownParserWithDefaults();
+                   GivenTheMarkdown(builder.ToString());
+               });
+
+            "When markdown is parsed"
+                .When(WhenTheMarkdownIsParsed);
+
+            "Then count of document children should be 1"
+                .Then(() => ThenDocumentChildrenShouldHaveCount(1));
+
+            "And child at index 0 should be a list with 3 items"
+                .Then(() => ThenDocumentChildAtIndexShouldMatch<ListBlock>(0, new
                 {
                     Count = 3
-                }, l => l.Items))
-                .BDDfy();
+                }, l => l.Items));
         }
     }
 }
