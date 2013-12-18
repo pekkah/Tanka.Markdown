@@ -3,7 +3,6 @@
     using System.Text;
     using Markdown.Blocks;
     using Xbehave;
-    using Xunit;
 
     public class ParseCodeblocks : MarkdownParserFactsBase
     {
@@ -21,9 +20,9 @@
                     GivenMarkdownParserWithDefaults();
                     GivenTheMarkdown(builder.ToString());
                 });
-                
-                "When markdown is parsed"
-                    .When(WhenTheMarkdownIsParsed);
+
+            "When markdown is parsed"
+                .When(WhenTheMarkdownIsParsed);
 
             "Then document child at index 0 should be codeblock and match"
                 .Then(() => ThenDocumentChildAtIndexShouldMatch<Codeblock>(0, new

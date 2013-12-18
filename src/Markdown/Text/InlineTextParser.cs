@@ -5,11 +5,11 @@
 
     public class InlineTextParser
     {
-        private readonly List<SpanFactoryBase> _factories; 
+        private readonly List<SpanFactoryBase> _factories;
 
         public InlineTextParser()
         {
-            _factories = new List<SpanFactoryBase>()
+            _factories = new List<SpanFactoryBase>
             {
                 new TextSpanFactory()
             };
@@ -17,11 +17,11 @@
 
         public IEnumerable<ISpan> Parse(string content)
         {
-            var tokens = GetTokens(content);
+            Stack<Token> tokens = GetTokens(content);
 
             while (tokens.Any())
             {
-                var factory = CreateSpan(tokens.Select(t => t.Type));
+                SpanFactoryBase factory = CreateSpan(tokens.Select(t => t.Type));
 
                 yield return factory.Create(tokens, content);
             }
@@ -35,7 +35,7 @@
         private Stack<Token> GetTokens(string content)
         {
             var tokenizer = new StringTokenizer(content);
-            var tokens = tokenizer.Tokenize();
+            IEnumerable<Token> tokens = tokenizer.Tokenize();
 
             return new Stack<Token>(tokens.Reverse());
         }
@@ -43,6 +43,5 @@
 
     public interface ISpan
     {
-        
     }
 }

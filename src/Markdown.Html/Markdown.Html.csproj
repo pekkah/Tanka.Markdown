@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CodeblockRenderer.cs" />
     <Compile Include="HeadingRenderer.cs" />
     <Compile Include="HtmlRenderer.cs" />
     <Compile Include="IBlockRenderer.cs" />

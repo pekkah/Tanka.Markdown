@@ -1,5 +1,6 @@
 ﻿namespace Tanka.Markdown.Blocks
 {
+    using System.Collections.Generic;
     using System.Text;
     using Text;
 
@@ -36,7 +37,7 @@
 
         public override Block Create()
         {
-            var spans = new InlineTextParser().Parse(_builder.ToString().Trim());
+            IEnumerable<ISpan> spans = new InlineTextParser().Parse(_builder.ToString().Trim());
             return new Paragraph(spans);
         }
     }

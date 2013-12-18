@@ -25,7 +25,7 @@
         protected void ThenDocumentChildAtIndexShould<T>(int index, Action<T> assert) where T : Block
         {
             var child = Document.Blocks.ElementAtOrDefault(index) as T;
-            child.Should().NotBeNull("Should have child block of type {0} at {1}", typeof(T).FullName, index);
+            child.Should().NotBeNull("Should have child block of type {0} at {1}", typeof (T).FullName, index);
 
             assert(child);
         }
@@ -69,10 +69,10 @@
         protected void ThenListAtIndexShouldMatch(int index, params string[] items)
         {
             var child = Document.Blocks.ElementAtOrDefault(index) as ListBlock;
-            child.Should().NotBeNull("Should have child block of type {0} at {1}", typeof(ListBlock).FullName, index);
+            child.Should().NotBeNull("Should have child block of type {0} at {1}", typeof (ListBlock).FullName, index);
 
-            var hasAll = true;
-            foreach (var item in items)
+            bool hasAll = true;
+            foreach (string item in items)
             {
                 if (!child.Items.Contains(item))
                     hasAll = false;

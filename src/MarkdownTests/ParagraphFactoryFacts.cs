@@ -3,11 +3,9 @@
     using FluentAssertions;
     using Markdown.Blocks;
     using Xbehave;
-    using Xunit;
 
     public class ParagraphFactoryFacts
     {
-
         [Scenario]
         public void WithJustCurrent()
         {
@@ -26,7 +24,6 @@
 
             "Then should match"
                 .Then(() => isMatch.ShouldBeEquivalentTo(true));
-
         }
 
         [Scenario]

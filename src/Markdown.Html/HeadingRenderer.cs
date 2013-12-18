@@ -4,25 +4,12 @@
     using Blocks;
     using HtmlTags;
 
-    public class HeadingRenderer : IBlockRenderer
+    public class HeadingRenderer : BlockRendererBase<Heading>
     {
-        public bool CanRender(Block block)
+        protected override HtmlTag Render(Document document, Heading block)
         {
-            if (block == null) throw new ArgumentNullException("block");
-            return block is Heading;
-        }
-
-        public HtmlTag Render(Block block)
-        {
-            if (block == null) throw new ArgumentNullException("block");
-            if (!CanRender(block))
-                throw new InvalidOperationException(
-                    string.Format("Cannot render block of type {0}", block.GetType().FullName));
-
-            var heading = block as Heading;
-
-            var tag = new HtmlTag(String.Format("h{0}", heading.Level));
-            tag.Text(heading.Text);
+            var tag = new HtmlTag(String.Format("h{0}", block.Level));
+            tag.Text(block.Text);
 
             return tag;
         }

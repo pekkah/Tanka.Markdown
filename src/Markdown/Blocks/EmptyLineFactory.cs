@@ -43,6 +43,5 @@
 
     public class EmptyLine : Block
     {
-        
     }
 }

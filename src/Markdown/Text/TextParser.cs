@@ -72,7 +72,7 @@
                 previousToken = currenToken;
             }
 
-            tokens.Add(new Token() { StartPosition = _content.Length, Type = TokenType.End});
+            tokens.Add(new Token {StartPosition = _content.Length, Type = TokenType.End});
 
             return tokens;
         }

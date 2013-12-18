@@ -5,7 +5,6 @@
     using FluentAssertions;
     using Markdown;
     using Xbehave;
-    using Xunit;
 
     public class LineReaderFacts
     {

@@ -3,7 +3,6 @@
     using System.Text;
     using Markdown.Blocks;
     using Xbehave;
-    using Xunit;
 
     public class ParseBlockquotes : MarkdownParserFactsBase
     {

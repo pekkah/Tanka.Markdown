@@ -17,15 +17,15 @@
 
         public override ISpan Create(Stack<Token> tokens, string content)
         {
-            var start = tokens.Pop();
-            var next = tokens.Pop();
+            Token start = tokens.Pop();
+            Token next = tokens.Pop();
 
-            var spanContent = GetTokenContent(
-                start.StartPosition, 
-                next.StartPosition, 
+            string spanContent = GetTokenContent(
+                start.StartPosition,
+                next.StartPosition,
                 content);
 
-            return new TextSpan()
+            return new TextSpan
             {
                 Content = spanContent
             };

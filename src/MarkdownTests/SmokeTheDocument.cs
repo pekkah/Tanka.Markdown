@@ -12,7 +12,7 @@
         [Scenario]
         public void SampleDocument()
         {
-            var markdown = File.ReadAllText("TheDocument.txt");
+            string markdown = File.ReadAllText("TheDocument.txt");
 
             "Given markdown parser with defaults and the markdown content"
                 .Given(() =>
@@ -20,7 +20,7 @@
                     GivenMarkdownParserWithDefaults();
                     GivenTheMarkdown(markdown);
                 });
-                
+
             "When markdown content is parsed"
                 .When(() => WhenTheMarkdownIsParsed());
 
@@ -32,7 +32,8 @@
                 }));
             "And paragraphs"
                 .And(() => ThenDocumentChildAtIndexShould<Paragraph>(1, p => p.Content.First().As<TextSpan>().Content
-                    .ShouldBeEquivalentTo("This document starts with Setext style heading level one and continues with two level paragraph. This parahraph.")));
+                    .ShouldBeEquivalentTo(
+                        "This document starts with Setext style heading level one and continues with two level paragraph. This parahraph.")));
 
             "And lists"
                 .And(() => ThenListAtIndexShouldMatch(2,

@@ -4,7 +4,6 @@
     using System.Text;
     using Markdown.Blocks;
     using Xbehave;
-    using Xunit;
 
     public class ParseHeadingBlocks : MarkdownParserFactsBase
     {
@@ -37,11 +36,11 @@
             const string markdown = "## Heading";
 
             "Given markdown with a level two heading with hash"
-                 .Given(() =>
-                 {
-                     GivenMarkdownParserWithDefaults();
-                     GivenTheMarkdown(markdown);
-                 });
+                .Given(() =>
+                {
+                    GivenMarkdownParserWithDefaults();
+                    GivenTheMarkdown(markdown);
+                });
 
             "When markdwn is parsed"
                 .When(WhenTheMarkdownIsParsed);
@@ -92,11 +91,11 @@
             builder.AppendLine("============");
 
             "Given markdown with a setext level one heading"
-               .Given(() =>
-               {
-                   GivenMarkdownParserWithDefaults();
-                   GivenTheMarkdown(builder.ToString());
-               });
+                .Given(() =>
+                {
+                    GivenMarkdownParserWithDefaults();
+                    GivenTheMarkdown(builder.ToString());
+                });
 
             "When markdwn is parsed"
                 .When(WhenTheMarkdownIsParsed);
@@ -117,11 +116,11 @@
             builder.AppendLine("-----------");
 
             "Given markdown with a settext level two heading"
-               .Given(() =>
-               {
-                   GivenMarkdownParserWithDefaults();
-                   GivenTheMarkdown(builder.ToString());
-               });
+                .Given(() =>
+                {
+                    GivenMarkdownParserWithDefaults();
+                    GivenTheMarkdown(builder.ToString());
+                });
 
             "When markdwn is parsed"
                 .When(WhenTheMarkdownIsParsed);

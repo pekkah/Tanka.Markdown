@@ -34,8 +34,8 @@
             builder.AppendLine("first line");
             builder.AppendLine("second line of text here");
 
-            var text = builder.ToString();
-            var expectedText = text.Replace(Environment.NewLine, " ").TrimEnd();
+            string text = builder.ToString();
+            string expectedText = text.Replace(Environment.NewLine, " ").TrimEnd();
 
             GivenMarkdownParserWithDefaults();
             GivenTheMarkdown(text);

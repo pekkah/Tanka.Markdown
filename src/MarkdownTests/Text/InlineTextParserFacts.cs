@@ -1,5 +1,6 @@
 ﻿namespace Tanka.MarkdownTests.Text
 {
+    using System.Collections.Generic;
     using FluentAssertions;
     using Markdown.Text;
     using Xunit;
@@ -12,7 +13,7 @@
             const string text = "Hello world!";
 
             var parser = new InlineTextParser();
-            var result = parser.Parse(text);
+            IEnumerable<ISpan> result = parser.Parse(text);
 
             result.Should().ContainSingle(span => span.As<TextSpan>().Content == text);
         }

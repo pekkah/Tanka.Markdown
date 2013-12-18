@@ -3,7 +3,6 @@
     using System.Text;
     using Markdown.Blocks;
     using Xbehave;
-    using Xunit;
 
     public class ParseLists : MarkdownParserFactsBase
     {
@@ -21,7 +20,7 @@
                     GivenMarkdownParserWithDefaults();
                     GivenTheMarkdown(builder.ToString());
                 });
-                
+
             "When markdown is parsed"
                 .When(WhenTheMarkdownIsParsed);
 
@@ -33,7 +32,6 @@
                 {
                     Count = 3
                 }, l => l.Items));
-
         }
 
         [Scenario]
@@ -73,11 +71,11 @@
             builder.AppendLine("3. item 3");
 
             "Given list in markdown"
-               .Given(() =>
-               {
-                   GivenMarkdownParserWithDefaults();
-                   GivenTheMarkdown(builder.ToString());
-               });
+                .Given(() =>
+                {
+                    GivenMarkdownParserWithDefaults();
+                    GivenTheMarkdown(builder.ToString());
+                });
 
             "When markdown is parsed"
                 .When(WhenTheMarkdownIsParsed);

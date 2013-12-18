@@ -9,7 +9,7 @@
 
         protected string GetTokenContent(int startPosition, int endPosition, string content)
         {
-            var length = endPosition - startPosition;
+            int length = endPosition - startPosition;
             return content.Substring(startPosition, length);
         }
     }

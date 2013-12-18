@@ -1,11 +1,11 @@
 ﻿namespace Tanka.MarkdownTests.Text
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using FluentAssertions;
     using Markdown.Text;
     using Xunit;
-    using Xunit.Extensions;
 
     public class LinkSpanFactoryFacts
     {
@@ -59,7 +59,7 @@
                 new Token
                 {
                     Type = TokenType.Text,
-                    StartPosition = content.IndexOf("title", System.StringComparison.Ordinal),
+                    StartPosition = content.IndexOf("title", StringComparison.Ordinal),
                 },
                 new Token
                 {
@@ -74,7 +74,7 @@
                 new Token
                 {
                     Type = TokenType.Text,
-                    StartPosition = content.IndexOf("http", System.StringComparison.Ordinal),
+                    StartPosition = content.IndexOf("http", StringComparison.Ordinal),
                 },
                 new Token
                 {

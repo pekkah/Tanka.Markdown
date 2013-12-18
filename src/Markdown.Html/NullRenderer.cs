@@ -9,7 +9,7 @@
             return true;
         }
 
-        public HtmlTag Render(Block block)
+        public HtmlTag Render(Document document, Block block)
         {
             return HtmlTag.Empty();
         }

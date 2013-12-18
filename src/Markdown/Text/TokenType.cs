@@ -32,7 +32,7 @@
         Emphasis,
 
         /// <summary>
-        /// End of string
+        ///     End of string
         /// </summary>
         End
     }

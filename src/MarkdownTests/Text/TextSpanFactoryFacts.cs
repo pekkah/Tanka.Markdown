@@ -15,7 +15,7 @@
             var tokens = new[]
             {
                 TokenType.Text,
-                TokenType.End, 
+                TokenType.End
             };
 
             var factory = new TextSpanFactory();
@@ -34,7 +34,7 @@
             var tokens = new[]
             {
                 typeOfFirstToken,
-                TokenType.Text,
+                TokenType.Text
             };
 
             var factory = new TextSpanFactory();
@@ -54,7 +54,7 @@
             var tokens = new[]
             {
                 TokenType.Text,
-                typeOfNextToken, 
+                typeOfNextToken
             };
 
             var factory = new TextSpanFactory();
@@ -67,12 +67,12 @@
             const string content = "1234567890";
             var tokens = new Stack<Token>(new[]
             {
-                new Token()
+                new Token
                 {
                     Type = TokenType.Text,
                     StartPosition = 0,
                 },
-                new Token()
+                new Token
                 {
                     Type = TokenType.End,
                     StartPosition = 10,

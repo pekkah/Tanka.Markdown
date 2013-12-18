@@ -32,5 +32,30 @@
             // assert
             html.ShouldBeEquivalentTo(expectedHtml.ToString());
         }
+
+        [Fact]
+        public void RenderCodeblocks()
+        {
+            // arrange
+            var markdown = new StringBuilder();
+            markdown.AppendLine("``` csharp");
+            markdown.AppendLine("string name = \"test\";");
+            markdown.AppendLine("```");
+
+            var expectedHtml = new StringBuilder();
+            expectedHtml.Append("<pre><code data-lang=\"csharp\">");
+            expectedHtml.Append("string name = \"test\";");
+            expectedHtml.Append("</code></pre>");
+
+            var parser = new MarkdownParser();
+            var renderer = new HtmlRenderer();
+
+            // act
+            Document document = parser.Parse(markdown.ToString());
+            string html = renderer.Render(document).Replace("\r\n", "");
+
+            // assert
+            html.ShouldBeEquivalentTo(expectedHtml.ToString());
+        }
     }
 }

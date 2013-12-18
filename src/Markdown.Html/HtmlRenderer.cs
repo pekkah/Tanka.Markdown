@@ -12,9 +12,10 @@
 
         public HtmlRenderer()
         {
-            _renderers = new List<IBlockRenderer>()
+            _renderers = new List<IBlockRenderer>
             {
                 new HeadingRenderer(),
+                new CodeblockRenderer(),
                 new NullRenderer()
             };
         }
@@ -30,8 +31,8 @@
             foreach (Block block in blocks)
             {
                 IBlockRenderer renderer = GetBlockRenderer(block);
-                HtmlTag rootTag = renderer.Render(block);
-                var html = rootTag.ToHtmlString();
+                HtmlTag rootTag = renderer.Render(document, block);
+                string html = rootTag.ToHtmlString();
 
                 builder.Append(html);
             }

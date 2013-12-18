@@ -1,6 +1,5 @@
 ﻿namespace Tanka.Markdown.Text
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -51,28 +50,28 @@
             tokens.Pop();
 
             // title content between these
-            var titleStartToken = tokens.Pop();
-            var titleEndToken = tokens.Pop();
+            Token titleStartToken = tokens.Pop();
+            Token titleEndToken = tokens.Pop();
 
             // pop the link url or key start token (
             tokens.Pop();
 
             // url content between these
-            var urlStartToken = tokens.Pop();
-            var urlEndToken = tokens.Pop();
+            Token urlStartToken = tokens.Pop();
+            Token urlEndToken = tokens.Pop();
 
             // get title content
-            var title = GetTokenContent(
+            string title = GetTokenContent(
                 titleStartToken.StartPosition,
                 titleEndToken.StartPosition,
                 content);
 
-            var urlOrKey = GetTokenContent(
+            string urlOrKey = GetTokenContent(
                 urlStartToken.StartPosition,
                 urlEndToken.StartPosition,
                 content);
 
-            return new LinkSpan()
+            return new LinkSpan
             {
                 Title = title,
                 UrlOrKey = urlOrKey

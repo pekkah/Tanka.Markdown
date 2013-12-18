@@ -68,7 +68,7 @@
             }
 
             if (_skipEmptyLines)
-                blocks = blocks.Where(b => b.GetType() != typeof(EmptyLine)).ToList();
+                blocks = blocks.Where(b => b.GetType() != typeof (EmptyLine)).ToList();
 
             return new Document(blocks);
         }
