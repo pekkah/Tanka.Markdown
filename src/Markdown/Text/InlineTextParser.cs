@@ -11,7 +11,9 @@
         {
             _factories = new List<SpanFactoryBase>
             {
-                new TextSpanFactory()
+                new EndFactory(),
+                new LinkSpanFactory(),
+                new TextSpanFactory(),
             };
         }
 
@@ -23,7 +25,12 @@
             {
                 SpanFactoryBase factory = CreateSpan(tokens.Select(t => t.Type));
 
-                yield return factory.Create(tokens, content);
+                var span = factory.Create(tokens, content);
+
+                if (span is EmptySpan)
+                    continue;
+
+                yield return span;
             }
         }
 

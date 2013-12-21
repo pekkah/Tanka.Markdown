@@ -49,6 +49,7 @@
     <Compile Include="IBlockRenderer.cs" />
     <Compile Include="NullRenderer.cs" />
     <Compile Include="OrderedListRenderer.cs" />
+    <Compile Include="ParagraphRenderer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnorederedListRenderer.cs" />
   </ItemGroup>

@@ -1,7 +1,6 @@
 ﻿namespace Tanka.Markdown.Html
 {
     using System;
-    using System.Web.UI.HtmlControls;
     using Blocks;
     using HtmlTags;
 

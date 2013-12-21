@@ -15,6 +15,7 @@
             _renderers = new List<IBlockRenderer>
             {
                 new HeadingRenderer(),
+                new ParagraphRenderer(),
                 new CodeblockRenderer(),
                 new UnorederedListRenderer(),
                 new OrderedListRenderer(),

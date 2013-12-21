@@ -61,6 +61,35 @@
             factory.IsMatch(tokens).ShouldBeEquivalentTo(true);
         }
 
+        [Theory]
+        [InlineData(TokenType.Emphasis)]
+        [InlineData(TokenType.LinkTitleEnd)]
+        [InlineData(TokenType.LinkTitleStart)]
+        [InlineData(TokenType.LinkUrlEnd)]
+        [InlineData(TokenType.LinkUrlStart)]
+        [InlineData(TokenType.Text)]
+        public void ShouldCreateSpanWhenNexAny(TokenType typeOfNextToken)
+        {
+            const string content = "1234567890";
+
+            var tokens = new Stack<Token>(new[]
+            {
+                new Token
+                {
+                    Type = TokenType.Text,
+                    StartPosition = 0,
+                },
+                new Token
+                {
+                    Type = typeOfNextToken,
+                    StartPosition = 10,
+                }
+            }.Reverse());
+
+            var factory = new TextSpanFactory();
+            factory.Create(tokens, content).As<TextSpan>().Content.ShouldAllBeEquivalentTo(content);
+        }
+
         [Fact]
         public void ShouldCreateSpanFromTokens()
         {

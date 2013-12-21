@@ -18,7 +18,7 @@
         public override ISpan Create(Stack<Token> tokens, string content)
         {
             Token start = tokens.Pop();
-            Token next = tokens.Pop();
+            Token next = tokens.Peek();
 
             string spanContent = GetTokenContent(
                 start.StartPosition,

@@ -111,5 +111,32 @@
             // assert
             html.ShouldBeEquivalentTo(expectedHtml.ToString());
         }
+
+        [Fact]
+        public void RenderParagraph()
+        {
+            // arrange
+            var markdown = new StringBuilder();
+            markdown.AppendLine("some text here");
+            markdown.AppendLine("a link here [here](http://www.123.com) ");
+            markdown.AppendLine("some text here");
+
+            var expectedHtml = new StringBuilder();
+            expectedHtml.Append("<p>");
+            expectedHtml.Append("some text here ");
+            expectedHtml.Append("a link here <a href=\"http://www.123.com\">here</a> ");
+            expectedHtml.Append("some text here");
+            expectedHtml.Append("</p>");
+
+            var parser = new MarkdownParser();
+            var renderer = new HtmlRenderer();
+
+            // act
+            Document document = parser.Parse(markdown.ToString());
+            string html = renderer.Render(document).Replace("\r\n", "");
+
+            // assert
+            html.ShouldBeEquivalentTo(expectedHtml.ToString());
+        }
     }
 }
