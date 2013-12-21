@@ -20,7 +20,8 @@
                 new SetextHeadingOneFactory(),
                 new HeadingFactory(),
                 new CodeblockBuilderFactory(),
-                new ListBlockFactory(),
+                new UnorderedListFactory(),
+                new OrderedListFactory(),
                 new EmptyLineFactory(),
                 new ParagraphFactory()
             };
@@ -47,7 +48,7 @@
                 if (currentBlockBuilder == null)
                     currentBlockBuilder = CreateBuilder(currentLine, nextLine);
 
-                if (currentBlockBuilder.IsEndLine(currentLine, nextLine))
+                if (currentBlockBuilder.IsEndLine(currentLine, nextLine) || reader.EndOfDocument)
                 {
                     // end current block
                     currentBlockBuilder.AddLine(currentLine);

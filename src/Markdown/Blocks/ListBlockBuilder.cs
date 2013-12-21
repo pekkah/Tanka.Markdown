@@ -1,43 +1,74 @@
 ﻿namespace Tanka.Markdown.Blocks
 {
+    using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Text;
 
-    public class ListBlock : Block
+    public enum ListStyle
     {
-        private readonly IEnumerable<string> _items;
-
-        public ListBlock(IEnumerable<string> items)
-        {
-            _items = items;
-        }
-
-        public int Count
-        {
-            get { return _items.Count(); }
-        }
-
-        public IEnumerable<string> Items
-        {
-            get { return _items; }
-        }
+        Ordered,
+        Unordered
     }
 
     public class ListBlockBuilder : BlockBuilderBase
     {
         private readonly List<string> _items;
         private StringBuilder _currentItemBuilder;
+        private readonly ListStyle _style;
 
-        public ListBlockBuilder()
+        public ListBlockBuilder(ListStyle style)
         {
+            _style = style;
             _items = new List<string>();
+        }
+
+        public ListStyle Style
+        {
+            get
+            {
+                return _style;
+            }
+        }
+
+        private string GetItem(string currentLine)
+        {
+            switch (Style)
+            {
+                case ListStyle.Ordered:
+                    return GetOrderedItem(currentLine);
+                case ListStyle.Unordered:
+                    return GetUnorderedItem(currentLine);
+            }
+
+            return null;
+        }
+
+        private string GetUnorderedItem(string currentLine)
+        {
+            if (currentLine.StartsWith("* "))
+                return CleanUnorderedLine(currentLine);
+
+            if (currentLine.StartsWith("- "))
+                return CleanUnorderedLine(currentLine);
+
+            return null;
+        }
+
+        private string GetOrderedItem(string currentLine)
+        {
+            return CleanOrderedLine(currentLine);
         }
 
         public override bool IsEndLine(string currentLine, string nextLine)
         {
-            if (string.IsNullOrEmpty(nextLine))
-                return true;
+            // current line is empty and next line is not an item so must be end
+            if (string.IsNullOrEmpty(currentLine))
+                if (GetItem(nextLine) == null)
+                    return true;
+
+            if (string.IsNullOrEmpty(currentLine))
+                if (string.IsNullOrEmpty(nextLine))
+                    return true;
 
             return false;
         }
@@ -47,39 +78,53 @@
             // finish hanging item
             _items.Add(_currentItemBuilder.ToString());
 
-            return true;
+            // do not skip next line
+            return false;
         }
 
         public override void AddLine(string currentLine)
         {
             // new item starts with a list item marker
-            if (ListBlockFactory.IsListItem.Any(f => f(currentLine)))
+            var item = GetItem(currentLine);
+
+            // is an item
+            if (!string.IsNullOrWhiteSpace(item))
             {
-                // end previous item if item exists
+                // finish last item if exists
                 if (_currentItemBuilder != null)
                 {
                     _items.Add(_currentItemBuilder.ToString());
                 }
 
                 _currentItemBuilder = new StringBuilder();
+                _currentItemBuilder.Append(item);
             }
-
-            _currentItemBuilder.Append(Clean(currentLine));
+            else
+            {
+                _currentItemBuilder.Append(currentLine.Trim());
+            }
         }
 
         public override Block Create()
         {
-            return new ListBlock(_items);
+            return new ListBlock(_items) {Style = _style};
         }
 
         private string Clean(string line)
         {
-            if (line.StartsWith("*"))
-                return line.Substring(1).Trim();
+            switch (Style)
+            {
+                case ListStyle.Ordered:
+                    return CleanOrderedLine(line);
+                case ListStyle.Unordered:
+                    return CleanUnorderedLine(line);
+            }
 
-            if (line.StartsWith("-"))
-                return line.Substring(1).Trim();
+            return line.Trim();
+        }
 
+        private string CleanOrderedLine(string line)
+        {
             int possiblyANumberEnd = line.IndexOf('.');
             if (possiblyANumberEnd > -1)
             {
@@ -90,7 +135,18 @@
                     return line.Substring(possiblyANumberEnd + 1).Trim();
             }
 
-            return line.Trim();
+            return line;
+        }
+
+        private string CleanUnorderedLine(string line)
+        {
+            if (line.StartsWith("* "))
+                return line.Substring(1).Trim();
+
+            if (line.StartsWith("- "))
+                return line.Substring(1).Trim();
+
+            return line;
         }
     }
 }

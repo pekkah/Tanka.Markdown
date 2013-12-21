@@ -14,7 +14,7 @@
                 "* item"
             };
 
-            var listBlockBuilder = new ListBlockBuilder();
+            var listBlockBuilder = new ListBlockBuilder(ListStyle.Unordered);
             listBlockBuilder.AddLine(lines[0]);
             listBlockBuilder.End();
 
@@ -31,7 +31,7 @@
                 "- item"
             };
 
-            var listBlockBuilder = new ListBlockBuilder();
+            var listBlockBuilder = new ListBlockBuilder(ListStyle.Unordered);
             listBlockBuilder.AddLine(lines[0]);
             listBlockBuilder.End();
 
@@ -48,7 +48,7 @@
                 "1. item"
             };
 
-            var listBlockBuilder = new ListBlockBuilder();
+            var listBlockBuilder = new ListBlockBuilder(ListStyle.Ordered);
             listBlockBuilder.AddLine(lines[0]);
             listBlockBuilder.End();
 

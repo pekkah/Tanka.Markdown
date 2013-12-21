@@ -30,7 +30,8 @@
             "And child at index 0 should be a list with 3 items"
                 .Then(() => ThenDocumentChildAtIndexShouldMatch<ListBlock>(0, new
                 {
-                    Count = 3
+                    Count = 3,
+                    Style = ListStyle.Unordered
                 }, l => l.Items));
         }
 
@@ -58,7 +59,8 @@
             "And child at index 0 should be a list with 3 items"
                 .Then(() => ThenDocumentChildAtIndexShouldMatch<ListBlock>(0, new
                 {
-                    Count = 3
+                    Count = 3,
+                    Style = ListStyle.Unordered
                 }, l => l.Items));
         }
 
@@ -86,7 +88,8 @@
             "And child at index 0 should be a list with 3 items"
                 .Then(() => ThenDocumentChildAtIndexShouldMatch<ListBlock>(0, new
                 {
-                    Count = 3
+                    Count = 3,
+                    Style = ListStyle.Ordered
                 }, l => l.Items));
         }
     }

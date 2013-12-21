@@ -1,39 +1,47 @@
 ﻿namespace Tanka.Markdown.Blocks
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-
-    public class ListBlockFactory : BlockFactoryBase
+    public class UnorderedListFactory : BlockFactoryBase
     {
-        public static List<Func<string, bool>> IsListItem = new List<Func<string, bool>>
-        {
-            item => item.StartsWith("* "),
-            item => item.StartsWith("- "),
-            item =>
-            {
-                int indexOfDot = item.IndexOf('.');
-                if (indexOfDot < 0)
-                    return false;
-
-                string numberStr = item.Substring(0, indexOfDot);
-                int _ = 0;
-
-                return int.TryParse(numberStr, out _);
-            }
-        };
-
         public override bool IsMatch(string currentLine, string nextLine)
         {
             if (string.IsNullOrWhiteSpace(currentLine))
                 return false;
 
-            return IsListItem.Any(f => f(currentLine));
+            if (currentLine.StartsWith("* "))
+                return true;
+
+            if (currentLine.StartsWith("- "))
+                return true;
+
+            return false;
         }
 
         public override BlockBuilderBase Create()
         {
-            return new ListBlockBuilder();
+            return new ListBlockBuilder(ListStyle.Unordered);
+        }
+    }
+
+    public class OrderedListFactory : BlockFactoryBase
+    {
+        public override bool IsMatch(string currentLine, string nextLine)
+        {
+            if (string.IsNullOrWhiteSpace(currentLine))
+                return false;
+
+            int indexOfDot = currentLine.IndexOf('.');
+            if (indexOfDot < 0)
+                return false;
+
+            string numberStr = currentLine.Substring(0, indexOfDot);
+            int _ = 0;
+
+            return int.TryParse(numberStr, out _);
+        }
+
+        public override BlockBuilderBase Create()
+        {
+            return new ListBlockBuilder(ListStyle.Ordered);
         }
     }
 }
