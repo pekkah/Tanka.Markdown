@@ -16,6 +16,8 @@
             {
                 new HeadingRenderer(),
                 new CodeblockRenderer(),
+                new UnorederedListRenderer(),
+                new OrderedListRenderer(),
                 new NullRenderer()
             };
         }

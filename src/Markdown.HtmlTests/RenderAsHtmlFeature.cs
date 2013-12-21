@@ -57,5 +57,59 @@
             // assert
             html.ShouldBeEquivalentTo(expectedHtml.ToString());
         }
+
+        [Fact]
+        public void RenderOrderedLists()
+        {
+            // arrange
+            var markdown = new StringBuilder();
+            markdown.AppendLine("1. item");
+            markdown.AppendLine("2. item");
+            markdown.AppendLine("3. item");
+
+            var expectedHtml = new StringBuilder();
+            expectedHtml.Append("<ol>");
+            expectedHtml.Append("<li>item</li>");
+            expectedHtml.Append("<li>item</li>");
+            expectedHtml.Append("<li>item</li>");
+            expectedHtml.Append("</ol>");
+
+            var parser = new MarkdownParser();
+            var renderer = new HtmlRenderer();
+
+            // act
+            Document document = parser.Parse(markdown.ToString());
+            string html = renderer.Render(document).Replace("\r\n", "");
+
+            // assert
+            html.ShouldBeEquivalentTo(expectedHtml.ToString());
+        }
+
+        [Fact]
+        public void RenderUnorderedLists()
+        {
+            // arrange
+            var markdown = new StringBuilder();
+            markdown.AppendLine("- item");
+            markdown.AppendLine("- item");
+            markdown.AppendLine("- item");
+
+            var expectedHtml = new StringBuilder();
+            expectedHtml.Append("<ul>");
+            expectedHtml.Append("<li>item</li>");
+            expectedHtml.Append("<li>item</li>");
+            expectedHtml.Append("<li>item</li>");
+            expectedHtml.Append("</ul>");
+
+            var parser = new MarkdownParser();
+            var renderer = new HtmlRenderer();
+
+            // act
+            Document document = parser.Parse(markdown.ToString());
+            string html = renderer.Render(document).Replace("\r\n", "");
+
+            // assert
+            html.ShouldBeEquivalentTo(expectedHtml.ToString());
+        }
     }
 }
