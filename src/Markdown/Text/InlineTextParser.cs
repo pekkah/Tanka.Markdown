@@ -12,6 +12,7 @@
             _factories = new List<SpanFactoryBase>
             {
                 new EndFactory(),
+                new ImageSpanFactory(),
                 new LinkSpanFactory(),
                 new TextSpanFactory(),
             };

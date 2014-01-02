@@ -2,43 +2,58 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     public class StringTokenizer
     {
         private readonly string _content;
 
-        private readonly Dictionary<char, Func<char, int, Token>> _tokenFactory;
+        private readonly Dictionary<Func<string, bool>, Func<int, Token>> _tokenFactory;
 
         protected StringTokenizer()
         {
-            _tokenFactory = new Dictionary<char, Func<char, int, Token>>
+            _tokenFactory = new Dictionary<Func<string, bool>, Func<int, Token>>
             {
                 {
-                    '[', (c, i) => new Token
+                    text => text.StartsWith("["), i => new Token
                     {
                         StartPosition = i,
                         Type = TokenType.LinkTitleStart
                     }
                 },
                 {
-                    ']', (c, i) => new Token
+                    text => text.StartsWith("]"), i => new Token
                     {
                         StartPosition = i,
                         Type = TokenType.LinkTitleEnd
                     }
                 },
                 {
-                    '(', (c, i) => new Token
+                    text => text.StartsWith("("), i => new Token
                     {
                         StartPosition = i,
                         Type = TokenType.LinkUrlStart
                     }
                 },
                 {
-                    ')', (c, i) => new Token
+                    text => text.StartsWith(")"), i => new Token
                     {
                         StartPosition = i,
                         Type = TokenType.LinkUrlEnd
+                    }
+                },
+                {
+                    text => text.StartsWith("!["), i => new Token
+                    {
+                        StartPosition = i,
+                        Type = TokenType.Image
+                    }
+                },
+                {
+                    text => true, i => new Token
+                    {
+                        Type = TokenType.Text,
+                        StartPosition = i
                     }
                 }
             };
@@ -56,9 +71,17 @@
 
             for (int position = 0; position < _content.Length; position++)
             {
-                char c = _content[position];
+                string twoChars;
+                if (position < _content.Length-1)
+                {
+                    twoChars = _content.Substring(position, 2);
+                }
+                else
+                {
+                    twoChars = _content.Substring(position, 1);
+                }
 
-                Token currenToken = GetToken(c, position);
+                Token currenToken = GetToken(twoChars, position);
 
                 // don't create new token if the previous token was text
                 if (previousToken != null && previousToken.Type == TokenType.Text)
@@ -77,20 +100,11 @@
             return tokens;
         }
 
-        public Token GetToken(char c, int position)
+        public Token GetToken(string c, int position)
         {
-            Func<char, int, Token> factory = null;
-            if (_tokenFactory.TryGetValue(c, out factory))
-            {
-                return factory(c, position);
-            }
+            KeyValuePair<Func<string, bool>, Func<int, Token>> factoryEntry = _tokenFactory.First(f => f.Key(c));
 
-            // if not special token then must be text
-            return new Token
-            {
-                Type = TokenType.Text,
-                StartPosition = position
-            };
+            return factoryEntry.Value(position);
         }
     }
 }

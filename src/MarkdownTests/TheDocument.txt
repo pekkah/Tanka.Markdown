@@ -18,3 +18,5 @@ function() {
 ```
 
 > blockquotes
+
+And images ![alt](http://image.jpg)

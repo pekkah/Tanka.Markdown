@@ -49,6 +49,7 @@
         [InlineData(TokenType.LinkUrlEnd)]
         [InlineData(TokenType.LinkUrlStart)]
         [InlineData(TokenType.Text)]
+        [InlineData(TokenType.Image)]
         public void ShouldMatchTokenPatternWhenNextAny(TokenType typeOfNextToken)
         {
             var tokens = new[]

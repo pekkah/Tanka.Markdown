@@ -19,6 +19,17 @@
         }
 
         [Fact]
+        public void TokenizeTextWithExlamationMark()
+        {
+            const string text = "Text some here!";
+
+            var tokenizer = new StringTokenizer(text);
+            IEnumerable<Token> result = tokenizer.Tokenize();
+
+            result.Should().ContainSingle(t => t.Type == TokenType.Text && t.StartPosition == 0);
+        }
+
+        [Fact]
         public void TokenizeLink()
         {
             const string text = "[Google](http://google.fi)";

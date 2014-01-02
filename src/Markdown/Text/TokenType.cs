@@ -34,6 +34,11 @@
         /// <summary>
         ///     End of string
         /// </summary>
-        End
+        End,
+
+        /// <summary>
+        /// !
+        /// </summary>
+        Image
     }
 }

@@ -16,11 +16,17 @@
             markdown.AppendLine("# heading 1");
             markdown.AppendLine("## heading 2");
             markdown.AppendLine("### heading 3");
+            markdown.AppendLine("Heading");
+            markdown.AppendLine("=======");
+            markdown.AppendLine("Heading");
+            markdown.AppendLine("-------");
 
             var expectedHtml = new StringBuilder();
             expectedHtml.Append("<h1>heading 1</h1>");
             expectedHtml.Append("<h2>heading 2</h2>");
             expectedHtml.Append("<h3>heading 3</h3>");
+            expectedHtml.Append("<h1>Heading</h1>");
+            expectedHtml.Append("<h2>Heading</h2>");
 
             var parser = new MarkdownParser();
             var renderer = new HtmlRenderer();
@@ -118,14 +124,14 @@
             // arrange
             var markdown = new StringBuilder();
             markdown.AppendLine("some text here");
-            markdown.AppendLine("a link here [here](http://www.123.com) ");
-            markdown.AppendLine("some text here");
+            markdown.AppendLine("a link here [here](http://www.123.com)");
+            markdown.AppendLine("a inline image here ![alt text](/images/sample.jpg)");
 
             var expectedHtml = new StringBuilder();
             expectedHtml.Append("<p>");
             expectedHtml.Append("some text here ");
             expectedHtml.Append("a link here <a href=\"http://www.123.com\">here</a> ");
-            expectedHtml.Append("some text here");
+            expectedHtml.Append("a inline image here <img src=\"/images/sample.jpg\" alt=\"alt text\" />");
             expectedHtml.Append("</p>");
 
             var parser = new MarkdownParser();

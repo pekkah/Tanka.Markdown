@@ -22,7 +22,7 @@
                 });
 
             "When markdown content is parsed"
-                .When(() => WhenTheMarkdownIsParsed());
+                .When(WhenTheMarkdownIsParsed);
 
             "Then should parse headings"
                 .Then(() => ThenDocumentChildAtIndexShouldMatch<Heading>(0, new
@@ -56,8 +56,20 @@
                     Language = "javascript",
                     Code = "function() {\r\n	var hello = \"world\";\r\n}\r\n"
                 }));
+
             "And blockquotes"
                 .And(() => ThenDocumentChildAtIndexShouldBe(5, typeof (Blockquote)));
+
+            "And images"
+                .And(
+                    () =>
+                        ThenDocumentChildAtIndexShould<Paragraph>(6,
+                            p => p.Content.Last().As<ImageSpan>().ShouldHave().AllProperties().EqualTo(new
+                            {
+                                AltText = "alt",
+                                UrlOrKey = "http://image.jpg",
+                                IsKey = false
+                            })));
         }
     }
 }

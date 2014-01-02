@@ -30,12 +30,19 @@
                 var text = span as TextSpan;
                 builder.Append(text.Content);
             }
-
-            if (span is LinkSpan)
+            else if (span is LinkSpan)
             {
                 var link = span as LinkSpan;
                 var linkTag = new LinkTag(link.Title, link.UrlOrKey);
                 builder.Append(linkTag.ToHtmlString());
+            }
+            else if (span is ImageSpan)
+            {
+                var image = span as ImageSpan;
+                var imageTag = new HtmlTag("img");
+                imageTag.Attr("src", image.UrlOrKey);
+                imageTag.Attr("alt", image.AltText);
+                builder.Append(imageTag.ToHtmlString());
             }
         }
     }

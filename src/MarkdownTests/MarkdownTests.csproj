@@ -64,6 +64,7 @@
     <Compile Include="LineReaderFacts.cs" />
     <Compile Include="SmokeTheDocument.cs" />
     <Compile Include="Text\InlineTextParserFacts.cs" />
+    <Compile Include="Text\ImageSpanFactoryFacts.cs" />
     <Compile Include="Text\LinkSpanFactoryFacts.cs" />
     <Compile Include="Text\StringTokenizerFacts.cs" />
     <Compile Include="Text\TextSpanFactoryFacts.cs" />
