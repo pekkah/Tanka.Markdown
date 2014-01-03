@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 
-[assembly: AssemblyTitle("Markdown.Html")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Tanka Markdown Html")]
+[assembly: AssemblyDescription("Markdown Html renderer")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Markdown.Html")]
-[assembly: AssemblyCopyright("Copyright ©  2013")]
+[assembly: AssemblyCompany("Pekka Heikura")]
+[assembly: AssemblyProduct("Tanka")]
+[assembly: AssemblyCopyright("Copyright ©  2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
