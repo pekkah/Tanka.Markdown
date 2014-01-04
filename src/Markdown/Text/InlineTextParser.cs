@@ -1,5 +1,6 @@
 ﻿namespace Tanka.Markdown.Text
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -14,25 +15,43 @@
                 new EndFactory(),
                 new ImageSpanFactory(),
                 new LinkSpanFactory(),
+                new ReferenceLinkSpanFactory(),
                 new TextSpanFactory(),
+                new UnknownAsTextSpanFactory()
             };
         }
 
         public IEnumerable<ISpan> Parse(string content)
         {
             Stack<Token> tokens = GetTokens(content);
+            var result = new List<ISpan>();
+
+            ISpan previousSpan = null;
 
             while (tokens.Any())
             {
                 SpanFactoryBase factory = CreateSpan(tokens.Select(t => t.Type));
 
-                var span = factory.Create(tokens, content);
+                ISpan span = factory.Create(tokens, content);
 
                 if (span is EmptySpan)
                     continue;
 
-                yield return span;
+                // combine text spans
+                if (previousSpan is TextSpan && span is TextSpan)
+                {
+                    var previousTextSpan = previousSpan as TextSpan;
+                    var currentTextSpan = span as TextSpan;
+                    previousTextSpan.Content = string.Concat(previousTextSpan.Content, "", currentTextSpan.Content);
+
+                    continue;
+                }
+
+                previousSpan = span;
+                result.Add(span);
             }
+
+            return result;
         }
 
         private SpanFactoryBase CreateSpan(IEnumerable<TokenType> tokens)

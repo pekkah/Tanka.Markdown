@@ -69,6 +69,8 @@
     <Compile Include="Text\EndFactory.cs" />
     <Compile Include="Text\InlineTextParser.cs" />
     <Compile Include="Text\LinkSpan.cs" />
+    <Compile Include="Text\LinkSpanFactory.cs" />
+    <Compile Include="Text\ReferenceLinkSpanFactory.cs" />
     <Compile Include="Text\SpanFactoryBase.cs" />
     <Compile Include="Text\StringTokenizer.cs" />
     <Compile Include="Text\TextSpan.cs" />

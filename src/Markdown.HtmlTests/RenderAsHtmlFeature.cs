@@ -50,7 +50,7 @@
 
             var expectedHtml = new StringBuilder();
             expectedHtml.Append("<pre><code data-lang=\"csharp\">");
-            expectedHtml.Append("string name = \"test\";");
+            expectedHtml.Append("string name = &quot;test&quot;;");
             expectedHtml.Append("</code></pre>");
 
             var parser = new MarkdownParser();

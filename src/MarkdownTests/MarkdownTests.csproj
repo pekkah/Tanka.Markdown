@@ -66,6 +66,7 @@
     <Compile Include="Text\InlineTextParserFacts.cs" />
     <Compile Include="Text\ImageSpanFactoryFacts.cs" />
     <Compile Include="Text\LinkSpanFactoryFacts.cs" />
+    <Compile Include="Text\ReferenceLinkSpanFactoryFacts.cs" />
     <Compile Include="Text\StringTokenizerFacts.cs" />
     <Compile Include="Text\TextSpanFactoryFacts.cs" />
   </ItemGroup>

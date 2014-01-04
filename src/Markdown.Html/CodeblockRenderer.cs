@@ -12,7 +12,7 @@
             var code = new HtmlTag("code", tag);
             code.Attr("data-lang", block.Language);
             //code.Text(block.Code);
-            code.AppendHtml(block.Code);
+            code.Text(block.Code);
 
             return tag;
         }
