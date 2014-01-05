@@ -10,7 +10,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <releaseNotes>https://github.com/pekkah/Tanka.Markdown</releaseNotes>
-    <copyright>Copyright 2014</copyright>
+    <copyright>Copyright 2014 Pekka Heikura</copyright>
     <tags>Tanka Markdown Html</tags>
   </metadata>
 </package>
