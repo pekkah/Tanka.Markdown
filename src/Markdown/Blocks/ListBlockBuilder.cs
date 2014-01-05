@@ -1,6 +1,5 @@
 ﻿namespace Tanka.Markdown.Blocks
 {
-    using System;
     using System.Collections.Generic;
     using System.Text;
 
@@ -13,8 +12,8 @@
     public class ListBlockBuilder : BlockBuilderBase
     {
         private readonly List<string> _items;
-        private StringBuilder _currentItemBuilder;
         private readonly ListStyle _style;
+        private StringBuilder _currentItemBuilder;
 
         public ListBlockBuilder(ListStyle style)
         {
@@ -24,23 +23,26 @@
 
         public ListStyle Style
         {
-            get
-            {
-                return _style;
-            }
+            get { return _style; }
         }
 
         private string GetItem(string currentLine)
         {
+            if (string.IsNullOrEmpty(currentLine))
+                return null;
+
+            string item = null;
             switch (Style)
             {
                 case ListStyle.Ordered:
-                    return GetOrderedItem(currentLine);
+                    item = GetOrderedItem(currentLine);
+                    break;
                 case ListStyle.Unordered:
-                    return GetUnorderedItem(currentLine);
+                    item = GetUnorderedItem(currentLine);
+                    break;
             }
 
-            return null;
+            return string.IsNullOrEmpty(item) ? null : item.Trim();
         }
 
         private string GetUnorderedItem(string currentLine)
@@ -61,22 +63,32 @@
 
         public override bool IsEndLine(string currentLine, string nextLine)
         {
-            // current line is empty and next line is not an item so must be end
-            if (string.IsNullOrEmpty(currentLine))
-                if (GetItem(nextLine) == null)
-                    return true;
+            if (GetItem(currentLine) != null)
+                return false;
 
-            if (string.IsNullOrEmpty(currentLine))
-                if (string.IsNullOrEmpty(nextLine))
-                    return true;
+            if (!string.IsNullOrEmpty(currentLine) && currentLine.StartsWith("   "))
+                return false;
 
-            return false;
+            if (GetItem(nextLine) != null)
+                return false;
+
+            if (string.IsNullOrWhiteSpace(currentLine))
+                if (!string.IsNullOrEmpty(nextLine) && nextLine.StartsWith("   "))
+                    return false;
+
+            if (string.IsNullOrWhiteSpace(currentLine))
+                if (!string.IsNullOrEmpty(nextLine) && GetItem(nextLine) != null)
+                    return false;
+
+            return true;
         }
 
         public override bool End()
         {
             // finish hanging item
-            _items.Add(_currentItemBuilder.ToString());
+            var hangingItem = _currentItemBuilder.ToString().Trim();
+            if (!string.IsNullOrWhiteSpace(hangingItem))
+                _items.Add(hangingItem);
 
             // do not skip next line
             return false;
@@ -85,7 +97,7 @@
         public override void AddLine(string currentLine)
         {
             // new item starts with a list item marker
-            var item = GetItem(currentLine);
+            string item = GetItem(currentLine);
 
             // is an item
             if (!string.IsNullOrWhiteSpace(item))
@@ -101,7 +113,8 @@
             }
             else
             {
-                _currentItemBuilder.Append(currentLine.Trim());
+                var line = string.Concat(" ", currentLine.Trim());
+                _currentItemBuilder.Append(line);
             }
         }
 
@@ -135,7 +148,8 @@
                     return line.Substring(possiblyANumberEnd + 1).Trim();
             }
 
-            return line;
+            // not an ordered list item
+            return null;
         }
 
         private string CleanUnorderedLine(string line)

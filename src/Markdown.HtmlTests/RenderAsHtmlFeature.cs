@@ -71,12 +71,13 @@
             var markdown = new StringBuilder();
             markdown.AppendLine("1. item");
             markdown.AppendLine("2. item");
+            markdown.AppendLine("   this is item two");
             markdown.AppendLine("3. item");
 
             var expectedHtml = new StringBuilder();
             expectedHtml.Append("<ol>");
             expectedHtml.Append("<li>item</li>");
-            expectedHtml.Append("<li>item</li>");
+            expectedHtml.Append("<li>item this is item two</li>");
             expectedHtml.Append("<li>item</li>");
             expectedHtml.Append("</ol>");
 
