@@ -1,5 +1,6 @@
 ﻿namespace Tanka.Markdown.Html
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Text;
     using Blocks;
@@ -8,6 +9,28 @@
 
     public class ParagraphRenderer : BlockRendererBase<Paragraph>
     {
+        public ParagraphRenderer()
+        {
+            SpanRenderers = new List<ISpanRenderer>
+            {
+                new SpanRenderer<TextSpan>((text, builder) => builder.Append(text.Content)),
+                new SpanRenderer<LinkSpan>((link, builder) =>
+                {
+                    var linkTag = new LinkTag(link.Title, link.UrlOrKey);
+                    builder.Append(linkTag.ToHtmlString());
+                }),
+                new SpanRenderer<ImageSpan>((image, builder) =>
+                {
+                    var imageTag = new HtmlTag("img");
+                    imageTag.Attr("src", image.UrlOrKey);
+                    imageTag.Attr("alt", image.AltText);
+                    builder.Append(imageTag.ToHtmlString());
+                })
+            };
+        }
+
+        public List<ISpanRenderer> SpanRenderers { get; set; }
+
         protected override HtmlTag Render(Document document, Paragraph block)
         {
             var builder = new StringBuilder();
@@ -15,35 +38,13 @@
 
             foreach (ISpan span in block.Content.ToList())
             {
-                WriteSpan(builder, span);
+                ISpanRenderer renderer = SpanRenderers.First(r => r.CanRender(span));
+                renderer.Render(span, builder);
             }
 
             builder.Append("</p>");
             var tag = new LiteralTag(builder.ToString());
             return tag;
-        }
-
-        private void WriteSpan(StringBuilder builder, ISpan span)
-        {
-            if (span is TextSpan)
-            {
-                var text = span as TextSpan;
-                builder.Append(text.Content);
-            }
-            else if (span is LinkSpan)
-            {
-                var link = span as LinkSpan;
-                var linkTag = new LinkTag(link.Title, link.UrlOrKey);
-                builder.Append(linkTag.ToHtmlString());
-            }
-            else if (span is ImageSpan)
-            {
-                var image = span as ImageSpan;
-                var imageTag = new HtmlTag("img");
-                imageTag.Attr("src", image.UrlOrKey);
-                imageTag.Attr("alt", image.AltText);
-                builder.Append(imageTag.ToHtmlString());
-            }
         }
     }
 }

@@ -70,6 +70,21 @@
                                 UrlOrKey = "http://image.jpg",
                                 IsKey = false
                             })));
+
+            "And reference link should parsed as link ith IsKey = true"
+                .And(() => ThenDocumentChildAtIndexShould<Paragraph>(7,
+                    p =>
+                    {
+                        var linkSpan = p.Content.Last().As<LinkSpan>();
+                        linkSpan.IsKey.ShouldBeEquivalentTo(true);
+                    }));
+
+            "And link definition with key and url"
+                .And(() => ThenDocumentChildAtIndexShould<LinkDefinition>(8, ld =>
+                {
+                    ld.Key.ShouldBeEquivalentTo("1");
+                    ld.Url.ShouldBeEquivalentTo("https://github.com");
+                }));
         }
     }
 }

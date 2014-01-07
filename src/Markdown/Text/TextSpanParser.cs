@@ -1,14 +1,20 @@
 ﻿namespace Tanka.Markdown.Text
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
 
-    public class InlineTextParser
+    public class TextSpanParser
     {
-        private readonly List<SpanFactoryBase> _factories;
+        private readonly IEnumerable<SpanFactoryBase> _factories;
+        private readonly StringTokenizer _tokenizer;
+        
+        public TextSpanParser(IEnumerable<SpanFactoryBase> factories, StringTokenizer tokenizer)
+        {
+            _factories = factories;
+            _tokenizer = tokenizer;
+        }
 
-        public InlineTextParser()
+        public TextSpanParser()
         {
             _factories = new List<SpanFactoryBase>
             {
@@ -19,6 +25,8 @@
                 new TextSpanFactory(),
                 new UnknownAsTextSpanFactory()
             };
+
+            _tokenizer = new StringTokenizer();
         }
 
         public IEnumerable<ISpan> Parse(string content)
@@ -30,7 +38,7 @@
 
             while (tokens.Any())
             {
-                SpanFactoryBase factory = CreateSpan(tokens.Select(t => t.Type));
+                SpanFactoryBase factory = GetFactory(tokens);
 
                 ISpan span = factory.Create(tokens, content);
 
@@ -54,15 +62,14 @@
             return result;
         }
 
-        private SpanFactoryBase CreateSpan(IEnumerable<TokenType> tokens)
+        private SpanFactoryBase GetFactory(IEnumerable<Token> tokens)
         {
             return _factories.First(f => f.IsMatch(tokens));
         }
 
         private Stack<Token> GetTokens(string content)
         {
-            var tokenizer = new StringTokenizer(content);
-            IEnumerable<Token> tokens = tokenizer.Tokenize();
+            IEnumerable<Token> tokens = _tokenizer.Tokenize(content);
 
             return new Stack<Token>(tokens.Reverse());
         }

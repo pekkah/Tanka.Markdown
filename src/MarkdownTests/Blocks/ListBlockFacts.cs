@@ -1,6 +1,5 @@
 ﻿namespace Tanka.MarkdownTests.Blocks
 {
-    using System.Text;
     using FluentAssertions;
     using Markdown.Blocks;
     using Xunit;
@@ -82,7 +81,7 @@
             var builder = new ListBlockBuilder(ListStyle.Ordered);
 
             builder.AddLine("1. item one");
-            builder.IsEndLine("", "").ShouldBeEquivalentTo(true);            
+            builder.IsEndLine("", "").ShouldBeEquivalentTo(true);
         }
 
         [Fact]

@@ -51,10 +51,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExtendByAddingNewBlockRenderer.cs" />
     <Compile Include="RenderAsHtmlFeature.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Markdown.Gist\Markdown.Gist.csproj">
+      <Project>{ec1c2049-15cf-4eff-a6cb-834ac901ffb2}</Project>
+      <Name>Markdown.Gist</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Markdown.Html\Markdown.Html.csproj">
       <Project>{f5f63c49-2fc2-4e55-b942-8495ffc54a7c}</Project>
       <Name>Markdown.Html</Name>

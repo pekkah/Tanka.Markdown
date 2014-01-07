@@ -1,36 +1,26 @@
 ﻿namespace Tanka.Markdown.Text
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
     public class LinkSpanFactory : SpanFactoryBase
     {
-        private static readonly List<TokenType> Pattern = new List<TokenType>
+        private static readonly List<Token> Pattern = new List<Token>
         {
-            TokenType.LinkTitleStart,
-            TokenType.Text,
-            TokenType.LinkTitleEnd,
-            TokenType.LinkUrlStart,
-            TokenType.Text,
-            TokenType.LinkUrlEnd
+            new Token(TokenType.LinkTitleStart),
+            new Token(TokenType.Text),
+            new Token(TokenType.LinkTitleEnd),
+            new Token(TokenType.LinkUrlStart),
+            new Token(TokenType.Text),
+            new Token(TokenType.LinkUrlEnd)
         };
 
-        public override bool IsMatch(IEnumerable<TokenType> tokens)
+        public override bool IsMatch(IEnumerable<Token> tokens)
         {
-            IList<TokenType> tokenTypes = tokens as IList<TokenType> ?? tokens.ToList();
-            if (tokenTypes.Count() < Pattern.Count)
-                return false;
+            if (tokens == null) throw new ArgumentNullException("tokens");
 
-            for (int i = 0; i < Pattern.Count; i++)
-            {
-                TokenType pt = Pattern[i];
-                TokenType st = tokenTypes.ElementAt(i);
-
-                if (pt != st)
-                    return false;
-            }
-
-            return true;
+            return TokensMatch(tokens, Pattern);
         }
 
         public override ISpan Create(Stack<Token> tokens, string content)

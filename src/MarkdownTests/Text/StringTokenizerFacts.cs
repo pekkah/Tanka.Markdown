@@ -12,8 +12,8 @@
         {
             const string text = "Text some here";
 
-            var tokenizer = new StringTokenizer(text);
-            IEnumerable<Token> result = tokenizer.Tokenize();
+            var tokenizer = new StringTokenizer();
+            IEnumerable<Token> result = tokenizer.Tokenize(text);
 
             result.Should().ContainSingle(t => t.Type == TokenType.Text && t.StartPosition == 0);
         }
@@ -23,8 +23,8 @@
         {
             const string text = "Text some here!";
 
-            var tokenizer = new StringTokenizer(text);
-            IEnumerable<Token> result = tokenizer.Tokenize();
+            var tokenizer = new StringTokenizer();
+            IEnumerable<Token> result = tokenizer.Tokenize(text);
 
             result.Should().ContainSingle(t => t.Type == TokenType.Text && t.StartPosition == 0);
         }
@@ -34,41 +34,17 @@
         {
             const string text = "[Google](http://google.fi)";
 
-            var tokenizer = new StringTokenizer(text);
-            IEnumerable<Token> result = tokenizer.Tokenize();
+            var tokenizer = new StringTokenizer();
+            IEnumerable<Token> result = tokenizer.Tokenize(text);
 
             result.Should().ContainInOrder(new[]
             {
-                new Token
-                {
-                    StartPosition = 0,
-                    Type = TokenType.LinkTitleStart
-                },
-                new Token
-                {
-                    StartPosition = 1,
-                    Type = TokenType.Text
-                },
-                new Token
-                {
-                    StartPosition = 7,
-                    Type = TokenType.LinkTitleEnd
-                },
-                new Token
-                {
-                    StartPosition = 8,
-                    Type = TokenType.LinkUrlStart
-                },
-                new Token
-                {
-                    StartPosition = 9,
-                    Type = TokenType.Text
-                },
-                new Token
-                {
-                    StartPosition = 25,
-                    Type = TokenType.LinkUrlEnd
-                }
+                new Token(TokenType.LinkTitleStart, 0),
+                new Token(TokenType.Text, 1),
+                new Token(TokenType.LinkTitleEnd, 7),
+                new Token(TokenType.LinkUrlStart, 8),
+                new Token(TokenType.Text, 9),
+                new Token(TokenType.LinkUrlEnd, 25)
             });
         }
     }

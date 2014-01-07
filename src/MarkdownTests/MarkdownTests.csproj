@@ -52,7 +52,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Blocks\CodeblockFacts.cs" />
+    <Compile Include="Blocks\LinkDefinitionBlockFacts.cs" />
     <Compile Include="Blocks\ListBlockFacts.cs" />
+    <Compile Include="ExtendByAddingNewSpan.cs" />
+    <Compile Include="ExtendByAddingNewBlock.cs" />
     <Compile Include="MarkdownParserFactsBase.cs" />
     <Compile Include="Blocks\ParagraphFacts.cs" />
     <Compile Include="ParseBlockquotes.cs" />
@@ -71,6 +74,10 @@
     <Compile Include="Text\TextSpanFactoryFacts.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Markdown.Gist\Markdown.Gist.csproj">
+      <Project>{ec1c2049-15cf-4eff-a6cb-834ac901ffb2}</Project>
+      <Name>Markdown.Gist</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Markdown\Markdown.csproj">
       <Project>{8298ab0e-89bb-4034-ba7f-c643debc87dd}</Project>
       <Name>Markdown</Name>

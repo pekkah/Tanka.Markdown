@@ -10,9 +10,9 @@
 
     public class TextSpanFactory : SpanFactoryBase
     {
-        public override bool IsMatch(IEnumerable<TokenType> tokens)
+        public override bool IsMatch(IEnumerable<Token> tokens)
         {
-            return tokens.First() == TokenType.Text;
+            return tokens.First().Type == TokenType.Text;
         }
 
         public override ISpan Create(Stack<Token> tokens, string content)
@@ -34,7 +34,7 @@
 
     public class UnknownAsTextSpanFactory : SpanFactoryBase
     {
-        public override bool IsMatch(IEnumerable<TokenType> tokens)
+        public override bool IsMatch(IEnumerable<Token> tokens)
         {
             return tokens.Any();
         }

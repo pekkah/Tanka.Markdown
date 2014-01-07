@@ -13,7 +13,7 @@
         {
             const string text = "Hello world!";
 
-            var parser = new InlineTextParser();
+            var parser = new TextSpanParser();
             IEnumerable<ISpan> result = parser.Parse(text);
 
             result.Should().ContainSingle(span => span.As<TextSpan>().Content == text);
@@ -24,10 +24,12 @@
         {
             const string text = "[here](http://test.com)";
 
-            var parser = new InlineTextParser();
+            var parser = new TextSpanParser();
             IEnumerable<ISpan> result = parser.Parse(text);
 
-            result.Should().ContainSingle(span => span.As<LinkSpan>().Title == "here" && span.As<LinkSpan>().UrlOrKey == "http://test.com");
+            result.Should()
+                .ContainSingle(
+                    span => span.As<LinkSpan>().Title == "here" && span.As<LinkSpan>().UrlOrKey == "http://test.com");
         }
 
         [Fact]
@@ -35,8 +37,8 @@
         {
             const string text = "text [here](http://test.com) text";
 
-            var parser = new InlineTextParser();
-            var result = parser.Parse(text).ToList();
+            var parser = new TextSpanParser();
+            List<ISpan> result = parser.Parse(text).ToList();
 
             result.Should().HaveCount(3);
             var first = result[0] as TextSpan;

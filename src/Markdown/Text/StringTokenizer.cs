@@ -1,87 +1,46 @@
 ﻿namespace Tanka.Markdown.Text
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
 
     public class StringTokenizer
     {
-        private readonly string _content;
-
-        private readonly Dictionary<Func<string, bool>, Func<int, Token>> _tokenFactory;
-
-        protected StringTokenizer()
+        public StringTokenizer(IEnumerable<ITokenFactory> factories)
         {
-            _tokenFactory = new Dictionary<Func<string, bool>, Func<int, Token>>
+            TokenFactories = new List<ITokenFactory>(factories);
+        }
+
+        public StringTokenizer()
+        {
+            TokenFactories = new List<ITokenFactory>
             {
-                {
-                    text => text.StartsWith("["), i => new Token
-                    {
-                        StartPosition = i,
-                        Type = TokenType.LinkTitleStart
-                    }
-                },
-                {
-                    text => text.StartsWith("]"), i => new Token
-                    {
-                        StartPosition = i,
-                        Type = TokenType.LinkTitleEnd
-                    }
-                },
-                {
-                    text => text.StartsWith("("), i => new Token
-                    {
-                        StartPosition = i,
-                        Type = TokenType.LinkUrlStart
-                    }
-                },
-                {
-                    text => text.StartsWith(")"), i => new Token
-                    {
-                        StartPosition = i,
-                        Type = TokenType.LinkUrlEnd
-                    }
-                },
-                {
-                    text => text.StartsWith("!["), i => new Token
-                    {
-                        StartPosition = i,
-                        Type = TokenType.Image
-                    }
-                },
-                {
-                    text => true, i => new Token
-                    {
-                        Type = TokenType.Text,
-                        StartPosition = i
-                    }
-                }
+                new TokenFactory(text => text.StartsWith("["),
+                    i => new Token(TokenType.LinkTitleStart, i)),
+                new TokenFactory(text => text.StartsWith("]"),
+                    i => new Token(TokenType.LinkTitleEnd, i)),
+                new TokenFactory(text => text.StartsWith("("),
+                    i => new Token(TokenType.LinkUrlStart, i)),
+                new TokenFactory(text => text.StartsWith(")"),
+                    i => new Token(TokenType.LinkUrlEnd, i)),
+                new TokenFactory(text => text.StartsWith("!["),
+                    i => new Token(TokenType.Image, i)),
+                new TokenFactory(text => true,
+                    i => new Token(TokenType.Text, i))
             };
         }
 
-        public StringTokenizer(string content) : this()
-        {
-            _content = content;
-        }
+        public List<ITokenFactory> TokenFactories { get; set; }
 
-        public IEnumerable<Token> Tokenize()
+        public IEnumerable<Token> Tokenize(string content)
         {
             var tokens = new List<Token>();
             Token previousToken = null;
 
-            for (int position = 0; position < _content.Length; position++)
+            for (int position = 0; position < content.Length; position++)
             {
-                string twoChars;
-                if (position < _content.Length-1)
-                {
-                    twoChars = _content.Substring(position, 2);
-                }
-                else
-                {
-                    twoChars = _content.Substring(position, 1);
-                }
+                string restOfTheString = content.Substring(position);
 
-                Token currenToken = GetToken(twoChars, position);
+                Token currenToken = GetToken(restOfTheString, position);
 
                 // don't create new token if the previous token was text
                 if (previousToken != null && previousToken.Type == TokenType.Text)
@@ -95,16 +54,15 @@
                 previousToken = currenToken;
             }
 
-            tokens.Add(new Token {StartPosition = _content.Length, Type = TokenType.End});
+            tokens.Add(new Token(TokenType.End, content.Length));
 
             return tokens;
         }
 
         public Token GetToken(string c, int position)
         {
-            KeyValuePair<Func<string, bool>, Func<int, Token>> factoryEntry = _tokenFactory.First(f => f.Key(c));
-
-            return factoryEntry.Value(position);
+            ITokenFactory factoryEntry = TokenFactories.First(f => f.CanCreate(c));
+            return factoryEntry.Create(position);
         }
     }
 }

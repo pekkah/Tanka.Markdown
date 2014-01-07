@@ -4,30 +4,21 @@
     using System.Collections.Generic;
     using System.Linq;
     using Blocks;
+    using Text;
 
     public class MarkdownParser
     {
-        private readonly bool _skipEmptyLines;
-
         public MarkdownParser()
         {
-            // default settings
-            _skipEmptyLines = true;
-
-            BlockFactories = new List<BlockFactoryBase>
-            {
-                new BlockquoteFactory(),
-                new SetextHeadingOneFactory(),
-                new HeadingFactory(),
-                new CodeblockBuilderFactory(),
-                new UnorderedListFactory(),
-                new OrderedListFactory(),
-                new EmptyLineFactory(),
-                new ParagraphFactory()
-            };
+            Options = MarkdownParserOptions.Defaults;
         }
 
-        public List<BlockFactoryBase> BlockFactories { get; private set; }
+        public MarkdownParser(MarkdownParserOptions options)
+        {
+            Options = options;
+        }
+
+        public MarkdownParserOptions Options { get; set; }
 
         public Document Parse(string markdown)
         {
@@ -68,15 +59,42 @@
                 }
             }
 
-            if (_skipEmptyLines)
+            if (Options.SkipEmptyLines)
                 blocks = blocks.Where(b => b.GetType() != typeof (EmptyLine)).ToList();
+
+            if (Options.AutoResolveReferenceLinks)
+                ResolveLinks(blocks);
 
             return new Document(blocks);
         }
 
+        private void ResolveLinks(IEnumerable<Block> blocks)
+        {
+            if (blocks == null) throw new ArgumentNullException("blocks");
+
+            List<Block> allBlocks = blocks.ToList();
+            IEnumerable<Paragraph> paragraphs = allBlocks.OfType<Paragraph>();
+            List<LinkDefinition> definitions = allBlocks.OfType<LinkDefinition>().ToList();
+
+            foreach (Paragraph paragraph in paragraphs)
+            {
+                // process all reference links (IsKey == True)
+                foreach (LinkSpan link in paragraph.Content.OfType<LinkSpan>().Where(l => l.IsKey))
+                {
+                    LinkDefinition definition = definitions.FirstOrDefault(d => d.Key == link.UrlOrKey);
+
+                    // todo(pekka): should we fail if the link definition is not found?
+                    if (definition == null)
+                        continue;
+
+                    link.UrlOrKey = definition.Url;
+                }
+            }
+        }
+
         private BlockBuilderBase CreateBuilder(string startLine, string nextLine)
         {
-            return BlockFactories.First(f => f.IsMatch(startLine, nextLine)).Create();
+            return Options.BlockFactories.First(f => f.IsMatch(startLine, nextLine)).Create();
         }
     }
 }

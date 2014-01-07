@@ -14,12 +14,12 @@
         {
             var tokens = new[]
             {
-                TokenType.LinkTitleStart,
-                TokenType.Text,
-                TokenType.LinkTitleEnd,
-                TokenType.LinkTitleStart,
-                TokenType.Text,
-                TokenType.LinkTitleEnd
+                new Token(TokenType.LinkTitleStart),
+                new Token(TokenType.Text),
+                new Token(TokenType.LinkTitleEnd),
+                new Token(TokenType.LinkTitleStart),
+                new Token(TokenType.Text),
+                new Token(TokenType.LinkTitleEnd)
             };
 
             var factory = new ReferenceLinkSpanFactory();
@@ -32,12 +32,12 @@
         {
             var tokens = new[]
             {
-                TokenType.LinkTitleStart,
-                TokenType.LinkTitleStart,
-                TokenType.LinkTitleEnd,
-                TokenType.LinkUrlStart,
-                TokenType.Text,
-                TokenType.LinkUrlEnd
+                new Token(TokenType.LinkTitleStart),
+                new Token(TokenType.LinkTitleStart),
+                new Token(TokenType.LinkTitleEnd),
+                new Token(TokenType.LinkUrlStart),
+                new Token(TokenType.Text),
+                new Token(TokenType.LinkUrlEnd)
             };
 
             var factory = new ReferenceLinkSpanFactory();
@@ -52,35 +52,35 @@
             var tokens = new Stack<Token>(new[]
             {
                 new Token
-                {
-                    Type = TokenType.LinkTitleStart,
-                    StartPosition = content.IndexOf('['),
-                },
+                    (
+                    TokenType.LinkTitleStart,
+                    content.IndexOf('[')
+                    ),
                 new Token
-                {
-                    Type = TokenType.Text,
-                    StartPosition = content.IndexOf("title", StringComparison.Ordinal),
-                },
+                    (
+                    TokenType.Text,
+                    content.IndexOf("title", StringComparison.Ordinal)
+                    ),
                 new Token
-                {
-                    Type = TokenType.LinkTitleEnd,
-                    StartPosition = content.IndexOf(']'),
-                },
+                    (
+                    TokenType.LinkTitleEnd,
+                    content.IndexOf(']')
+                    ),
                 new Token
-                {
-                    Type = TokenType.LinkTitleStart,
-                    StartPosition = content.LastIndexOf('['),
-                },
+                    (
+                    TokenType.LinkTitleStart,
+                    content.LastIndexOf('[')
+                    ),
                 new Token
-                {
-                    Type = TokenType.Text,
-                    StartPosition = content.IndexOf("1", StringComparison.Ordinal),
-                },
+                    (
+                    TokenType.Text,
+                    content.IndexOf("1", StringComparison.Ordinal)
+                    ),
                 new Token
-                {
-                    Type = TokenType.LinkTitleEnd,
-                    StartPosition = content.LastIndexOf(']'),
-                }
+                    (
+                    TokenType.LinkTitleEnd,
+                    content.LastIndexOf(']')
+                    )
             }.Reverse());
 
             var factory = new ReferenceLinkSpanFactory();

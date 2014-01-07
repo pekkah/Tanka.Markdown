@@ -5,9 +5,9 @@
 
     public class EndFactory : SpanFactoryBase
     {
-        public override bool IsMatch(IEnumerable<TokenType> tokens)
+        public override bool IsMatch(IEnumerable<Token> tokens)
         {
-            return tokens.First() == TokenType.End;
+            return tokens.First().Type == TokenType.End;
         }
 
         public override ISpan Create(Stack<Token> tokens, string content)

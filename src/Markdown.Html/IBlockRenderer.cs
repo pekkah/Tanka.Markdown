@@ -15,7 +15,12 @@
         {
             if (block == null) throw new ArgumentNullException("block");
 
-            return CanRender(block as T);
+            var expectedBlock = block as T;
+
+            if (expectedBlock == null)
+                return false;
+
+            return CanRender(expectedBlock);
         }
 
         public HtmlTag Render(Document document, Block block)

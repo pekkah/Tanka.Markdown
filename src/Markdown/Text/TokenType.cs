@@ -1,44 +1,46 @@
 ﻿namespace Tanka.Markdown.Text
 {
-    public enum TokenType
+    public static class TokenType
     {
         /// <summary>
         /// </summary>
-        Text,
+        public const string Text = "(any)";
 
         /// <summary>
         ///     [
         /// </summary>
-        LinkTitleStart,
+        public const string LinkTitleStart = "[";
 
         /// <summary>
         ///     ]
         /// </summary>
-        LinkTitleEnd,
+        public const string LinkTitleEnd = "]";
 
         /// <summary>
         ///     (
         /// </summary>
-        LinkUrlStart,
+        public const string LinkUrlStart = "(";
 
         /// <summary>
         ///     )
         /// </summary>
-        LinkUrlEnd,
+        public const string LinkUrlEnd = ")";
 
         /// <summary>
         ///     *
         /// </summary>
-        Emphasis,
+        public const string Emphasis = "*";
 
         /// <summary>
         ///     End of string
         /// </summary>
-        End,
+        public const string End = "(eof)";
 
         /// <summary>
         /// !
         /// </summary>
-        Image
+        public const string Image = "!";
+
+        public const string Unknown = "(unk)";
     }
 }

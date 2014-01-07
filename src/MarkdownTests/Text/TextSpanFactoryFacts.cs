@@ -14,8 +14,8 @@
         {
             var tokens = new[]
             {
-                TokenType.Text,
-                TokenType.End
+                new Token(TokenType.Text),
+                new Token(TokenType.End)
             };
 
             var factory = new TextSpanFactory();
@@ -29,12 +29,12 @@
         [InlineData(TokenType.LinkTitleStart)]
         [InlineData(TokenType.LinkUrlEnd)]
         [InlineData(TokenType.LinkUrlStart)]
-        public void ShouldNotMatchWhenNotFirstInPattern(TokenType typeOfFirstToken)
+        public void ShouldNotMatchWhenNotFirstInPattern(string typeOfFirstToken)
         {
             var tokens = new[]
             {
-                typeOfFirstToken,
-                TokenType.Text
+                new Token(typeOfFirstToken),
+                new Token(TokenType.Text)
             };
 
             var factory = new TextSpanFactory();
@@ -50,12 +50,12 @@
         [InlineData(TokenType.LinkUrlStart)]
         [InlineData(TokenType.Text)]
         [InlineData(TokenType.Image)]
-        public void ShouldMatchTokenPatternWhenNextAny(TokenType typeOfNextToken)
+        public void ShouldMatchTokenPatternWhenNextAny(string typeOfNextToken)
         {
             var tokens = new[]
             {
-                TokenType.Text,
-                typeOfNextToken
+                new Token(TokenType.Text),
+                new Token(typeOfNextToken)
             };
 
             var factory = new TextSpanFactory();
@@ -69,22 +69,14 @@
         [InlineData(TokenType.LinkUrlEnd)]
         [InlineData(TokenType.LinkUrlStart)]
         [InlineData(TokenType.Text)]
-        public void ShouldCreateSpanWhenNexAny(TokenType typeOfNextToken)
+        public void ShouldCreateSpanWhenNexAny(string typeOfNextToken)
         {
             const string content = "1234567890";
 
             var tokens = new Stack<Token>(new[]
             {
-                new Token
-                {
-                    Type = TokenType.Text,
-                    StartPosition = 0,
-                },
-                new Token
-                {
-                    Type = typeOfNextToken,
-                    StartPosition = 10,
-                }
+                new Token(TokenType.Text, 0),
+                new Token(typeOfNextToken, 10)
             }.Reverse());
 
             var factory = new TextSpanFactory();
@@ -97,16 +89,8 @@
             const string content = "1234567890";
             var tokens = new Stack<Token>(new[]
             {
-                new Token
-                {
-                    Type = TokenType.Text,
-                    StartPosition = 0,
-                },
-                new Token
-                {
-                    Type = TokenType.End,
-                    StartPosition = 10,
-                }
+                new Token(TokenType.Text, 0),
+                new Token(TokenType.End, 10)
             }.Reverse());
 
             var factory = new TextSpanFactory();

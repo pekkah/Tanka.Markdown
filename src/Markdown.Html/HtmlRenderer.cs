@@ -8,20 +8,17 @@
 
     public class HtmlRenderer
     {
-        private readonly List<IBlockRenderer> _renderers;
-
         public HtmlRenderer()
         {
-            _renderers = new List<IBlockRenderer>
-            {
-                new HeadingRenderer(),
-                new ParagraphRenderer(),
-                new CodeblockRenderer(),
-                new UnorederedListRenderer(),
-                new OrderedListRenderer(),
-                new NullRenderer()
-            };
+            Options = HtmlRendererOptions.Defaults;
         }
+
+        public HtmlRenderer(HtmlRendererOptions options)
+        {
+            Options = options;
+        }
+
+        public HtmlRendererOptions Options { get; set; }
 
         public string Render(Document document)
         {
@@ -45,7 +42,7 @@
 
         protected IBlockRenderer GetBlockRenderer(Block block)
         {
-            return _renderers.First(r => r.CanRender(block));
+            return Options.Renderers.First(r => r.CanRender(block));
         }
     }
 }

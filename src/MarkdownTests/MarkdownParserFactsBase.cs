@@ -56,6 +56,11 @@
             _parser = new MarkdownParser();
         }
 
+        protected void GivenMarkdownParser(MarkdownParser parser)
+        {
+            _parser = parser;
+        }
+
         protected void GivenTheMarkdown(string markdown)
         {
             _markdown = markdown;

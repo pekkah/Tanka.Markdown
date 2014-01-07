@@ -1,6 +1,8 @@
 ﻿namespace Tanka.Markdown
 {
     using System.Collections.Generic;
+    using System.Linq;
+    using Blocks;
 
     public class Document
     {
@@ -15,5 +17,13 @@
         {
             get { return _blocks; }
         }
+
+        public IEnumerable<LinkDefinition> LinkDefinitions
+        {
+            get
+            {
+                return _blocks.OfType<LinkDefinition>();
+            }
+        } 
     }
 }

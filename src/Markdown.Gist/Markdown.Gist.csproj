@@ -4,14 +4,13 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F5F63C49-2FC2-4E55-B942-8495FFC54A7C}</ProjectGuid>
+    <ProjectGuid>{EC1C2049-15CF-4EFF-A6CB-834AC901FFB2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Tanka.Markdown.Html</RootNamespace>
-    <AssemblyName>Tanka.Markdown.Html</AssemblyName>
+    <RootNamespace>Tanka.Markdown.Gist</RootNamespace>
+    <AssemblyName>Tanka.Markdown.Gist</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <FodyPath>..\packages\Fody.1.19.1.0</FodyPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,7 +30,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="HtmlTags">
+    <Reference Include="HtmlTags, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\HtmlTags.2.0.0.181\lib\4.0\HtmlTags.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -44,27 +44,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CodeblockRenderer.cs" />
-    <Compile Include="HeadingRenderer.cs" />
-    <Compile Include="HtmlRenderer.cs" />
-    <Compile Include="HtmlRendererOptions.cs" />
-    <Compile Include="IBlockRenderer.cs" />
-    <Compile Include="ISpanRenderer.cs" />
-    <Compile Include="NullRenderer.cs" />
-    <Compile Include="OrderedListRenderer.cs" />
-    <Compile Include="ParagraphRenderer.cs" />
+    <Compile Include="GistBlock.cs" />
+    <Compile Include="GistBlockRenderer.cs" />
+    <Compile Include="GistBuilder.cs" />
+    <Compile Include="GistFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SpanRenderer.cs" />
-    <Compile Include="UnorederedListRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
+    <ProjectReference Include="..\Markdown.Html\Markdown.Html.csproj">
+      <Project>{f5f63c49-2fc2-4e55-b942-8495ffc54a7c}</Project>
+      <Name>Markdown.Html</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Markdown\Markdown.csproj">
       <Project>{8298ab0e-89bb-4034-ba7f-c643debc87dd}</Project>
       <Name>Markdown</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

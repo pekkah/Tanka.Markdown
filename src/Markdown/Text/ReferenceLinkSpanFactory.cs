@@ -5,32 +5,19 @@
 
     public class ReferenceLinkSpanFactory : SpanFactoryBase
     {
-        private static readonly List<TokenType> Pattern = new List<TokenType>
+        private static readonly List<Token> Pattern = new List<Token>
         {
-            TokenType.LinkTitleStart,
-            TokenType.Text,
-            TokenType.LinkTitleEnd,
-            TokenType.LinkTitleStart,
-            TokenType.Text,
-            TokenType.LinkTitleEnd
+            new Token(TokenType.LinkTitleStart),
+            new Token(TokenType.Text),
+            new Token(TokenType.LinkTitleEnd),
+            new Token(TokenType.LinkTitleStart),
+            new Token(TokenType.Text),
+            new Token(TokenType.LinkTitleEnd)
         };
 
-        public override bool IsMatch(IEnumerable<TokenType> tokens)
+        public override bool IsMatch(IEnumerable<Token> tokens)
         {
-            IList<TokenType> tokenTypes = tokens as IList<TokenType> ?? tokens.ToList();
-            if (tokenTypes.Count() < Pattern.Count)
-                return false;
-
-            for (int i = 0; i < Pattern.Count; i++)
-            {
-                TokenType pt = Pattern[i];
-                TokenType st = tokenTypes.ElementAt(i);
-
-                if (pt != st)
-                    return false;
-            }
-
-            return true;
+            return TokensMatch(tokens, Pattern);
         }
 
         public override ISpan Create(Stack<Token> tokens, string content)
