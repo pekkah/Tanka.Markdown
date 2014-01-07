@@ -4,13 +4,20 @@
 * Parse markdown into a document
 * Render markdown document as html
 
-# Progress
-* Document parsing mainly done
-* Work on html renderer started
-
-NOTE: Not ready for any serious use!!
+# Supported Blocks
+* Headings
+* Codeblocks
+* Link definitions
+* Blockquotes
+* Paragraphs
 
 # Usage
+
+At your own risk :)
+
+```
+Install-Package Tanka.Markdown.Html -Pre
+```
 
 ```
 var parser = new MarkdownParser();
