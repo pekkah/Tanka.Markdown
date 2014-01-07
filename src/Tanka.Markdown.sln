@@ -13,6 +13,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Markdown.HtmlTests", "Markd
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Markdown.Gist", "Markdown.Gist\Markdown.Gist.csproj", "{EC1C2049-15CF-4EFF-A6CB-834AC901FFB2}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C6330601-672C-4BDA-A584-6E45BE3935E0}"
+	ProjectSection(SolutionItems) = preProject
+		Versioning\AssemblyInfo.cs = Versioning\AssemblyInfo.cs
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

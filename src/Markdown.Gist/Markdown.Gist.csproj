@@ -44,6 +44,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Versioning\AssemblyInfo.cs">
+      <Link>AssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="GistBlock.cs" />
     <Compile Include="GistBlockRenderer.cs" />
     <Compile Include="GistBuilder.cs" />
