@@ -7,25 +7,22 @@
     {
         private readonly List<SpanFactoryBase> _factories;
 
-        public ParagraphFactory()
+        public ParagraphFactory(IEnumerable<SpanFactoryBase> factories)
         {
-            _factories = new List<SpanFactoryBase>
-            {
-                new EndFactory(),
-                new ImageSpanFactory(),
-                new LinkSpanFactory(),
-                new ReferenceLinkSpanFactory(),
-                new TextSpanFactory(),
-                new UnknownAsTextSpanFactory()
-            };
-
             Tokenizer = new StringTokenizer();
+            _factories = new List<SpanFactoryBase>(factories);
         }
 
         public ParagraphFactory(IEnumerable<SpanFactoryBase> factories, StringTokenizer tokenizer)
         {
             _factories = new List<SpanFactoryBase>(factories);
             Tokenizer = tokenizer;
+        }
+
+        public ParagraphFactory()
+        {
+            _factories = new List<SpanFactoryBase>();
+            Tokenizer = new StringTokenizer();
         }
 
         public List<SpanFactoryBase> SpanFactories

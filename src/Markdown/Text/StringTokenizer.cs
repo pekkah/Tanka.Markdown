@@ -24,6 +24,10 @@
                     i => new Token(TokenType.LinkUrlEnd, i)),
                 new TokenFactory(text => text.StartsWith("!["),
                     i => new Token(TokenType.Image, i)),
+                new TokenFactory(text => text.StartsWith("**"),
+                    i => new Token(TokenType.StrongEmphasis, i)),
+                new TokenFactory(text => text.StartsWith("*"),
+                    i => new Token(TokenType.Emphasis, i)),
                 new TokenFactory(text => true,
                     i => new Token(TokenType.Text, i))
             };

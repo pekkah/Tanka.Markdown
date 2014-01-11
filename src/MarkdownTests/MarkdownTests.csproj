@@ -66,6 +66,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="LineReaderFacts.cs" />
     <Compile Include="SmokeTheDocument.cs" />
+    <Compile Include="Text\EmphasisFactoryFacts.cs" />
     <Compile Include="Text\InlineTextParserFacts.cs" />
     <Compile Include="Text\ImageSpanFactoryFacts.cs" />
     <Compile Include="Text\LinkSpanFactoryFacts.cs" />

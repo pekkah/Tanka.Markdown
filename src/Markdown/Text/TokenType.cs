@@ -42,5 +42,7 @@
         public const string Image = "!";
 
         public const string Unknown = "(unk)";
+
+        public const string StrongEmphasis = "**";
     }
 }

@@ -25,7 +25,9 @@
                     imageTag.Attr("src", image.UrlOrKey);
                     imageTag.Attr("alt", image.AltText);
                     builder.Append(imageTag.ToHtmlString());
-                })
+                }),
+                new OpenAndCloseRenderer<StrongEmphasisBeginOrEnd>("strong"),
+                new OpenAndCloseRenderer<EmphasisBeginOrEnd>("em")
             };
         }
 

@@ -13,7 +13,7 @@
         {
             const string text = "Hello world!";
 
-            var parser = new TextSpanParser();
+            var parser = new TextSpanParser(new[] {new TextSpanFactory()}, new StringTokenizer());
             IEnumerable<ISpan> result = parser.Parse(text);
 
             result.Should().ContainSingle(span => span.As<TextSpan>().Content == text);
@@ -24,7 +24,7 @@
         {
             const string text = "[here](http://test.com)";
 
-            var parser = new TextSpanParser();
+            var parser = new TextSpanParser(new[] {new LinkSpanFactory()}, new StringTokenizer());
             IEnumerable<ISpan> result = parser.Parse(text);
 
             result.Should()
@@ -37,7 +37,8 @@
         {
             const string text = "text [here](http://test.com) text";
 
-            var parser = new TextSpanParser();
+            var parser = new TextSpanParser(new SpanFactoryBase[] {new LinkSpanFactory(), new TextSpanFactory()},
+                new StringTokenizer());
             List<ISpan> result = parser.Parse(text).ToList();
 
             result.Should().HaveCount(3);

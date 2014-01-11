@@ -54,6 +54,7 @@
     <Compile Include="IBlockRenderer.cs" />
     <Compile Include="ISpanRenderer.cs" />
     <Compile Include="NullRenderer.cs" />
+    <Compile Include="OpenAndCloseRenderer.cs" />
     <Compile Include="OrderedListRenderer.cs" />
     <Compile Include="ParagraphRenderer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

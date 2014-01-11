@@ -74,10 +74,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="LineReader.cs" />
     <Compile Include="Blocks\SetextHeadingFactory.cs" />
+    <Compile Include="Text\EmphasisBeginOrEnd.cs" />
+    <Compile Include="Text\EmphasisFactory.cs" />
     <Compile Include="Text\ImageSpan.cs" />
     <Compile Include="Text\EmptySpan.cs" />
     <Compile Include="Text\EndFactory.cs" />
+    <Compile Include="Text\ISpan.cs" />
     <Compile Include="Text\ITokenFactory.cs" />
+    <Compile Include="Text\StrongEmphasisBeginOrEnd.cs" />
     <Compile Include="Text\TextSpanParser.cs" />
     <Compile Include="Text\LinkSpan.cs" />
     <Compile Include="Text\LinkSpanFactory.cs" />

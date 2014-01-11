@@ -47,5 +47,34 @@
                 new Token(TokenType.LinkUrlEnd, 25)
             });
         }
+
+        [Fact]
+        public void TokenizeEmphasis()
+        {
+            // arrange
+            const string text = "*";
+            var tokenizer = new StringTokenizer();
+
+            // act
+            var result = tokenizer.Tokenize(text);
+
+            // assert
+            result.Should().ContainSingle(t => t.Type == TokenType.Emphasis);
+        }
+
+
+        [Fact]
+        public void TokenizeDoubleEmphasis()
+        {
+            // arrange
+            const string text = "**";
+            var tokenizer = new StringTokenizer();
+
+            // act
+            var result = tokenizer.Tokenize(text);
+
+            // assert
+            result.Should().ContainSingle(t => t.Type == TokenType.StrongEmphasis);
+        }
     }
 }

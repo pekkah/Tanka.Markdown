@@ -15,12 +15,6 @@
             _builder = new StringBuilder();
         }
 
-        public ParagraphBuilder()
-        {
-            _textParser = new TextSpanParser();
-            _builder = new StringBuilder();
-        }
-
         public override bool IsEndLine(string currentLine, string nextLine)
         {
             if (string.IsNullOrEmpty(nextLine))

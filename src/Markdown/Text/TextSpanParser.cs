@@ -5,28 +5,23 @@
 
     public class TextSpanParser
     {
-        private readonly IEnumerable<SpanFactoryBase> _factories;
+        private readonly List<SpanFactoryBase> _factories;
         private readonly StringTokenizer _tokenizer;
-        
+
         public TextSpanParser(IEnumerable<SpanFactoryBase> factories, StringTokenizer tokenizer)
         {
-            _factories = factories;
+            _factories = new List<SpanFactoryBase>(factories);
             _tokenizer = tokenizer;
+
+            EnsureEndFactoryPresent();
         }
 
-        public TextSpanParser()
+        private void EnsureEndFactoryPresent()
         {
-            _factories = new List<SpanFactoryBase>
-            {
-                new EndFactory(),
-                new ImageSpanFactory(),
-                new LinkSpanFactory(),
-                new ReferenceLinkSpanFactory(),
-                new TextSpanFactory(),
-                new UnknownAsTextSpanFactory()
-            };
+            if (_factories.Any(factory => factory is EndFactory))
+                return;
 
-            _tokenizer = new StringTokenizer();
+            _factories.Add(new EndFactory());
         }
 
         public IEnumerable<ISpan> Parse(string content)
@@ -73,9 +68,5 @@
 
             return new Stack<Token>(tokens.Reverse());
         }
-    }
-
-    public interface ISpan
-    {
     }
 }
