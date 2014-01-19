@@ -63,6 +63,7 @@
     <Compile Include="ParseHeadingBlocks.cs" />
     <Compile Include="ParagraphFactoryFacts.cs" />
     <Compile Include="ParseLists.cs" />
+    <Compile Include="ParseParagraphBlocks.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="LineReaderFacts.cs" />
     <Compile Include="SmokeTheDocument.cs" />

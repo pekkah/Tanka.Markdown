@@ -49,5 +49,10 @@
 
             return Equals((Token) obj);
         }
+
+        public override string ToString()
+        {
+            return string.Format("{0}:{1}", Type, StartPosition);
+        }
     }
 }
