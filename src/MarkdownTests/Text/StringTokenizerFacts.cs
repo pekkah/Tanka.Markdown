@@ -1,6 +1,7 @@
 ﻿namespace Tanka.MarkdownTests.Text
 {
     using System.Collections.Generic;
+    using System.Linq;
     using FluentAssertions;
     using Markdown.Text;
     using Xunit;
@@ -13,7 +14,7 @@
             const string text = "Text some here";
 
             var tokenizer = new StringTokenizer();
-            IEnumerable<Token> result = tokenizer.Tokenize(text);
+            IEnumerable<Token> result = tokenizer.Tokenize(text).Take(1);
 
             result.Should().ContainSingle(t => t.Type == TokenType.Text && t.StartPosition == 0);
         }
@@ -24,7 +25,7 @@
             const string text = "Text some here!";
 
             var tokenizer = new StringTokenizer();
-            IEnumerable<Token> result = tokenizer.Tokenize(text);
+            IEnumerable<Token> result = tokenizer.Tokenize(text).Take(1);
 
             result.Should().ContainSingle(t => t.Type == TokenType.Text && t.StartPosition == 0);
         }
@@ -56,7 +57,7 @@
             var tokenizer = new StringTokenizer();
 
             // act
-            var result = tokenizer.Tokenize(text);
+            var result = tokenizer.Tokenize(text).Take(1);
 
             // assert
             result.Should().ContainSingle(t => t.Type == TokenType.Emphasis);
@@ -71,10 +72,38 @@
             var tokenizer = new StringTokenizer();
 
             // act
-            var result = tokenizer.Tokenize(text);
+            var result = tokenizer.Tokenize(text).Take(1);
 
             // assert
             result.Should().ContainSingle(t => t.Type == TokenType.StrongEmphasis);
+        }
+
+        [Fact]
+        public void DoNotTokenizeEmphasisWhenFileWildcard()
+        {
+            // arrange
+            const string text = "*.";
+            var tokenizer = new StringTokenizer();
+
+            // act
+            var result = tokenizer.Tokenize(text).Take(1);
+
+            // assert
+            result.Should().OnlyContain(t => t.Type == TokenType.Text);
+        }
+
+        [Fact]
+        public void DoNotTokenizeStrongEmphasisWhenFileWildcard()
+        {
+            // arrange
+            const string text = "**.";
+            var tokenizer = new StringTokenizer();
+
+            // act
+            var result = tokenizer.Tokenize(text).Take(1);
+
+            // assert
+            result.Should().OnlyContain(t => t.Type == TokenType.Text);
         }
     }
 }

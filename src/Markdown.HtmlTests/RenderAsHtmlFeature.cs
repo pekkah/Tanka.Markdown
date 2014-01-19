@@ -147,5 +147,51 @@
             // assert
             html.ShouldBeEquivalentTo(expectedHtml.ToString());
         }
+
+        [Fact]
+        public void RenderParagraphWithOnlyEmphasis()
+        {
+            // arrange
+            var markdown = new StringBuilder();
+            markdown.AppendLine("*text*");
+
+            var expectedHtml = new StringBuilder();
+            expectedHtml.Append("<p>");
+            expectedHtml.Append("<em>text</em>");
+            expectedHtml.Append("</p>");
+
+            var parser = new MarkdownParser();
+            var renderer = new HtmlRenderer();
+
+            // act
+            Document document = parser.Parse(markdown.ToString());
+            string html = renderer.Render(document).Replace("\r\n", "");
+
+            // assert
+            html.ShouldBeEquivalentTo(expectedHtml.ToString());
+        }
+
+        [Fact]
+        public void RenderParagraphWithOnlyStrongEmphasis()
+        {
+            // arrange
+            var markdown = new StringBuilder();
+            markdown.AppendLine("**text**");
+
+            var expectedHtml = new StringBuilder();
+            expectedHtml.Append("<p>");
+            expectedHtml.Append("<strong>text</strong>");
+            expectedHtml.Append("</p>");
+
+            var parser = new MarkdownParser();
+            var renderer = new HtmlRenderer();
+
+            // act
+            Document document = parser.Parse(markdown.ToString());
+            string html = renderer.Render(document).Replace("\r\n", "");
+
+            // assert
+            html.ShouldBeEquivalentTo(expectedHtml.ToString());
+        }
     }
 }

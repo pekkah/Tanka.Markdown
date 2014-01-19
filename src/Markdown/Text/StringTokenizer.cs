@@ -24,9 +24,23 @@
                     i => new Token(TokenType.LinkUrlEnd, i)),
                 new TokenFactory(text => text.StartsWith("!["),
                     i => new Token(TokenType.Image, i)),
-                new TokenFactory(text => text.StartsWith("**"),
-                    i => new Token(TokenType.StrongEmphasis, i)),
-                new TokenFactory(text => text.StartsWith("*"),
+                new TokenFactory(text =>
+                {
+                    if (text.StartsWith("**."))
+                        return false;
+
+                    return text.StartsWith("**");
+                }, i => new Token(TokenType.StrongEmphasis, i)),
+                new TokenFactory(text =>
+                {
+                    if (text.StartsWith("*."))
+                        return false;
+
+                    if (text.StartsWith("**"))
+                        return false;
+
+                    return text.StartsWith("*");
+                },
                     i => new Token(TokenType.Emphasis, i)),
                 new TokenFactory(text => true,
                     i => new Token(TokenType.Text, i))
@@ -34,6 +48,12 @@
         }
 
         public List<ITokenFactory> TokenFactories { get; set; }
+
+        public Token GetToken(string c, int position)
+        {
+            ITokenFactory factoryEntry = TokenFactories.First(f => f.CanCreate(c));
+            return factoryEntry.Create(position);
+        }
 
         public IEnumerable<Token> Tokenize(string content)
         {
@@ -61,12 +81,6 @@
             tokens.Add(new Token(TokenType.End, content.Length));
 
             return tokens;
-        }
-
-        public Token GetToken(string c, int position)
-        {
-            ITokenFactory factoryEntry = TokenFactories.First(f => f.CanCreate(c));
-            return factoryEntry.Create(position);
         }
     }
 }
