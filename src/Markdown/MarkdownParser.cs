@@ -1,100 +1,130 @@
 ﻿namespace Tanka.Markdown
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Blocks;
-    using Text;
+    using Inline;
 
     public class MarkdownParser
     {
-        public MarkdownParser()
-        {
-            Options = MarkdownParserOptions.Defaults;
-        }
+        private readonly bool _skipEmptyLines;
+        private readonly List<IBlockBuilder> _builders;
 
-        public MarkdownParser(MarkdownParserOptions options)
+        public MarkdownParser(bool skipEmptyLines = true)
         {
-            Options = options;
-        }
+            _skipEmptyLines = skipEmptyLines;
 
-        public MarkdownParserOptions Options { get; set; }
+            _builders = new List<IBlockBuilder>();
+            _builders.Add(new CodeblockBuilder());
+            _builders.Add(new EmptyLineBuilder());
+            _builders.Add(new HeadingBuilder());
+            _builders.Add(new SetextLevelOneHeadingBuilder());
+            _builders.Add(new SetextLevelTwoHeadingBuilder());
+            _builders.Add(new UnorderedListBuilder('*'));
+            _builders.Add(new UnorderedListBuilder('-'));
+            _builders.Add(new OrderedListBuilder());
+            _builders.Add(new LinkDefinitionListBuilder());
+
+            // the special paragraph builder should always
+            // be the last one as it's very greedy!
+            _builders.Add(new ParagraphBuilder());
+        }
 
         public Document Parse(string markdown)
         {
-            if (string.IsNullOrEmpty(markdown))
-                throw new ArgumentNullException("markdown");
-
             var blocks = new List<Block>();
-            var reader = new LineReader(markdown);
+            var document = new StringRange(markdown);
 
-            BlockBuilderBase currentBlockBuilder = null;
-
-            while (reader.EndOfDocument == false)
+            foreach (var block in ParseBlocks(document))
             {
-                string currentLine = reader.ReadLine();
-                string nextLine = reader.PeekLine();
+                if (_skipEmptyLines && block is EmptyLine)
+                    continue;
 
-                // start new block if current null
-                if (currentBlockBuilder == null)
-                    currentBlockBuilder = CreateBuilder(currentLine, nextLine);
-
-                if (currentBlockBuilder.IsEndLine(currentLine, nextLine) || reader.EndOfDocument)
-                {
-                    // end current block
-                    currentBlockBuilder.AddLine(currentLine);
-                    bool skipNextLine = currentBlockBuilder.End();
-                    blocks.Add(currentBlockBuilder.Create());
-
-                    // reset current block
-                    currentBlockBuilder = null;
-
-                    // some blocks have special end markers which should be skipped
-                    if (skipNextLine)
-                        reader.ReadLine();
-                }
-                else
-                {
-                    currentBlockBuilder.AddLine(currentLine);
-                }
+                blocks.Add(block);
             }
 
-            if (Options.SkipEmptyLines)
-                blocks = blocks.Where(b => b.GetType() != typeof (EmptyLine)).ToList();
+            ResolveReferences(blocks);
 
-            if (Options.AutoResolveReferenceLinks)
-                ResolveLinks(blocks);
-
-            return new Document(blocks);
+            return new Document(blocks, markdown);
         }
 
-        private void ResolveLinks(IEnumerable<Block> blocks)
+        private void ResolveReferences(List<Block> blocks)
         {
-            if (blocks == null) throw new ArgumentNullException("blocks");
+            var linkDefinitions = blocks.OfType<LinkDefinitionList>()
+                .SelectMany(list => list.Definitions).ToList();
 
-            List<Block> allBlocks = blocks.ToList();
-            IEnumerable<Paragraph> paragraphs = allBlocks.OfType<Paragraph>();
-            List<LinkDefinition> definitions = allBlocks.OfType<LinkDefinition>().ToList();
-
-            foreach (Paragraph paragraph in paragraphs)
+            foreach (var paragraph in blocks.OfType<Paragraph>())
             {
-                // process all reference links (IsKey == True)
-                foreach (LinkSpan link in paragraph.Content.OfType<LinkSpan>().Where(l => l.IsKey))
+                foreach (var referenceLink in paragraph.Spans.OfType<ReferenceLinkSpan>().ToList())
                 {
-                    LinkDefinition definition = definitions.FirstOrDefault(d => d.Key == link.UrlOrKey);
+                    var key = referenceLink.Key.ToString();
 
-                    // todo(pekka): should we fail if the link definition is not found?
+                    var definition = linkDefinitions.FirstOrDefault(def => def.Key.ToString() == key);
+
                     if (definition == null)
                         continue;
 
-                    link.UrlOrKey = definition.Url;
+                    // replace the reference with a link
+                    var link = new LinkSpan(
+                        paragraph,
+                        referenceLink.Start,
+                        referenceLink.End,
+                        referenceLink.Title,
+                        definition.Url);
+
+                    paragraph.Replace(referenceLink, link);
                 }
             }
         }
 
-        private BlockBuilderBase CreateBuilder(string startLine, string nextLine)
+        private IEnumerable<Block> ParseBlocks(StringRange document)
         {
-            return Options.BlockFactories.First(f => f.IsMatch(startLine, nextLine)).Create();
+            int paragraphStart = -1;
+            int paragraphEnd = -1;
+            bool paragraphStarted = false;
+
+            for (int start = 0; start < document.Length; start++)
+            {
+                var builder = GetBuilder(start, document);
+
+                // paragraph is special as it just eats
+                // everything else the others don't
+                // want. Special muncher!
+                if (builder is ParagraphBuilder)
+                {
+                    if (!paragraphStarted)
+                    {
+                        paragraphStart = start;
+                        paragraphStarted = true;
+                    }
+
+                    paragraphEnd = start;
+                    continue;
+                }
+
+                // have to kill the monster so others can
+                // feed too
+                if (paragraphStarted)
+                {
+                    // yield it and then kill it!
+                    yield return new Paragraph(document, paragraphStart, paragraphEnd);
+                    paragraphStarted = false;
+                }
+
+                yield return builder.Build(start, document, out start);
+            }
+
+            // so one monster got away
+            // run after it as it's yielding
+            if (paragraphStarted)
+            {
+                yield return new Paragraph(document, paragraphStart, paragraphEnd);
+            }
+        }
+
+        private IBlockBuilder GetBuilder(int start, StringRange document)
+        {
+            return _builders.First(builder => builder.CanBuild(start, document));
         }
     }
 }

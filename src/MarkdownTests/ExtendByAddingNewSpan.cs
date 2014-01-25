@@ -79,7 +79,7 @@
             };
         }
 
-        public class UserName : ISpan
+        public class UserName : Span
         {
             public string Name { get; set; }
         }

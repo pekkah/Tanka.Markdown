@@ -1,20 +1,40 @@
 ﻿namespace Tanka.Markdown.Blocks
 {
     using System.Collections.Generic;
-    using Text;
+    using System.Linq;
+    using Inline;
 
     public class Paragraph : Block
     {
-        private readonly IEnumerable<ISpan> _content;
+        private readonly List<Span> _spans;
 
-        public Paragraph(IEnumerable<ISpan> content)
+        public Paragraph(
+            StringRange parent,
+            int start,
+            int end) : base(parent, start, end)
         {
-            _content = content;
+            _spans = ParseSpans();
         }
 
-        public IEnumerable<ISpan> Content
+        public IEnumerable<Span> Spans
         {
-            get { return _content; }
+            get
+            {
+                return _spans;
+            }
+        }
+
+        private List<Span> ParseSpans()
+        {
+            var parser = new InlineParser();
+            return parser.Parse(this).ToList();
+        }
+
+        public void Replace(Span target, LinkSpan withThis)
+        {
+            var indexOf = _spans.IndexOf(target);
+            _spans.Remove(target);
+            _spans.Insert(indexOf, withThis);
         }
     }
 }

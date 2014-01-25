@@ -44,12 +44,12 @@
         {
             // arrange
             var markdown = new StringBuilder();
-            markdown.AppendLine("``` csharp");
+            markdown.AppendLine("```");
             markdown.AppendLine("string name = \"test\";");
             markdown.AppendLine("```");
 
             var expectedHtml = new StringBuilder();
-            expectedHtml.Append("<pre><code data-lang=\"csharp\">");
+            expectedHtml.Append("<pre><code>");
             expectedHtml.Append("string name = &quot;test&quot;;");
             expectedHtml.Append("</code></pre>");
 

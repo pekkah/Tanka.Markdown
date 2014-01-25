@@ -9,7 +9,7 @@
         {
             // sample: <script src="https://gist.github.com/pekkah/8304465.js"></script>
             var tag = new HtmlTag("script");
-            tag.UnencodedAttr("src", CreateGistUrl(block.UserName, block.GistId));
+            tag.UnencodedAttr("src", CreateGistUrl(block.UserName.ToString(), block.GistId.ToString()));
 
             return tag;
         }

@@ -50,7 +50,6 @@
     <Compile Include="GistBlock.cs" />
     <Compile Include="GistBlockRenderer.cs" />
     <Compile Include="GistBuilder.cs" />
-    <Compile Include="GistFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

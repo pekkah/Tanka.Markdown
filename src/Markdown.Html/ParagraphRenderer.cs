@@ -5,7 +5,7 @@
     using System.Text;
     using Blocks;
     using HtmlTags;
-    using Text;
+    using Inline;
 
     public class ParagraphRenderer : BlockRendererBase<Paragraph>
     {
@@ -13,21 +13,22 @@
         {
             SpanRenderers = new List<ISpanRenderer>
             {
-                new SpanRenderer<TextSpan>((text, builder) => builder.Append(text.Content)),
+                new SpanRenderer<TextSpan>((text, builder) 
+                    => builder.Append(text.ToString().Replace("\r\n", " "))),
                 new SpanRenderer<LinkSpan>((link, builder) =>
                 {
-                    var linkTag = new LinkTag(link.Title, link.UrlOrKey);
+                    var linkTag = new LinkTag(link.Title.ToString(), link.Url.ToString());
                     builder.Append(linkTag.ToHtmlString());
                 }),
                 new SpanRenderer<ImageSpan>((image, builder) =>
                 {
                     var imageTag = new HtmlTag("img");
-                    imageTag.Attr("src", image.UrlOrKey);
-                    imageTag.Attr("alt", image.AltText);
+                    imageTag.Attr("src", image.Url.ToString());
+                    imageTag.Attr("alt", image.Title.ToString());
                     builder.Append(imageTag.ToHtmlString());
                 }),
-                new OpenAndCloseRenderer<StrongEmphasisBeginOrEnd>("strong"),
-                new OpenAndCloseRenderer<EmphasisBeginOrEnd>("em")
+                new OpenAndCloseRenderer<StrongEmphasis>("strong"),
+                new OpenAndCloseRenderer<Emphasis>("em")
             };
         }
 
@@ -38,7 +39,7 @@
             var builder = new StringBuilder();
             builder.Append("<p>");
 
-            foreach (ISpan span in block.Content.ToList())
+            foreach (Span span in block.Spans.ToList())
             {
                 ISpanRenderer renderer = SpanRenderers.First(r => r.CanRender(span));
                 renderer.Render(span, builder);

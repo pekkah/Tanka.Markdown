@@ -1,58 +1,44 @@
 ﻿namespace Tanka.Markdown.Blocks
 {
-    using System;
-    using System.Text;
+    using System.Text.RegularExpressions;
+    using CSharpVerbalExpressions;
+    using Markdown;
 
-    public class CodeblockBuilder : BlockBuilderBase
+    public class CodeblockBuilder : IBlockBuilder
     {
-        private readonly StringBuilder _codeBuilder;
-        private string _language;
+        private readonly Regex _expression;
 
         public CodeblockBuilder()
         {
-            _codeBuilder = new StringBuilder();
+            _expression = VerbalExpressions.DefaultExpression
+                .Add(@"\G", false)
+                .Then("```")
+                .Anything()
+                .Then("```")
+                .WithOptions(RegexOptions.Singleline)
+                .ToRegex();
         }
 
-        public override bool IsEndLine(string currentLine, string nextLine)
+        public bool CanBuild(int start, StringRange content)
         {
-            if (string.IsNullOrWhiteSpace(nextLine))
-                return false;
+            var isMatch = _expression.IsMatch(content.Document, start);
 
-            if (nextLine.StartsWith("```"))
-                return true;
-
-            return false;
+            return isMatch;
         }
 
-        public override bool End()
+        public Block Build(int start, StringRange content, out int end)
         {
-            // endline is found when next line has end marker so skip required
-            return true;
-        }
+            // start from the actual first line of the content
+            var contentStart = content.StartOfNextLine(start);
 
-        public override void AddLine(string currentLine)
-        {
-            // first line with the language
-            if (currentLine.StartsWith("```"))
-            {
-                int firstIndexOfSpace = currentLine.IndexOf(" ", StringComparison.Ordinal);
+            // find the end ``` by skipping the first ```
+            var contentEnd = content.IndexOf("```", contentStart) - 1;
 
-                if (firstIndexOfSpace > 0)
-                {
-                    _language = currentLine.Substring(firstIndexOfSpace).Trim();
-                    return;
-                }
+            // skip line ending
+            end = content.EndOfLine(contentEnd + 1, true);
 
-                // end line
-                return;
-            }
-
-            _codeBuilder.AppendLine(currentLine);
-        }
-
-        public override Block Create()
-        {
-            return new Codeblock(_language, _codeBuilder.ToString());
+            // use the content between ``` and ```
+            return new Codeblock(content, contentStart, contentEnd);
         }
     }
 }

@@ -1,29 +1,17 @@
 ﻿namespace Tanka.Markdown
 {
     using System.Collections.Generic;
-    using System.Linq;
     using Blocks;
 
     public class Document
     {
-        private readonly IEnumerable<Block> _blocks;
-
-        public Document(IEnumerable<Block> blocks)
+        public Document(IEnumerable<Block> blocks, string markdown)
         {
-            _blocks = blocks;
+            Blocks = blocks;
+            Markdown = markdown;
         }
 
-        public IEnumerable<Block> Blocks
-        {
-            get { return _blocks; }
-        }
-
-        public IEnumerable<LinkDefinition> LinkDefinitions
-        {
-            get
-            {
-                return _blocks.OfType<LinkDefinition>();
-            }
-        } 
+        public IEnumerable<Block> Blocks { get; private set; }
+        public string Markdown { get; private set; }
     }
 }
