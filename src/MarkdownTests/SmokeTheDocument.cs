@@ -4,7 +4,7 @@
     using System.Linq;
     using FluentAssertions;
     using Markdown.Blocks;
-    using Markdown.Text;
+    using Markdown.Inline;
     using Xbehave;
 
     public class SmokeTheDocument : MarkdownParserFactsBase
@@ -25,15 +25,21 @@
                 .When(WhenTheMarkdownIsParsed);
 
             "Then should parse headings"
-                .Then(() => ThenDocumentChildAtIndexShouldMatch<Heading>(0, new
+                .Then(() => ThenDocumentChildAtIndexShould<Heading>(0, heading =>
                 {
-                    Level = 1,
-                    Text = "The Document"
+                    heading.Level.ShouldBeEquivalentTo(1);
+                    heading.ToString().ShouldAllBeEquivalentTo("The Document");
                 }));
             "And paragraphs"
-                .And(() => ThenDocumentChildAtIndexShould<Paragraph>(1, p => p.Content.First().As<TextSpan>().Content
-                    .ShouldBeEquivalentTo(
-                        "This document starts with Setext style heading level one and continues with two level paragraph. This parahraph.")));
+                .And(() => ThenDocumentChildAtIndexShould<Paragraph>(
+                    1,
+                    p =>
+                    {
+                        p.Spans.First().As<TextSpan>()
+                            .ToString()
+                            .ShouldBeEquivalentTo(
+                                "This document starts with Setext style heading level one and\r\ncontinues with two level paragraph. This parahraph.\r\n");
+                    }));
 
             "And lists"
                 .And(() => ThenListAtIndexShouldMatch(2,
@@ -44,46 +50,44 @@
                     "code blocks"));
 
             "And headings at different level"
-                .And(() => ThenDocumentChildAtIndexShouldMatch<Heading>(3, new
+                .And(() => ThenDocumentChildAtIndexShould<Heading>(3, heading =>
                 {
-                    Level = 2,
-                    Text = "Sample code"
+                    heading.Level.ShouldBeEquivalentTo(2);
+                    heading.ToString().ShouldBeEquivalentTo("Sample code");
                 }));
 
             "And codeblocks"
-                .And(() => ThenDocumentChildAtIndexShouldMatch<Codeblock>(4, new
+                .And(() => ThenDocumentChildAtIndexShould<Codeblock>(4, code =>
                 {
-                    Language = "javascript",
-                    Code = "function() {\r\n	var hello = \"world\";\r\n}\r\n"
+                    code.ToString().ShouldBeEquivalentTo("function() {\r\n	var hello = \"world\";\r\n}\r\n");
                 }));
 
-            "And blockquotes"
-                .And(() => ThenDocumentChildAtIndexShouldBe(5, typeof (Blockquote)));
+            //"And blockquotes"
+            //    .And(() => ThenDocumentChildAtIndexShouldBe(5, typeof (Blockquote)));
 
             "And images"
                 .And(
                     () =>
-                        ThenDocumentChildAtIndexShould<Paragraph>(6,
-                            p => p.Content.Last().As<ImageSpan>().ShouldHave().AllProperties().EqualTo(new
-                            {
-                                AltText = "alt",
-                                UrlOrKey = "http://image.jpg",
-                                IsKey = false
-                            })));
+                        ThenDocumentChildAtIndexShould<Paragraph>(6, p => {
+                            var span = p.Spans.Last().As<ImageSpan>();
+                            span.Title.ToString().ShouldBeEquivalentTo("alt");
+                            span.Url.ToString().ShouldBeEquivalentTo("http://image.jpg");
+                            }));
 
-            "And reference link should parsed as link ith IsKey = true"
+            "And reference link should be resolved"
                 .And(() => ThenDocumentChildAtIndexShould<Paragraph>(7,
                     p =>
                     {
-                        var linkSpan = p.Content.Last().As<LinkSpan>();
-                        linkSpan.IsKey.ShouldBeEquivalentTo(true);
+                        var linkSpan = p.Spans.Last().As<LinkSpan>();
+                        linkSpan.Title.ToString().ShouldBeEquivalentTo("github");
                     }));
 
             "And link definition with key and url"
-                .And(() => ThenDocumentChildAtIndexShould<LinkDefinition>(8, ld =>
+                .And(() => ThenDocumentChildAtIndexShould<LinkDefinitionList>(8, list =>
                 {
-                    ld.Key.ShouldBeEquivalentTo("1");
-                    ld.Url.ShouldBeEquivalentTo("https://github.com");
+                    var ld = list.Definitions.Single();
+                    ld.Key.ToString().ShouldBeEquivalentTo("1");
+                    ld.Url.ToString().ShouldBeEquivalentTo("https://github.com");
                 }));
         }
     }

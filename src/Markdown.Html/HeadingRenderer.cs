@@ -9,7 +9,7 @@
         protected override HtmlTag Render(Document document, Heading block)
         {
             var tag = new HtmlTag(String.Format("h{0}", block.Level));
-            tag.Text(block.Text);
+            tag.Text(block.ToString());
 
             return tag;
         }

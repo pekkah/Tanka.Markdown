@@ -1,14 +1,21 @@
 ﻿namespace Tanka.Markdown.Gist
 {
+    using Blocks;
+
     public class GistBlock : Block
     {
-        public GistBlock(string userName, string gistId)
+        public GistBlock(
+            StringRange parent,
+            int start,
+            int end,
+            StringRange userName,
+            StringRange gistId) : base(parent, start, end)
         {
             UserName = userName;
             GistId = gistId;
         }
 
-        public string UserName { get; set; }
-        public string GistId { get; set; }
+        public StringRange UserName { get; set; }
+        public StringRange GistId { get; set; }
     }
 }

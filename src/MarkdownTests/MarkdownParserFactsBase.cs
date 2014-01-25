@@ -73,13 +73,13 @@
 
         protected void ThenListAtIndexShouldMatch(int index, params string[] items)
         {
-            var child = Document.Blocks.ElementAtOrDefault(index) as ListBlock;
-            child.Should().NotBeNull("Should have child block of type {0} at {1}", typeof (ListBlock).FullName, index);
+            var child = Document.Blocks.ElementAtOrDefault(index) as List;
+            child.Should().NotBeNull("Should have child block of type {0} at {1}", typeof (List).FullName, index);
 
             bool hasAll = true;
             foreach (string item in items)
             {
-                if (!child.Items.Contains(item))
+                if (!child.Items.Any(i => i.ToString() == item))
                     hasAll = false;
             }
 

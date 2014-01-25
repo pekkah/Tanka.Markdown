@@ -1,15 +1,11 @@
-﻿namespace Tanka.Markdown.Blocks
+namespace Tanka.Markdown.Blocks
 {
+    using Markdown;
+
     public class Codeblock : Block
     {
-        public Codeblock(string language, string code)
+        public Codeblock(StringRange parent, int start, int end) : base(parent, start, end)
         {
-            Language = language;
-            Code = code;
         }
-
-        public string Language { get; private set; }
-
-        public string Code { get; private set; }
     }
 }

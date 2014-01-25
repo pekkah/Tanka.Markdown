@@ -1,46 +1,18 @@
 ﻿namespace Tanka.Markdown.Blocks
 {
-    using System.Collections.Generic;
-    using System.Text;
-    using Text;
+    using Markdown;
 
-    public class ParagraphBuilder : BlockBuilderBase
+    public class ParagraphBuilder : IBlockBuilder
     {
-        private readonly StringBuilder _builder;
-        private readonly TextSpanParser _textParser;
-
-        public ParagraphBuilder(IEnumerable<SpanFactoryBase> factories, StringTokenizer tokenizer)
-        {
-            _textParser = new TextSpanParser(factories, tokenizer);
-            _builder = new StringBuilder();
-        }
-
-        public override bool IsEndLine(string currentLine, string nextLine)
-        {
-            if (string.IsNullOrEmpty(nextLine))
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        public override bool End()
+        public bool CanBuild(int start, StringRange content)
         {
             return true;
         }
 
-        public override void AddLine(string currentLine)
+        public Block Build(int start, StringRange content, out int end)
         {
-            string line = currentLine.Trim(' ', '\r', '\n');
-
-            _builder.Append(string.Concat(line, " "));
-        }
-
-        public override Block Create()
-        {
-            IEnumerable<ISpan> spans = _textParser.Parse(_builder.ToString().Trim());
-            return new Paragraph(spans);
+            end = start;
+            return null;
         }
     }
 }
