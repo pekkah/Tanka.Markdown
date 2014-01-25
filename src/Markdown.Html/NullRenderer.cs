@@ -1,5 +1,6 @@
 ﻿namespace Tanka.Markdown.Html
 {
+    using Blocks;
     using HtmlTags;
 
     public class NullRenderer : IBlockRenderer

@@ -2,9 +2,9 @@
 {
     using System;
     using System.Text;
-    using Text;
+    using Inline;
 
-    public class OpenAndCloseRenderer<T> : ISpanRenderer where T : class, ISpan
+    public class OpenAndCloseRenderer<T> : ISpanRenderer where T : Span
     {
         private readonly string _tag;
         private bool _hasStarted;
@@ -17,14 +17,14 @@
             _tag = tag;
         }
 
-        public bool CanRender(ISpan span)
+        public bool CanRender(Span span)
         {
             if (span == null) throw new ArgumentNullException("span");
 
             return span is T;
         }
 
-        public void Render(ISpan span, StringBuilder builder)
+        public void Render(Span span, StringBuilder builder)
         {
             if (span == null) throw new ArgumentNullException("span");
             if (builder == null) throw new ArgumentNullException("builder");

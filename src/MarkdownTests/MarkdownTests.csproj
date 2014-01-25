@@ -40,6 +40,10 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="VerbalExpressions, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\CSharpVerbalExpressions.0.1\lib\net40\VerbalExpressions.dll</HintPath>
+    </Reference>
     <Reference Include="Xbehave">
       <HintPath>..\packages\Xbehave.1.0.0\lib\net40\Xbehave.dll</HintPath>
     </Reference>
@@ -51,29 +55,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Blocks\CodeblockFacts.cs" />
-    <Compile Include="Blocks\LinkDefinitionBlockFacts.cs" />
-    <Compile Include="Blocks\ListBlockFacts.cs" />
-    <Compile Include="ExtendByAddingNewSpan.cs" />
-    <Compile Include="ExtendByAddingNewBlock.cs" />
+    <Compile Include="Blocks\CodeblockBuilderFacts.cs" />
+    <Compile Include="Blocks\OrderedListBuilderFacts.cs" />
+    <Compile Include="MarkdownParserFacts.cs" />
+    <None Include="ExtendByAddingNewSpan.cs" />
+    <None Include="ExtendByAddingNewBlock.cs" />
     <Compile Include="MarkdownParserFactsBase.cs" />
-    <Compile Include="Blocks\ParagraphFacts.cs" />
-    <Compile Include="ParseBlockquotes.cs" />
-    <Compile Include="ParseCodeblocks.cs" />
-    <Compile Include="ParseHeadingBlocks.cs" />
-    <Compile Include="ParagraphFactoryFacts.cs" />
-    <Compile Include="ParseLists.cs" />
-    <Compile Include="ParseParagraphBlocks.cs" />
+    <Compile Include="StringRangeFacts.cs" />
+    <Compile Include="Inline\InlineParserFacts.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="LineReaderFacts.cs" />
     <Compile Include="SmokeTheDocument.cs" />
-    <Compile Include="Text\EmphasisFactoryFacts.cs" />
-    <Compile Include="Text\InlineTextParserFacts.cs" />
-    <Compile Include="Text\ImageSpanFactoryFacts.cs" />
-    <Compile Include="Text\LinkSpanFactoryFacts.cs" />
-    <Compile Include="Text\ReferenceLinkSpanFactoryFacts.cs" />
-    <Compile Include="Text\StringTokenizerFacts.cs" />
-    <Compile Include="Text\TextSpanFactoryFacts.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Markdown.Gist\Markdown.Gist.csproj">

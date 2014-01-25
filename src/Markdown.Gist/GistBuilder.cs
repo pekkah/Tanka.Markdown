@@ -1,39 +1,35 @@
 ﻿namespace Tanka.Markdown.Gist
 {
     using System;
+    using Blocks;
 
-    public class GistBuilder : BlockBuilderBase
+    public class GistBuilder : IBlockBuilder
     {
-        private string _gistId;
-        private string _userName;
-
-        public override bool IsEndLine(string currentLine, string nextLine)
+        public bool CanBuild(int start, StringRange content)
         {
-            // gist is single line block
-            return true;
+            throw new NotImplementedException();
         }
 
-        public override bool End()
+        public Block Build(int start, StringRange content, out int end)
         {
-            // no op
-            return false;
-        }
-
-        public override void AddLine(string currentLine)
-        {
-            if (currentLine == null) throw new ArgumentNullException("currentLine");
-
             // sample link to gist: https://gist.github.com/pekkah/8304465
-            int userNameStart = currentLine.LastIndexOf(".com/") + 5;
-            int gistIdStart = currentLine.LastIndexOf('/') + 1;
+            int userNameStart = content.IndexOf(".com/") + 5;
+            int gistIdStart = content.IndexOf('/', userNameStart) + 1;
 
-            _userName = currentLine.Substring(userNameStart, currentLine.Length - gistIdStart - 1);
-            _gistId = currentLine.Substring(gistIdStart);
-        }
+            end = content.EndOfLine(gistIdStart, true);
 
-        public override Block Create()
-        {
-            return new GistBlock(_userName, _gistId);
+            return new GistBlock(
+                content,
+                start,
+                content.EndOfLine(start),
+                new StringRange(
+                    content,
+                    userNameStart,
+                    gistIdStart-1),
+                new StringRange(
+                    content,
+                    gistIdStart,
+                    content.EndOfLine(gistIdStart)));
         }
     }
 }

@@ -2,9 +2,9 @@
 {
     using System;
     using System.Text;
-    using Text;
+    using Inline;
 
-    public class SpanRenderer<T> : ISpanRenderer where T : ISpan
+    public class SpanRenderer<T> : ISpanRenderer where T : Span
     {
         private readonly Action<T, StringBuilder> _render;
 
@@ -15,12 +15,12 @@
             _render = render;
         }
 
-        public bool CanRender(ISpan span)
+        public bool CanRender(Span span)
         {
             return span is T;
         }
 
-        public void Render(ISpan span, StringBuilder builder)
+        public void Render(Span span, StringBuilder builder)
         {
             _render((T) span, builder);
         }
