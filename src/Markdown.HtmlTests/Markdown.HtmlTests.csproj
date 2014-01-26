@@ -51,7 +51,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ExtendByAddingNewBlockRenderer.cs" />
+    <Compile Include="ExtendByAddingNewBlockRenderer.cs" />
     <Compile Include="RenderAsHtmlFeature.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
