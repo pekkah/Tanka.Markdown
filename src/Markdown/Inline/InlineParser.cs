@@ -9,14 +9,19 @@
 
         public InlineParser()
         {
-            _spanBuilders = new List<SpanBuilder>();
-            _spanBuilders.Add(new LinkSpanBuilder());
-            _spanBuilders.Add(new ImageSpanBuilder());
-            _spanBuilders.Add(new ReferenceLinkSpanBuilder());
-            _spanBuilders.Add(new EmphasisBuilder());
+            _spanBuilders = new List<SpanBuilder>
+            {
+                new LinkSpanBuilder(),
+                new ImageSpanBuilder(),
+                new ReferenceLinkSpanBuilder(),
+                new EmphasisBuilder(),
+                new CharSpanBuilder()
+            };
+        }
 
-            // this should always be the last one
-            _spanBuilders.Add(new CharSpanBuilder());
+        public List<SpanBuilder> Builders
+        {
+            get { return _spanBuilders; }
         }
 
         public IEnumerable<Span> Parse(StringRange content)

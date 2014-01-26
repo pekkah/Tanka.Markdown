@@ -7,7 +7,7 @@
     using FluentAssertions;
     using Markdown;
     using Markdown.Blocks;
-    using Markdown.Text;
+    using Markdown.Inline;
     using Xbehave;
 
     public class ExtendByAddingNewSpan : MarkdownParserFactsBase
@@ -21,17 +21,9 @@
             "Given markdown parser with UserNameSpanFactory"
                 .Given(() =>
                 {
-                    MarkdownParserOptions options = MarkdownParserOptions.Defaults;
-
-                    // we first have to detect the @ token
-                    options.Tokenizer.TokenFactories.Insert(
-                        0,
-                        new TokenFactory(str => str.StartsWith("@"), start => new Token("@", start)));
-
-                    // this will actuall read the user name from the content
-                    options.SpanFactories.Insert(0, new UserNameFactory());
-
-                    var parser = new MarkdownParser(options);
+                    var parser = new MarkdownParser();
+                    var paragraphBuilder = parser.Builders.OfType<ParagraphBuilder>().Single();
+                    paragraphBuilder.InlineParser.Builders.Insert(0, new UserNameBuilder());
 
                     GivenMarkdownParser(parser);
                     GivenTheMarkdown(builder.ToString());
@@ -46,42 +38,38 @@
             "And child at index 0 should be a paragraph with UserName span"
                 .And(() => ThenDocumentChildAtIndexShould<Paragraph>(0, paragraph =>
                 {
-                    UserNameFactory.UserName userName = paragraph.Content.OfType<UserNameFactory.UserName>().Single();
-                    userName.Name.ShouldBeEquivalentTo("@pekkath");
+                    var userName = paragraph.Spans.OfType<UserName>().Single();
+                    userName.ToString().ShouldBeEquivalentTo("@pekkath");
                 }));
         }
     }
 
-    public class UserNameFactory : SpanFactoryBase
+    public class UserNameBuilder : SpanBuilder
     {
-        public override bool IsMatch(IEnumerable<Token> tokens)
+        public override bool CanBuild(int position, StringRange content)
         {
-            return tokens.First().Type == "@";
+            var atPosition = content.IndexOf('@', position);
+
+            if (atPosition == -1)
+                return false;
+
+            return true;
         }
 
-        public override ISpan Create(Stack<Token> tokens, string content)
+        public override Span Build(int position, StringRange content, out int lastPosition)
         {
-            Token start = tokens.Pop();
+            var atPosition = content.IndexOf('@', position);
 
-            // todo(pekka): hmm this seems shady?
-            int endOfUserName = content.IndexOf(" ", start.StartPosition, StringComparison.Ordinal);
+            lastPosition = content.IndexOf(' ', atPosition)- 1;
 
-            string name = GetTokenContent(start.StartPosition, endOfUserName, content);
-
-            // HACK: as the tokenizer does not yet detect space we have to fix the next
-            // token to have correct start position after the username has ended
-            Token next = tokens.Peek();
-            next.StartPosition = endOfUserName;
-
-            return new UserName
-            {
-                Name = name
-            };
+            return new UserName(content, atPosition, lastPosition);
         }
+    }
 
-        public class UserName : Span
+    public class UserName : Span
+    {
+        public UserName(StringRange parentRange, int start, int end) : base(parentRange, start, end)
         {
-            public string Name { get; set; }
         }
     }
 }

@@ -58,8 +58,8 @@
     <Compile Include="Blocks\CodeblockBuilderFacts.cs" />
     <Compile Include="Blocks\OrderedListBuilderFacts.cs" />
     <Compile Include="MarkdownParserFacts.cs" />
-    <None Include="ExtendByAddingNewSpan.cs" />
-    <None Include="ExtendByAddingNewBlock.cs" />
+    <Compile Include="ExtendByAddingNewSpan.cs" />
+    <Compile Include="ExtendByAddingNewBlock.cs" />
     <Compile Include="MarkdownParserFactsBase.cs" />
     <Compile Include="StringRangeFacts.cs" />
     <Compile Include="Inline\InlineParserFacts.cs" />

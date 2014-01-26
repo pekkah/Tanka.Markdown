@@ -19,10 +19,8 @@
             var expectedHtml = new StringBuilder();
             expectedHtml.Append("<script src=\"https://gist.github.com/pekkah/8304465.js\"></script>");
 
-            var parserOptions = MarkdownParserOptions.Defaults;
-            parserOptions.BlockFactories.Insert(0, new GistFactory());
-
-            var parser = new MarkdownParser(parserOptions);
+            var parser = new MarkdownParser();
+            parser.Builders.Insert(0, new GistBuilder());
 
             // act
             Document document = parser.Parse(markdown.ToString());
