@@ -2,6 +2,7 @@
 {
     using System;
     using System.Text;
+    using FluentAssertions;
     using Markdown;
     using Markdown.Gist;
     using Xbehave;
@@ -17,10 +18,8 @@
             "Given markdown parser with GistFactory"
                 .Given(() =>
                 {
-                    var options = MarkdownParserOptions.Defaults;
-                    options.BlockFactories.Insert(0, new GistFactory());
-
-                    var parser = new MarkdownParser(options);
+                    var parser = new MarkdownParser();
+                    parser.Builders.Insert(0, new GistBuilder());
 
                     GivenMarkdownParser(parser);
                     GivenTheMarkdown(builder.ToString());
@@ -33,10 +32,10 @@
                 .Then(() => ThenDocumentChildrenShouldHaveCount(1));
 
             "And child at index 0 should be Gist with gist id and user name"
-                .And(() => ThenDocumentChildAtIndexShouldMatch<GistBlock>(0, new
+                .And(() => ThenDocumentChildAtIndexShould<GistBlock>(0, gist =>
                 {
-                    GistId = "8304465",
-                    UserName = "pekkah"
+                    gist.UserName.ToString().ShouldBeEquivalentTo("pekkah");
+                    gist.GistId.ToString().ShouldBeEquivalentTo("8304465");
                 }));
         }
 

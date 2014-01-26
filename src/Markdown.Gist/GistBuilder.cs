@@ -1,13 +1,14 @@
 ﻿namespace Tanka.Markdown.Gist
 {
-    using System;
     using Blocks;
 
     public class GistBuilder : IBlockBuilder
     {
         public bool CanBuild(int start, StringRange content)
         {
-            throw new NotImplementedException();
+            bool isMatch = content.HasStringAt(start, "https://gist.github.com/");
+
+            return isMatch;
         }
 
         public Block Build(int start, StringRange content, out int end)
@@ -25,7 +26,7 @@
                 new StringRange(
                     content,
                     userNameStart,
-                    gistIdStart-1),
+                    gistIdStart - 2),
                 new StringRange(
                     content,
                     gistIdStart,

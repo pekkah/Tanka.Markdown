@@ -7,27 +7,31 @@
 
     public class MarkdownParser
     {
-        private readonly bool _skipEmptyLines;
         private readonly List<IBlockBuilder> _builders;
+        private readonly bool _skipEmptyLines;
 
         public MarkdownParser(bool skipEmptyLines = true)
         {
             _skipEmptyLines = skipEmptyLines;
 
-            _builders = new List<IBlockBuilder>();
-            _builders.Add(new CodeblockBuilder());
-            _builders.Add(new EmptyLineBuilder());
-            _builders.Add(new HeadingBuilder());
-            _builders.Add(new SetextLevelOneHeadingBuilder());
-            _builders.Add(new SetextLevelTwoHeadingBuilder());
-            _builders.Add(new UnorderedListBuilder('*'));
-            _builders.Add(new UnorderedListBuilder('-'));
-            _builders.Add(new OrderedListBuilder());
-            _builders.Add(new LinkDefinitionListBuilder());
+            _builders = new List<IBlockBuilder>
+            {
+                new CodeblockBuilder(),
+                new EmptyLineBuilder(),
+                new HeadingBuilder(),
+                new SetextLevelOneHeadingBuilder(),
+                new SetextLevelTwoHeadingBuilder(),
+                new UnorderedListBuilder('*'),
+                new UnorderedListBuilder('-'),
+                new OrderedListBuilder(),
+                new LinkDefinitionListBuilder(),
+                new ParagraphBuilder()
+            };
+        }
 
-            // the special paragraph builder should always
-            // be the last one as it's very greedy!
-            _builders.Add(new ParagraphBuilder());
+        public List<IBlockBuilder> Builders
+        {
+            get { return _builders; }
         }
 
         public Document Parse(string markdown)
@@ -35,7 +39,7 @@
             var blocks = new List<Block>();
             var document = new StringRange(markdown);
 
-            foreach (var block in ParseBlocks(document))
+            foreach (Block block in ParseBlocks(document))
             {
                 if (_skipEmptyLines && block is EmptyLine)
                     continue;
@@ -50,16 +54,16 @@
 
         private void ResolveReferences(List<Block> blocks)
         {
-            var linkDefinitions = blocks.OfType<LinkDefinitionList>()
+            List<LinkDefinition> linkDefinitions = blocks.OfType<LinkDefinitionList>()
                 .SelectMany(list => list.Definitions).ToList();
 
-            foreach (var paragraph in blocks.OfType<Paragraph>())
+            foreach (Paragraph paragraph in blocks.OfType<Paragraph>())
             {
-                foreach (var referenceLink in paragraph.Spans.OfType<ReferenceLinkSpan>().ToList())
+                foreach (ReferenceLinkSpan referenceLink in paragraph.Spans.OfType<ReferenceLinkSpan>().ToList())
                 {
-                    var key = referenceLink.Key.ToString();
+                    string key = referenceLink.Key.ToString();
 
-                    var definition = linkDefinitions.FirstOrDefault(def => def.Key.ToString() == key);
+                    LinkDefinition definition = linkDefinitions.FirstOrDefault(def => def.Key.ToString() == key);
 
                     if (definition == null)
                         continue;
@@ -77,15 +81,18 @@
             }
         }
 
-        private IEnumerable<Block> ParseBlocks(StringRange document)
+        protected IEnumerable<Block> ParseBlocks(StringRange document)
         {
             int paragraphStart = -1;
             int paragraphEnd = -1;
             bool paragraphStarted = false;
 
+            // there should be one monster builder always in builders
+            var monsterBuilder = _builders.OfType<ParagraphBuilder>().Single();
+
             for (int start = 0; start < document.Length; start++)
             {
-                var builder = GetBuilder(start, document);
+                IBlockBuilder builder = GetBuilder(start, document);
 
                 // paragraph is special as it just eats
                 // everything else the others don't
@@ -107,7 +114,7 @@
                 if (paragraphStarted)
                 {
                     // yield it and then kill it!
-                    yield return new Paragraph(document, paragraphStart, paragraphEnd);
+                    yield return monsterBuilder.Build(paragraphStart, paragraphEnd, document);
                     paragraphStarted = false;
                 }
 
@@ -118,7 +125,7 @@
             // run after it as it's yielding
             if (paragraphStarted)
             {
-                yield return new Paragraph(document, paragraphStart, paragraphEnd);
+                yield return monsterBuilder.Build(paragraphStart, paragraphEnd, document);
             }
         }
 
