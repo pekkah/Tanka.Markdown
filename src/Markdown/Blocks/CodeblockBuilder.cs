@@ -35,7 +35,7 @@
             var contentEnd = content.IndexOf("```", contentStart) - 1;
 
             // skip line ending
-            end = content.EndOfLine(contentEnd + 1, true);
+            end = content.EndOfLine(contentEnd + 1, false);
 
             // use the content between ``` and ```
             return new Codeblock(content, contentStart, contentEnd);

@@ -16,6 +16,7 @@
                 new ReferenceLinkSpanBuilder(),
                 new EmphasisBuilder(),
                 new CodeblockSpanBuilder(),
+                new NewLineSpanBuilder(),
                 new CharSpanBuilder()
             };
         }
@@ -35,6 +36,9 @@
             {
                 // get span builder
                 SpanBuilder builder = GetBuilder(position, content);
+
+                if (builder is NewLineSpanBuilder)
+                    continue;
 
                 /*******************************************************
                  * We don't want to generate char spans with only single
@@ -74,11 +78,6 @@
             // lets yield it so it's not left orphaned
             if (textSpanStarted)
             {
-                bool isNewLine = content.HasCharactersAt(textSpanStart, '\r', '\n');
-
-                if (isNewLine)
-                    yield break;
-
                 yield return new TextSpan(content, textSpanStart, textSpanEnd);
             }
         }

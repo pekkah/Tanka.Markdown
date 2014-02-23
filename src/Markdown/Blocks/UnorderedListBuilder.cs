@@ -44,7 +44,7 @@
             } while (content.HasCharactersAt(startOfLine, _startsWith, ' '));
 
             // special case when content ends
-            end = startOfLine != -1 ? content.EndOfLine(startOfLine, true) : content.End;
+            end = startOfLine != -1 ? content.EndOfLine(startOfLine, false) : content.End;
 
             return new List(content, start, end, false, items);
         }

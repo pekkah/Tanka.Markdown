@@ -38,7 +38,7 @@
                         p.Spans.First().As<TextSpan>()
                             .ToString()
                             .ShouldBeEquivalentTo(
-                                "This document starts with Setext style heading level one and\r\ncontinues with two level paragraph. This parahraph.\r\n");
+                                "This document starts with Setext style heading level one and\r\ncontinues with two level paragraph. This parahraph.");
                     }));
 
             "And lists"

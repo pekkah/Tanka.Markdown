@@ -17,7 +17,7 @@
             int endOfHeadingText = content.EndOfLine(start);
 
             int startOfMarker = content.StartOfNextLine(endOfHeadingText);
-            end = content.EndOfLine(startOfMarker, true);
+            end = content.EndOfLine(startOfMarker, false);
             return new Heading(content, start, endOfHeadingText, 2);
         }
     }

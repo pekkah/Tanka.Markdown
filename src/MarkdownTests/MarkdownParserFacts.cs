@@ -34,6 +34,47 @@
         }
 
         [Fact]
+        public void MultipleParagraphs()
+        {
+            /* given */
+            var builder = new StringBuilder();
+            builder.AppendLine("paragraph is just text");
+            builder.AppendLine("that can continue for");
+            builder.AppendLine();
+            builder.AppendLine("second paragraph");
+            builder.AppendLine("multiple lines");
+            string markdown = builder.ToString();
+
+            var parser = new MarkdownParser();
+
+            /* when */
+            Document result = parser.Parse(markdown);
+
+            /* then */
+            result.Blocks.Should().HaveCount(2);
+            result.Blocks.Should().ContainItemsAssignableTo<Paragraph>();
+        }
+
+        [Fact]
+        public void MultipleParagraphsWithNewLines()
+        {
+            /* given */
+            var builder = new StringBuilder();
+            builder.Append(
+                "Paragraphs should be separated by one empty line. Paragraph text is part of one \nparagraph as long as there's no empty lines.\n\nThis is a second paragraph which starts from new line and there's one empty line\nabove it.");
+
+            var markdown = builder.ToString();
+            var parser = new MarkdownParser();
+            
+            /* when */
+            Document result = parser.Parse(markdown);
+
+            /* then */
+            result.Blocks.Should().HaveCount(2);
+            result.Blocks.Should().ContainItemsAssignableTo<Paragraph>();
+        }
+
+        [Fact]
         public void EmptyLine()
         {
             /* given */
@@ -54,10 +95,10 @@
             result.Blocks.Should().HaveCount(3);
             var firstParagraph = result.Blocks.First() as Paragraph;
             firstParagraph.Start.ShouldBeEquivalentTo(0);
-            firstParagraph.End.ShouldBeEquivalentTo(46);
+            firstParagraph.End.ShouldBeEquivalentTo(44);
 
             var emptyLine = result.Blocks.ElementAt(1) as EmptyLine;
-            emptyLine.Start.ShouldBeEquivalentTo(47);
+            emptyLine.Start.ShouldBeEquivalentTo(45);
             emptyLine.Length.ShouldBeEquivalentTo(2);
 
             var secondParagraph = result.Blocks.Last() as Paragraph;

@@ -1,6 +1,7 @@
 ﻿namespace Tanka.Markdown.Blocks
 {
     using System.Collections.Generic;
+    using System.Linq;
     using Inline;
 
     public class Paragraph : Block
@@ -22,6 +23,21 @@
             int indexOf = _spans.IndexOf(target);
             _spans.Remove(target);
             _spans.Insert(indexOf, withThis);
+        }
+
+        public bool IsEmpty()
+        {
+            if (!_spans.Any())
+                return true;
+
+            if (_spans.Count() != 1)
+            {
+                return false;
+            }
+
+            var isNewLine = _spans.OfType<NewLineSpan>().Any();
+
+            return isNewLine;
         }
     }
 }
