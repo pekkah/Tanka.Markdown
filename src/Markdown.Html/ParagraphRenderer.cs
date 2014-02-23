@@ -33,6 +33,12 @@
                     imageTag.Attr("alt", image.Title.ToString());
                     builder.Append(imageTag.ToHtmlString());
                 }),
+                new SpanRenderer<CodeblockSpan>((codeblockSpan, builder) =>
+                {
+                    var code = new HtmlTag("code");
+                    code.Text(codeblockSpan.ToString());
+                    builder.Append(code.ToHtmlString());
+                }),
                 new OpenAndCloseRenderer<StrongEmphasis>("strong"),
                 new OpenAndCloseRenderer<Emphasis>("em")
             };

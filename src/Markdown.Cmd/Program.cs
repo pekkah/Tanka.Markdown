@@ -50,6 +50,8 @@
             {
                 Console.WriteLine(x.ToString());
             }
+
+            Console.ReadKey();
         }
 
         private static void ShowHelp()

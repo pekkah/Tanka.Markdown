@@ -57,6 +57,7 @@
   <ItemGroup>
     <Compile Include="Blocks\CodeblockBuilderFacts.cs" />
     <Compile Include="Blocks\OrderedListBuilderFacts.cs" />
+    <Compile Include="Inline\InlineCodeblock.cs" />
     <Compile Include="MarkdownParserFacts.cs" />
     <Compile Include="ExtendByAddingNewSpan.cs" />
     <Compile Include="ExtendByAddingNewBlock.cs" />
