@@ -63,6 +63,7 @@
     <Compile Include="Inline\CodeblockSpanBuilder.cs" />
     <Compile Include="Inline\EmphasisBuilder.cs" />
     <Compile Include="Inline\NewLineEater.cs" />
+    <Compile Include="Inline\NewLineSpanBuilder.cs" />
     <Compile Include="MarkdownParser.cs" />
     <Compile Include="Blocks\OrderedListBuilder.cs" />
     <Compile Include="Blocks\Paragraph.cs" />

@@ -31,7 +31,7 @@
             result.ToString().ShouldBeEquivalentTo("public int X = 1;\r\n");
 
             // end of the block
-            end.ShouldBeEquivalentTo(28);
+            end.ShouldBeEquivalentTo(26);
         }
     }
 }

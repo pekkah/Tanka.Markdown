@@ -60,7 +60,7 @@
             } while (_expression.IsMatch(content.Document, content.IndexOf('[', startOfLine)));
 
             // special case when content ends
-            end = startOfLine != -1 ? content.EndOfLine(startOfLine, true) : content.End;
+            end = startOfLine != -1 ? content.EndOfLine(startOfLine, false) : content.End;
 
             return new LinkDefinitionList(content, start, end, items);
         }

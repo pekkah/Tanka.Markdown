@@ -27,8 +27,7 @@
 
         public Block Build(int start, StringRange content, out int end)
         {
-            end = content.EndOfLine(start, true);
-            var endOfContent = content.EndOfLine(start);
+            end = content.EndOfLine(start, false);
  
             var counter = start;
             var level = 0;
@@ -38,7 +37,7 @@
                 counter++;
             }
 
-            return new Heading(content, counter + 1, endOfContent, level);
+            return new Heading(content, counter + 1, end, level);
         }
     }
 }

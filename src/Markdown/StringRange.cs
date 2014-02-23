@@ -201,7 +201,7 @@
             if (at > End)
                 return false;
 
-            if ((at + str.Length) > End)
+            if ((at + str.Length -1) > End)
                 return false;
 
             for (int i = 0; i < str.Length; i++)

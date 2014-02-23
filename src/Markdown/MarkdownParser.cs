@@ -41,6 +41,16 @@
 
             foreach (Block block in ParseBlocks(document))
             {
+                // skip empty paragraphs
+                if (block is Paragraph)
+                {
+                    var paragraph = (Paragraph) block;
+
+                    if (paragraph.IsEmpty())
+                        continue;
+                }
+
+                // skip empty lines
                 if (_skipEmptyLines && block is EmptyLine)
                     continue;
 
