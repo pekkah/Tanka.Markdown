@@ -61,9 +61,9 @@
             {
                 foreach (ReferenceLinkSpan referenceLink in paragraph.Spans.OfType<ReferenceLinkSpan>().ToList())
                 {
-                    string key = referenceLink.Key.ToString();
+                    string key = referenceLink.Key.ToString().ToLower();
 
-                    LinkDefinition definition = linkDefinitions.FirstOrDefault(def => def.Key.ToString() == key);
+                    LinkDefinition definition = linkDefinitions.FirstOrDefault(def => def.Key.ToString().ToLower() == key);
 
                     if (definition == null)
                         continue;

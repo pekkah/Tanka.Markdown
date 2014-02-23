@@ -1,5 +1,6 @@
 ﻿namespace Tanka.Markdown.Html
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
@@ -18,6 +19,11 @@
                 new SpanRenderer<LinkSpan>((link, builder) =>
                 {
                     var linkTag = new LinkTag(link.Title.ToString(), link.Url.ToString());
+                    builder.Append(linkTag.ToHtmlString());
+                }),
+                new SpanRenderer<ReferenceLinkSpan>((link, builder) =>
+                {
+                    var linkTag = new LinkTag(link.Title.ToString(), link.Key.ToString());
                     builder.Append(linkTag.ToHtmlString());
                 }),
                 new SpanRenderer<ImageSpan>((image, builder) =>
@@ -39,9 +45,14 @@
             var builder = new StringBuilder();
             builder.Append("<p>");
 
-            foreach (Span span in block.Spans.ToList())
+            foreach (Span span in block.Spans)
             {
-                ISpanRenderer renderer = SpanRenderers.First(r => r.CanRender(span));
+                ISpanRenderer renderer = SpanRenderers.FirstOrDefault(r => r.CanRender(span));
+
+                if (renderer == null)
+                    throw new InvalidOperationException(
+                        string.Format("Cannot find renderer for span {0}", span));
+
                 renderer.Render(span, builder);
             }
 
