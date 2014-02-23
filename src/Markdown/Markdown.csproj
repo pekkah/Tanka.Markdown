@@ -59,6 +59,8 @@
     <Compile Include="Blocks\LinkDefinitionListBuilder.cs" />
     <Compile Include="Blocks\LinkDefinitionsBuilder.cs" />
     <Compile Include="Blocks\List.cs" />
+    <Compile Include="Inline\CodeblockSpan.cs" />
+    <Compile Include="Inline\CodeblockSpanBuilder.cs" />
     <Compile Include="Inline\EmphasisBuilder.cs" />
     <Compile Include="Inline\NewLineEater.cs" />
     <Compile Include="MarkdownParser.cs" />

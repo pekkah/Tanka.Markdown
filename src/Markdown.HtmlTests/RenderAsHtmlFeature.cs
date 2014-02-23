@@ -128,13 +128,15 @@
             markdown.AppendLine("a link here [here](http://www.123.com)");
             markdown.AppendLine("a inline image here ![alt text](/images/sample.jpg)");
             markdown.AppendLine("emphasis of *text* or strong emphasis of **text**");
+            markdown.AppendLine("inline code block `var test = 123;` should be supported");
 
             var expectedHtml = new StringBuilder();
             expectedHtml.Append("<p>");
             expectedHtml.Append("some text here ");
             expectedHtml.Append("a link here <a href=\"http://www.123.com\">here</a> ");
             expectedHtml.Append("a inline image here <img src=\"/images/sample.jpg\" alt=\"alt text\" /> ");
-            expectedHtml.Append("emphasis of <em>text</em> or strong emphasis of <strong>text</strong>");
+            expectedHtml.Append("emphasis of <em>text</em> or strong emphasis of <strong>text</strong> ");
+            expectedHtml.Append("inline code block <code>var test = 123;</code> should be supported ");
             expectedHtml.Append("</p>");
 
             var parser = new MarkdownParser();

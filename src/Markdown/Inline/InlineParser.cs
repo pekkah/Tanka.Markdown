@@ -15,6 +15,7 @@
                 new ImageSpanBuilder(),
                 new ReferenceLinkSpanBuilder(),
                 new EmphasisBuilder(),
+                new CodeblockSpanBuilder(),
                 new CharSpanBuilder()
             };
         }
