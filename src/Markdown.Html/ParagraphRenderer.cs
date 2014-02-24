@@ -39,6 +39,10 @@
                     code.Text(codeblockSpan.ToString());
                     builder.Append(code.ToHtmlString());
                 }),
+                new SpanRenderer<NewLineSpan>((newLine, builder) =>
+                {
+                    builder.Append(" ");
+                }),
                 new OpenAndCloseRenderer<StrongEmphasis>("strong"),
                 new OpenAndCloseRenderer<Emphasis>("em")
             };

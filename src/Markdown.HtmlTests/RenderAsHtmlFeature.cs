@@ -155,7 +155,7 @@
         {
             // arrange
             var markdown = new StringBuilder();
-            markdown.AppendLine("*text*");
+            markdown.Append("*text*");
 
             var expectedHtml = new StringBuilder();
             expectedHtml.Append("<p>");
@@ -178,7 +178,7 @@
         {
             // arrange
             var markdown = new StringBuilder();
-            markdown.AppendLine("**text**");
+            markdown.Append("**text**");
 
             var expectedHtml = new StringBuilder();
             expectedHtml.Append("<p>");

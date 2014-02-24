@@ -14,7 +14,7 @@
 
         public Block Build(int start, StringRange content, out int end)
         {
-            int endOfHeadingText = content.EndOfLine(start);
+            int endOfHeadingText = content.EndOfLine(start, false);
 
             int startOfMarker = content.StartOfNextLine(endOfHeadingText);
             end = content.EndOfLine(startOfMarker, false);

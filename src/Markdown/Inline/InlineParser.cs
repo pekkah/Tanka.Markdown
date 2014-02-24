@@ -37,9 +37,6 @@
                 // get span builder
                 SpanBuilder builder = GetBuilder(position, content);
 
-                if (builder is NewLineSpanBuilder)
-                    continue;
-
                 /*******************************************************
                  * We don't want to generate char spans with only single
                  * character so we combine it to one text span. 

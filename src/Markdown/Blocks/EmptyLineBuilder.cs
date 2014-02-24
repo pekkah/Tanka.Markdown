@@ -26,7 +26,8 @@
 
         public Block Build(int start, StringRange content, out int end)
         {
-            end = content.EndOfLine(start, true);
+            // \r\n\r\n or \n\n
+            end = content.EndOfLine(start + 2, true);
             return new EmptyLine(content, start, end);
         }
     }

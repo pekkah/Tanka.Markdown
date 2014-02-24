@@ -19,7 +19,7 @@
             Options = options;
         }
 
-        public HtmlRendererOptions Options { get; set; }
+        public HtmlRendererOptions Options { get; private set; }
 
         public string Render(Document document)
         {

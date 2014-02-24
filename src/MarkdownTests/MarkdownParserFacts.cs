@@ -31,6 +31,7 @@
             var paragraph = result.Blocks.Single() as Paragraph;
             paragraph.Start.ShouldBeEquivalentTo(0);
             paragraph.Length.ShouldBeEquivalentTo(markdown.Length);
+            paragraph.Spans.Should().HaveCount(6);
         }
 
         [Fact]
@@ -99,7 +100,7 @@
 
             var emptyLine = result.Blocks.ElementAt(1) as EmptyLine;
             emptyLine.Start.ShouldBeEquivalentTo(45);
-            emptyLine.Length.ShouldBeEquivalentTo(2);
+            emptyLine.Length.ShouldBeEquivalentTo(4);
 
             var secondParagraph = result.Blocks.Last() as Paragraph;
             secondParagraph.Start.ShouldBeEquivalentTo(emptyLine.End + 1);
@@ -271,7 +272,7 @@
         {
             /* given */
             var contentBuilder = new StringBuilder();
-            contentBuilder.AppendLine("And images ![alt](http://image.jpg)");
+            contentBuilder.Append("And images ![alt](http://image.jpg)");
             var parser = new MarkdownParser();
 
             /* when */

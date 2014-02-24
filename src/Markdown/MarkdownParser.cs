@@ -16,8 +16,8 @@
 
             _builders = new List<IBlockBuilder>
             {
-                new CodeblockBuilder(),
                 new EmptyLineBuilder(),
+                new CodeblockBuilder(),
                 new HeadingBuilder(),
                 new SetextLevelOneHeadingBuilder(),
                 new SetextLevelTwoHeadingBuilder(),
