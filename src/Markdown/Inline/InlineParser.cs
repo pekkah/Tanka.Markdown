@@ -28,6 +28,18 @@
 
         public IEnumerable<Span> Parse(StringRange content)
         {
+            var spans = new List<Span>(ParseCore(content));
+
+            // strip last new line
+            var last = spans.Last();
+            if (last is NewLineSpan)
+                spans.Remove(last);
+
+            return spans;
+        } 
+
+        private IEnumerable<Span> ParseCore(StringRange content)
+        {
             bool textSpanStarted = false;
             int textSpanStart = -1;
             int textSpanEnd = -1;

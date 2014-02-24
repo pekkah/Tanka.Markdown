@@ -1,6 +1,7 @@
 ﻿namespace Tanka.Markdown.Blocks
 {
     using System.Collections.Generic;
+    using Inline;
 
     public class List : Block
     {
@@ -20,15 +21,9 @@
         public bool IsOrdered { get; private set; }
     }
 
-    public class Item : List
+    public class Item : Paragraph
     {
-        public Item(
-            StringRange parent,
-            int start,
-            int end,
-            bool isOrdered,
-            IEnumerable<Item> items = null)
-            : base(parent, start, end, isOrdered, null)
+        public Item(StringRange parent, int start, int end, IEnumerable<Span> spans) : base(parent, start, end, spans)
         {
         }
     }

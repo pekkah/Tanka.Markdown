@@ -8,14 +8,32 @@
     using HtmlTags;
     using Inline;
 
+    public class TextSpanRenderer : ISpanRenderer
+    {
+        public Func<string, string> CleanInput = input =>
+        {
+            return input.Replace("\r", "").Replace("\n", " ");
+        };
+
+        public bool CanRender(Span span)
+        {
+            return span is TextSpan;
+        }
+
+        public void Render(Span span, StringBuilder builder)
+        {
+            var text = CleanInput(span.ToString());
+            builder.Append(text);
+        }
+    }
+
     public class ParagraphRenderer : BlockRendererBase<Paragraph>
     {
         public ParagraphRenderer()
         {
             SpanRenderers = new List<ISpanRenderer>
             {
-                new SpanRenderer<TextSpan>((text, builder) 
-                    => builder.Append(text.ToString().Replace("\r\n", " "))),
+                new TextSpanRenderer(),
                 new SpanRenderer<LinkSpan>((link, builder) =>
                 {
                     var linkTag = new LinkTag(link.Title.ToString(), link.Url.ToString());
@@ -39,10 +57,7 @@
                     code.Text(codeblockSpan.ToString());
                     builder.Append(code.ToHtmlString());
                 }),
-                new SpanRenderer<NewLineSpan>((newLine, builder) =>
-                {
-                    builder.Append(" ");
-                }),
+                new SpanRenderer<NewLineSpan>((newLine, builder) => builder.Append(" ")),
                 new OpenAndCloseRenderer<StrongEmphasis>("strong"),
                 new OpenAndCloseRenderer<Emphasis>("em")
             };

@@ -2,15 +2,18 @@
 {
     using System.Collections.Generic;
     using System.Text.RegularExpressions;
+    using Inline;
     using Markdown;
 
     public class OrderedListBuilder : IBlockBuilder
     {
         private readonly Regex _expression;
+        private readonly InlineParser _inlineParser;
 
         public OrderedListBuilder()
         {
             _expression = new Regex(@"\G([0-9]{1,3})(\.)(\s)(.*)(\n|\r\n)");
+            _inlineParser = new InlineParser();
         }
 
         public bool CanBuild(int start, StringRange content)
@@ -31,11 +34,12 @@
                 var startOfItem = content.IndexOf(' ', startOfLine) + 1;
                 var endOfItem = FindEndOfItem(content, startOfItem);
 
+                var spans = _inlineParser.Parse(new StringRange(content, startOfItem, endOfItem));
                 var item = new Item(
                     content,
                     startOfItem,
                     endOfItem,
-                    true);
+                    spans);
 
                 items.Add(item);
 
@@ -72,10 +76,10 @@
 
                 // document end
                 if (startOfNextLine == -1)
-                    return content.End;
+                    return content.EndOfLine(content.End);
 
                 if (content[startOfNextLine] != ' ')
-                    return startOfNextLine - 1;
+                    return content.EndOfLine(startOfNextLine - 1);
 
             } while (true);
         }

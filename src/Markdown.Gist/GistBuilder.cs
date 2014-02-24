@@ -17,7 +17,7 @@
             int userNameStart = content.IndexOf(".com/") + 5;
             int gistIdStart = content.IndexOf('/', userNameStart) + 1;
 
-            end = content.EndOfLine(gistIdStart, true);
+            end = content.EndOfLine(gistIdStart, false);
 
             return new GistBlock(
                 content,

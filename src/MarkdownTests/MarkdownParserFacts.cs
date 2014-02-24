@@ -31,7 +31,7 @@
             var paragraph = result.Blocks.Single() as Paragraph;
             paragraph.Start.ShouldBeEquivalentTo(0);
             paragraph.Length.ShouldBeEquivalentTo(markdown.Length);
-            paragraph.Spans.Should().HaveCount(6);
+            paragraph.Spans.Should().HaveCount(5);
         }
 
         [Fact]
@@ -54,6 +54,27 @@
             /* then */
             result.Blocks.Should().HaveCount(2);
             result.Blocks.Should().ContainItemsAssignableTo<Paragraph>();
+        }
+
+        [Fact]
+        public void BugFixForNewLines()
+        {
+            /* given */
+            var builder = new StringBuilder();
+            builder.Append("#### Paragraphs\n");
+            builder.Append("\n");
+            builder.Append("Paragraphs are lines of text followed by empty line.\n");
+            builder.Append("\n");
+            builder.Append("Second paragraph with an inline link to this site [heikura.me][me]\n");
+            string markdown = builder.ToString();
+
+            var parser = new MarkdownParser();
+
+            /* when */
+            Document result = parser.Parse(markdown);
+
+            /* then */
+            result.Blocks.Should().HaveCount(3);
         }
 
         [Fact]
@@ -231,7 +252,7 @@
             list.IsOrdered.ShouldBeEquivalentTo(true);
             for (int i = 0; i < list.Items.Count(); i++)
             {
-                string expected = string.Format("item {0}\r\n", i + 1);
+                string expected = string.Format("item {0}", i + 1);
                 Item item = list.Items.ElementAt(i);
 
                 item.ToString().ShouldAllBeEquivalentTo(expected);

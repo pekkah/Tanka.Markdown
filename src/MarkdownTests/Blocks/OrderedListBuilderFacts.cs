@@ -31,13 +31,13 @@
             list.Items.Should().HaveCount(3);
 
             var item1 = list.Items.ElementAt(0);
-            item1.ToString().ShouldBeEquivalentTo("item\r\n");
+            item1.ToString().ShouldBeEquivalentTo("item");
 
             var item2 = list.Items.ElementAt(1);
-            item2.ToString().ShouldBeEquivalentTo("item\r\n   this is item two\r\n");
+            item2.ToString().ShouldBeEquivalentTo("item\r\n   this is item two");
 
             var item3 = list.Items.ElementAt(2);
-            item3.ToString().ShouldBeEquivalentTo("item\r\n");
+            item3.ToString().ShouldBeEquivalentTo("item");
         }
     }
 }

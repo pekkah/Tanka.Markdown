@@ -76,9 +76,9 @@
 
             var expectedHtml = new StringBuilder();
             expectedHtml.Append("<ol>");
-            expectedHtml.Append("<li>item</li>");
-            expectedHtml.Append("<li>item this is item two</li>");
-            expectedHtml.Append("<li>item</li>");
+            expectedHtml.Append("<li><p>item</p></li>");
+            expectedHtml.Append("<li><p>item this is item two</p></li>");
+            expectedHtml.Append("<li><p>item</p></li>");
             expectedHtml.Append("</ol>");
 
             var parser = new MarkdownParser();
@@ -86,7 +86,7 @@
 
             // act
             Document document = parser.Parse(markdown.ToString());
-            string html = renderer.Render(document).Replace("\r\n", "");
+            string html = renderer.Render(document);
 
             // assert
             html.ShouldBeEquivalentTo(expectedHtml.ToString());
@@ -103,9 +103,9 @@
 
             var expectedHtml = new StringBuilder();
             expectedHtml.Append("<ul>");
-            expectedHtml.Append("<li>item</li>");
-            expectedHtml.Append("<li>item</li>");
-            expectedHtml.Append("<li>item</li>");
+            expectedHtml.Append("<li><p>item</p></li>");
+            expectedHtml.Append("<li><p>item</p></li>");
+            expectedHtml.Append("<li><p>item</p></li>");
             expectedHtml.Append("</ul>");
 
             var parser = new MarkdownParser();
@@ -113,7 +113,7 @@
 
             // act
             Document document = parser.Parse(markdown.ToString());
-            string html = renderer.Render(document).Replace("\r\n", "");
+            string html = renderer.Render(document);
 
             // assert
             html.ShouldBeEquivalentTo(expectedHtml.ToString());
@@ -136,7 +136,38 @@
             expectedHtml.Append("a link here <a href=\"http://www.123.com\">here</a> ");
             expectedHtml.Append("a inline image here <img src=\"/images/sample.jpg\" alt=\"alt text\" /> ");
             expectedHtml.Append("emphasis of <em>text</em> or strong emphasis of <strong>text</strong> ");
-            expectedHtml.Append("inline code block <code>var test = 123;</code> should be supported ");
+            expectedHtml.Append("inline code block <code>var test = 123;</code> should be supported");
+            expectedHtml.Append("</p>");
+
+            var parser = new MarkdownParser();
+            var renderer = new HtmlRenderer();
+
+            // act
+            Document document = parser.Parse(markdown.ToString());
+            string html = renderer.Render(document).Replace("\r\n", "");
+
+            // assert
+            html.ShouldBeEquivalentTo(expectedHtml.ToString());
+        }
+
+        [Fact]
+        public void FixParagraphDisappears()
+        {
+            // arrange
+            var markdown = new StringBuilder();
+            markdown.Append("#### Paragraphs\n");
+            markdown.Append("\n");
+            markdown.Append("Paragraphs are lines of text followed by empty line.\n");
+            markdown.Append("\n");
+            markdown.Append("Second paragraph\n");
+
+            var expectedHtml = new StringBuilder();
+            expectedHtml.Append("<h4>Paragraphs</h4>");
+            expectedHtml.Append("<p>");
+            expectedHtml.Append("Paragraphs are lines of text followed by empty line.");
+            expectedHtml.Append("</p>");
+            expectedHtml.Append("<p>");
+            expectedHtml.Append("Second paragraph");
             expectedHtml.Append("</p>");
 
             var parser = new MarkdownParser();
