@@ -1,15 +1,17 @@
 # Markdown parser
 
 # Features
+
 * Parse markdown into a document
 * Render markdown document as html
 
 # Supported Blocks
-* Headings
-* Codeblocks
-* Link definitions
-* Blockquotes
+
+* [Headings](http://www.heikura.me/tankamarkdown-headings)
+* [Codeblocks](http://www.heikura.me/tankamarkdown-codeblocks-and-lists)
+* [Lists](http://www.heikura.me/tankamarkdown-codeblocks-and-lists)
 * Paragraphs
+* Link definitions
 
 # Usage
 
