@@ -3,9 +3,8 @@
     using System.Collections.Generic;
     using System.Text.RegularExpressions;
     using Inline;
-    using Markdown;
 
-    public class OrderedListBuilder : IBlockBuilder
+    public class OrderedListBuilder : ListBuilder
     {
         private readonly Regex _expression;
         private readonly InlineParser _inlineParser;
@@ -16,35 +15,29 @@
             _inlineParser = new InlineParser();
         }
 
-        public bool CanBuild(int start, StringRange content)
-        {
-            bool isMatch = _expression.IsMatch(content.Document, start);
-            return isMatch;
-        }
-
-        public Block Build(int start, StringRange content, out int end)
+        public override Block Build(int start, StringRange content, out int end)
         {
             int startOfLine = start;
             var items = new List<Item>();
-
+            Item lastItem = null;
             bool foundItem = false;
 
             do
             {
-                var startOfItem = content.IndexOf(' ', startOfLine) + 1;
-                var endOfItem = FindEndOfItem(content, startOfItem);
+                int startOfItem = content.IndexOf(' ', startOfLine) + 1;
+                int endOfItem = FindEndOfItem(content, startOfItem);
 
-                var spans = _inlineParser.Parse(new StringRange(content, startOfItem, endOfItem));
-                var item = new Item(
+                IEnumerable<Span> spans = _inlineParser.Parse(new StringRange(content, startOfItem, endOfItem));
+                lastItem= new Item(
                     content,
                     startOfItem,
                     endOfItem,
                     spans);
 
-                items.Add(item);
+                items.Add(lastItem);
 
                 startOfLine = content.StartOfNextLine(endOfItem);
-                
+
                 if (startOfLine == -1)
                     break;
 
@@ -52,36 +45,18 @@
             } while (foundItem);
 
             // special case when content ends
-            end = startOfLine != -1 ? content.EndOfLine(startOfLine, false) : content.End;
+            end = content.EndOfLine(lastItem.End);
 
             return new List(content, start, end, true, items);
         }
 
-        private int FindEndOfItem(StringRange content, int position)
+        public override bool CanBuild(int start, StringRange content)
         {
-            /*********************************************
-             * item will end when the next line is not 
-             * indented by at least one space
-             * ******************************************/
+            if (!content.IsStartOfLine(start))
+                return false;
 
-            // document end
-            if (position > content.End)
-                return content.End;
-
-            var startOfNextLine = position;
-
-            do
-            {
-                startOfNextLine = content.StartOfNextLine(startOfNextLine);
-
-                // document end
-                if (startOfNextLine == -1)
-                    return content.EndOfLine(content.End);
-
-                if (content[startOfNextLine] != ' ')
-                    return content.EndOfLine(startOfNextLine - 1);
-
-            } while (true);
+            bool isMatch = _expression.IsMatch(content.Document, start);
+            return isMatch;
         }
     }
 }

@@ -70,5 +70,29 @@
             /* then */
             stringRange.IndexOf('8').ShouldBeEquivalentTo(-1);
         }
+
+        [Fact]
+        public void IsStartOfLine_ContentStart()
+        {
+            /* given */
+            const string text = "0123456789";
+            var stringRange = new StringRange(text);
+
+            /* when */
+            /* then */
+            stringRange.IsStartOfLine(0).ShouldBeEquivalentTo(true);
+        }
+
+        [Fact]
+        public void IsStartOfLine_StartOfLine()
+        {
+            /* given */
+            const string text = "0123456789\nSecond line";
+            var stringRange = new StringRange(text);
+
+            /* when */
+            /* then */
+            stringRange.IsStartOfLine(stringRange.StartOfNextLine(0)).ShouldBeEquivalentTo(true);
+        }
     }
 }

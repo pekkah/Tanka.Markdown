@@ -49,6 +49,7 @@
     <Compile Include="Blocks\Block.cs" />
     <Compile Include="Blocks\Codeblock.cs" />
     <Compile Include="Blocks\CodeblockBuilder.cs" />
+    <Compile Include="Blocks\ListBuilder.cs" />
     <Compile Include="Document.cs" />
     <Compile Include="Blocks\EmptyLine.cs" />
     <Compile Include="Blocks\EmptyLineBuilder.cs" />

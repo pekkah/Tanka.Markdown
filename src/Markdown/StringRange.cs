@@ -215,5 +215,13 @@
 
             return true;
         }
+
+        public bool IsStartOfLine(int start)
+        {
+            if (start == Start)
+                return true;
+
+            return HasCharactersAt(start - 1, '\n');
+        }
     }
 }

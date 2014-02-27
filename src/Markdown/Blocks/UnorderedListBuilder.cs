@@ -2,12 +2,11 @@
 {
     using System.Collections.Generic;
     using Inline;
-    using Markdown;
 
-    public class UnorderedListBuilder : IBlockBuilder
+    public class UnorderedListBuilder : ListBuilder
     {
-        private readonly char _startsWith;
         private readonly InlineParser _inlineParser;
+        private readonly char _startsWith;
 
         public UnorderedListBuilder(char startsWith)
         {
@@ -15,72 +14,48 @@
             _inlineParser = new InlineParser();
         }
 
-        public bool CanBuild(int start, StringRange content)
-        {
-            bool starts = content.HasCharactersAt(start, _startsWith, ' ');
-
-            if (!starts)
-                return false;
-
-            bool nextLineStarts = content.HasCharactersAt(
-                content.StartOfNextLine(start),
-                _startsWith, ' ');
-
-            return nextLineStarts;
-        }
-
-        public Block Build(int start, StringRange content, out int end)
+        public override Block Build(int start, StringRange content, out int end)
         {
             int startOfLine = start;
             var items = new List<Item>();
+            bool foundItem = false;
+            Item lastItem = null;
 
             do
             {
-                var startOfItem = startOfLine + 2;
-                var endOfItem = FindEndOfItem(content, startOfItem);
+                int startOfItem = content.IndexOf(' ', startOfLine) + 1;
+                int endOfItem = FindEndOfItem(content, startOfItem);
 
-                var spans = _inlineParser.Parse(new StringRange(content, startOfItem, endOfItem));
-                var item = new Item(
+                IEnumerable<Span> spans = _inlineParser.Parse(new StringRange(content, startOfItem, endOfItem));
+                lastItem = new Item(
                     content,
                     startOfItem,
                     endOfItem,
                     spans);
 
-                items.Add(item);
-                startOfLine = content.StartOfNextLine(startOfLine);
-            } while (content.HasCharactersAt(startOfLine, _startsWith, ' '));
+                items.Add(lastItem);
+                startOfLine = content.StartOfNextLine(endOfItem);
+
+                if (startOfLine == -1)
+                    break;
+
+                foundItem = content.HasCharactersAt(startOfLine, _startsWith, ' ');
+            } while (foundItem);
 
             // special case when content ends
-            end = startOfLine != -1 ? content.EndOfLine(startOfLine, false) : content.End;
+            end = content.EndOfLine(lastItem.End);
 
             return new List(content, start, end, false, items);
         }
 
-        private int FindEndOfItem(StringRange content, int position)
+        public override bool CanBuild(int start, StringRange content)
         {
-            /*********************************************
-             * item will end when the next line is not 
-             * indented by at least one space
-             * ******************************************/
+            if (!content.IsStartOfLine(start))
+                return false;
 
-            // document end
-            if (position > content.End)
-                return content.End;
+            bool starts = content.HasCharactersAt(start, _startsWith, ' ');
 
-            var startOfNextLine = position;
-
-            do
-            {
-                startOfNextLine = content.StartOfNextLine(startOfNextLine);
-
-                // document end
-                if (startOfNextLine == -1)
-                    return content.EndOfLine(content.End);
-
-                if (content[startOfNextLine] != ' ')
-                    return content.EndOfLine(startOfNextLine - 1);
-
-            } while (true);
+            return starts;
         }
     }
 }
