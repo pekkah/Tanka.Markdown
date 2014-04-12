@@ -76,6 +76,7 @@
     <Compile Include="Inline\Emphasis.cs" />
     <Compile Include="Inline\ImageSpan.cs" />
     <Compile Include="Inline\ImageSpanBuilder.cs" />
+    <Compile Include="ParsingException.cs" />
     <Compile Include="StringRange.cs" />
     <Compile Include="Inline\InlineParser.cs" />
     <Compile Include="Inline\LinkSpan.cs" />

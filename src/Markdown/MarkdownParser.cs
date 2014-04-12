@@ -1,5 +1,6 @@
 ﻿namespace Tanka.Markdown
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Blocks;
@@ -37,15 +38,18 @@
         public Document Parse(string markdown)
         {
             var blocks = new List<Block>();
-            var document = new StringRange(markdown);
 
-            foreach (Block block in ParseBlocks(document))
+            if (string.IsNullOrWhiteSpace(markdown))
+                return new Document(blocks, markdown);
+
+            var markdownContent = new StringRange(markdown);
+
+            foreach (Block block in ParseBlocks(markdownContent))
             {
                 // skip empty paragraphs
-                if (block is Paragraph)
+                var paragraph = block as Paragraph;
+                if (paragraph != null)
                 {
-                    var paragraph = (Paragraph) block;
-
                     if (paragraph.IsEmpty())
                         continue;
                 }
@@ -73,7 +77,8 @@
                 {
                     string key = referenceLink.Key.ToString().ToLower();
 
-                    LinkDefinition definition = linkDefinitions.FirstOrDefault(def => def.Key.ToString().ToLower() == key);
+                    LinkDefinition definition =
+                        linkDefinitions.FirstOrDefault(def => def.Key.ToString().ToLower() == key);
 
                     if (definition == null)
                         continue;
@@ -128,7 +133,7 @@
                     paragraphStarted = false;
                 }
 
-                yield return builder.Build(start, document, out start);
+                yield return BuildBlock(builder, start, document, out start);
             }
 
             // so one monster got away
@@ -136,6 +141,23 @@
             if (paragraphStarted)
             {
                 yield return monsterBuilder.Build(paragraphStart, paragraphEnd, document);
+            }
+        }
+
+        private Block BuildBlock(IBlockBuilder builder, int start, StringRange document, out int newPosition)
+        {
+            try
+            {
+                return builder.Build(start, document, out newPosition);
+            }
+            catch (Exception x)
+            {
+                throw new ParsingException("Parser failed to parse block. See exception details for more info.", x)
+                {
+                    BuilderType = builder.GetType(),
+                    Position = start,
+                    Content = new StringRange(document.Document, start, document.End)
+                };
             }
         }
 

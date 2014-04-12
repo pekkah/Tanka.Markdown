@@ -1,7 +1,7 @@
 ﻿namespace Tanka.MarkdownTests
 {
+    using System;
     using System.Linq;
-    using System.Net.Mime;
     using System.Text;
     using FluentAssertions;
     using Markdown;
@@ -87,7 +87,7 @@
 
             var markdown = builder.ToString();
             var parser = new MarkdownParser();
-            
+
             /* when */
             Document result = parser.Parse(markdown);
 
@@ -308,6 +308,45 @@
             var image = paragaph.Spans.OfType<ImageSpan>().Single();
             image.Title.ToString().ShouldBeEquivalentTo("alt");
             image.Url.ToString().ShouldBeEquivalentTo("http://image.jpg");
+        }
+
+        [Fact]
+        public void Empty()
+        {
+            /* given */
+            var contentBuilder = new StringBuilder();
+            var parser = new MarkdownParser();
+
+            /* when */
+            var result = parser.Parse(contentBuilder.ToString());
+
+            /* then */
+            result.Blocks.Should().HaveCount(0);
+        }
+
+        [Fact]
+        public void ThrowParseErrorOnBuilderFailure()
+        {
+            /* given */
+            var contentBuilder = new StringBuilder();
+            contentBuilder.Append("1234567890");
+
+            const int expectedPosition = 5;
+            var parser = new MarkdownParser();
+            parser.Builders.Insert(
+                0,
+                new ExceptionAtPositionBuilder(expectedPosition));
+            
+            /* when */
+            var exception = Assert.Throws<ParsingException>(() =>
+            {
+                parser.Parse(contentBuilder.ToString());
+            });
+
+            exception.Position.ShouldBeEquivalentTo(expectedPosition);
+            exception.BuilderType.ShouldBeEquivalentTo(typeof (ExceptionAtPositionBuilder));
+            exception.InnerException.Should().BeOfType<ArgumentNullException>();
+            exception.Content.ToString().ShouldBeEquivalentTo("67890");
         }
     }
 }

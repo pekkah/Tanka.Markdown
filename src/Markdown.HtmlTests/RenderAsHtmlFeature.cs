@@ -226,5 +226,23 @@
             // assert
             html.ShouldBeEquivalentTo(expectedHtml.ToString());
         }
+
+        [Fact]
+        public void RenderEmpty()
+        {
+            // arrange
+            var markdown = new StringBuilder();
+            var expectedHtml = new StringBuilder();
+         
+            var parser = new MarkdownParser();
+            var renderer = new HtmlRenderer();
+
+            // act
+            Document document = parser.Parse(markdown.ToString());
+            string html = renderer.Render(document);
+
+            // assert
+            html.ShouldBeEquivalentTo(expectedHtml.ToString());
+        }
     }
 }

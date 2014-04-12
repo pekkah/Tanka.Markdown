@@ -1,7 +1,6 @@
 ﻿namespace Tanka.Markdown.Html
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
     using System.Text;
     using Blocks;
@@ -25,11 +24,12 @@
         {
             if (document == null) throw new ArgumentNullException("document");
 
-            IEnumerable<Block> blocks = document.Blocks;
-
             var builder = new StringBuilder();
 
-            foreach (Block block in blocks)
+            if (!document.Blocks.Any())
+                return string.Empty;
+
+            foreach (Block block in document.Blocks)
             {
                 IBlockRenderer renderer = GetBlockRenderer(block);
                 HtmlTag rootTag = renderer.Render(document, block);
