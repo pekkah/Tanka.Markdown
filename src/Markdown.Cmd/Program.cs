@@ -26,7 +26,7 @@
             var content = File.ReadAllText(fileName);
 
             var parser = new MarkdownParser();
-            var renderer = new HtmlRenderer();
+            var renderer = new MarkdownHtmlRenderer();
 
             try
             {

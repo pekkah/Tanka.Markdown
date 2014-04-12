@@ -27,7 +27,7 @@
 
             HtmlRendererOptions options = HtmlRendererOptions.Defaults;
             options.Renderers.Insert(0, new GistBlockRenderer());
-            var renderer = new HtmlRenderer(options);
+            var renderer = new MarkdownHtmlRenderer(options);
 
             string html = renderer.Render(document).Replace("\r\n", "");
 

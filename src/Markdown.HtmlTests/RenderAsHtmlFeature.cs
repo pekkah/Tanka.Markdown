@@ -1,8 +1,10 @@
 ﻿namespace Markdown.HtmlTests
 {
+    using System;
     using System.Text;
     using FluentAssertions;
     using Tanka.Markdown;
+    using Tanka.Markdown.Blocks;
     using Tanka.Markdown.Html;
     using Xunit;
 
@@ -29,7 +31,7 @@
             expectedHtml.Append("<h2>Heading</h2>");
 
             var parser = new MarkdownParser();
-            var renderer = new HtmlRenderer();
+            var renderer = new MarkdownHtmlRenderer();
 
             // act
             Document document = parser.Parse(markdown.ToString());
@@ -54,7 +56,7 @@
             expectedHtml.Append("</code></pre>");
 
             var parser = new MarkdownParser();
-            var renderer = new HtmlRenderer();
+            var renderer = new MarkdownHtmlRenderer();
 
             // act
             Document document = parser.Parse(markdown.ToString());
@@ -82,7 +84,7 @@
             expectedHtml.Append("</ol>");
 
             var parser = new MarkdownParser();
-            var renderer = new HtmlRenderer();
+            var renderer = new MarkdownHtmlRenderer();
 
             // act
             Document document = parser.Parse(markdown.ToString());
@@ -109,7 +111,7 @@
             expectedHtml.Append("</ul>");
 
             var parser = new MarkdownParser();
-            var renderer = new HtmlRenderer();
+            var renderer = new MarkdownHtmlRenderer();
 
             // act
             Document document = parser.Parse(markdown.ToString());
@@ -140,7 +142,7 @@
             expectedHtml.Append("</p>");
 
             var parser = new MarkdownParser();
-            var renderer = new HtmlRenderer();
+            var renderer = new MarkdownHtmlRenderer();
 
             // act
             Document document = parser.Parse(markdown.ToString());
@@ -171,7 +173,7 @@
             expectedHtml.Append("</p>");
 
             var parser = new MarkdownParser();
-            var renderer = new HtmlRenderer();
+            var renderer = new MarkdownHtmlRenderer();
 
             // act
             Document document = parser.Parse(markdown.ToString());
@@ -194,7 +196,7 @@
             expectedHtml.Append("</p>");
 
             var parser = new MarkdownParser();
-            var renderer = new HtmlRenderer();
+            var renderer = new MarkdownHtmlRenderer();
 
             // act
             Document document = parser.Parse(markdown.ToString());
@@ -217,7 +219,7 @@
             expectedHtml.Append("</p>");
 
             var parser = new MarkdownParser();
-            var renderer = new HtmlRenderer();
+            var renderer = new MarkdownHtmlRenderer();
 
             // act
             Document document = parser.Parse(markdown.ToString());
@@ -235,7 +237,7 @@
             var expectedHtml = new StringBuilder();
          
             var parser = new MarkdownParser();
-            var renderer = new HtmlRenderer();
+            var renderer = new MarkdownHtmlRenderer();
 
             // act
             Document document = parser.Parse(markdown.ToString());
@@ -243,6 +245,36 @@
 
             // assert
             html.ShouldBeEquivalentTo(expectedHtml.ToString());
+        }
+
+        [Fact]
+        public void ThrowExceptionOnRenderingError()
+        {
+            // arrange
+            var markdown = new StringBuilder();
+            markdown.AppendLine("Title");
+            markdown.AppendLine("======");
+            markdown.AppendLine();
+
+            markdown.Append("1234567890");
+
+            var parser = new MarkdownParser();
+
+            var renderer = new MarkdownHtmlRenderer();
+            renderer.Options.Renderers.Insert(
+                0,
+                new ThrowErrorOnBlockRenderer(typeof(Paragraph)));
+
+            // act
+            Document document = parser.Parse(markdown.ToString());
+            
+            var exception = Assert.Throws<RenderingException>(
+                ()=>renderer.Render(document));
+
+            // assert
+            exception.Block.Should().BeOfType<Paragraph>();
+            exception.Renderer.Should().BeOfType<ThrowErrorOnBlockRenderer>();
+            exception.InnerException.Should().BeOfType<ArgumentNullException>();
         }
     }
 }

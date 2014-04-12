@@ -49,7 +49,7 @@
     </Compile>
     <Compile Include="CodeblockRenderer.cs" />
     <Compile Include="HeadingRenderer.cs" />
-    <Compile Include="HtmlRenderer.cs" />
+    <Compile Include="MarkdownHtmlRenderer.cs" />
     <Compile Include="HtmlRendererOptions.cs" />
     <Compile Include="IBlockRenderer.cs" />
     <Compile Include="ISpanRenderer.cs" />
