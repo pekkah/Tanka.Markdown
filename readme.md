@@ -1,5 +1,7 @@
 # Markdown parser
 
+[![Build status](https://ci.appveyor.com/api/projects/status/c8w5sk4ruux4dt6d)](https://ci.appveyor.com/project/pekkah/tanka-markdown)
+
 # Features
 
 * Parse markdown into a document
