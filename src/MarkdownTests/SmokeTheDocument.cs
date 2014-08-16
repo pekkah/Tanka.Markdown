@@ -1,5 +1,6 @@
 ﻿namespace Tanka.MarkdownTests
 {
+    using System;
     using System.IO;
     using System.Linq;
     using FluentAssertions;
@@ -63,7 +64,8 @@
             "And codeblocks"
                 .And(() => ThenDocumentChildAtIndexShould<Codeblock>(4, code =>
                 {
-                    code.ToString().ShouldBeEquivalentTo("function() {\r\n	var hello = \"world\";\r\n}\r\n");
+                    var expected = string.Format("function() {{{0}	var hello = \"world\";{0}}}{0}", Environment.NewLine);
+                    code.ToString().ShouldBeEquivalentTo(expected);
                 }));
 
             //"And blockquotes"
