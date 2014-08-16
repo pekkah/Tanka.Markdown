@@ -4,7 +4,7 @@
 
 # Features
 
-* Parse markdown into a document
+* Parse markdown into a document structure
 * Render markdown document as html
 
 # Supported Blocks
@@ -12,7 +12,7 @@
 * [Headings](http://www.heikura.me/tankamarkdown-headings)
 * [Codeblocks](http://www.heikura.me/tankamarkdown-codeblocks-and-lists)
 * [Lists](http://www.heikura.me/tankamarkdown-codeblocks-and-lists)
-* Paragraphs
+* [Paragraphs](https://www.heikura.me/tankamarkdown-paragraphs)
 * Link definitions
 
 # Usage
