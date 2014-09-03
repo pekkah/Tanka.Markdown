@@ -149,6 +149,25 @@
         }
 
         [Fact]
+        public void CodeblockWithSytaxIdentifier()
+        {
+            /* given */
+            var builder = new StringBuilder();
+            builder.AppendLine("```cs");
+            builder.AppendLine("public int X = 1;");
+            builder.AppendLine("```");
+            string markdown = builder.ToString();
+
+            var parser = new MarkdownParser();
+
+            /* when */
+            Document result = parser.Parse(markdown);
+
+            /* then */
+            result.Blocks.Cast<Codeblock>().First().Syntax.ShouldAllBeEquivalentTo("cs");
+        }
+
+        [Fact]
         public void SetextHeadings()
         {
             /* given */

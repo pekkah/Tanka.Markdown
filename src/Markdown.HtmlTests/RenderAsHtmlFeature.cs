@@ -67,6 +67,33 @@
         }
 
         [Fact]
+        public void RenderCodeblocksWithSyntaxName()
+        {
+            // arrange
+            var markdown = new StringBuilder();
+            markdown.AppendLine("```cs");
+            markdown.AppendLine("string name = \"test\";");
+            markdown.AppendLine("```");
+
+            var expectedHtml = new StringBuilder();
+
+            // it looks like the syntax name is prefixed with 'lang' by convention
+            expectedHtml.Append("<pre><code class=\"lang-cs\">");
+            expectedHtml.Append("string name = &quot;test&quot;;");
+            expectedHtml.Append("</code></pre>");
+
+            var parser = new MarkdownParser();
+            var renderer = new MarkdownHtmlRenderer();
+
+            // act
+            var document = parser.Parse(markdown.ToString());
+            string html = renderer.Render(document).Replace("\r\n", "");
+
+            // assert
+            html.ShouldBeEquivalentTo(expectedHtml.ToString());
+        }
+
+        [Fact]
         public void RenderOrderedLists()
         {
             // arrange

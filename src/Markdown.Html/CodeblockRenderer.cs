@@ -12,6 +12,11 @@
             var code = new HtmlTag("code", tag);
             //code.Text(block.Code);
             code.Text(block.ToString());
+            var syntax = block.Syntax;
+            if (!string.IsNullOrWhiteSpace(syntax))
+            {
+                code.AddClass(string.Concat("lang-", syntax));
+            }
 
             return tag;
         }
