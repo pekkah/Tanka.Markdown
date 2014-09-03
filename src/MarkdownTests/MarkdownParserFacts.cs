@@ -149,7 +149,7 @@
         }
 
         [Fact]
-        public void CodeblockWithSytaxIdentifier()
+        public void CodeblockWithSyntaxIdentifier()
         {
             /* given */
             var builder = new StringBuilder();
@@ -164,7 +164,57 @@
             Document result = parser.Parse(markdown);
 
             /* then */
-            result.Blocks.Cast<Codeblock>().First().Syntax.ShouldAllBeEquivalentTo("cs");
+            result.Blocks.Cast<Codeblock>().First().Syntax.ToString().ShouldBeEquivalentTo("cs");
+        }
+
+        [Fact]
+        public void CodeblocskWithSyntaxIdentifier()
+        {
+            /* given */
+            var builder = new StringBuilder();
+            builder.AppendLine("```cs");
+            builder.AppendLine("public int X = 1;");
+            builder.AppendLine("```");
+            builder.AppendLine("```js");
+            builder.AppendLine("int X = 1;");
+            builder.AppendLine("```");
+            string markdown = builder.ToString();
+
+            var parser = new MarkdownParser();
+
+            /* when */
+            Document result = parser.Parse(markdown);
+
+            /* then */
+            result.Blocks.Count().ShouldBeEquivalentTo(2);
+            result.Blocks.Cast<Codeblock>().First().Syntax.ToString().ShouldBeEquivalentTo("cs");
+            result.Blocks.Cast<Codeblock>().Last().Syntax.ToString().ShouldBeEquivalentTo("js");
+        }
+
+        [Fact]
+        public void CodeblocskWithSyntaxIdentifierAndParagraphBetween()
+        {
+            /* given */
+            var builder = new StringBuilder();
+            builder.AppendLine("```cs");
+            builder.AppendLine("public int X = 1;");
+            builder.AppendLine("```");
+            builder.AppendLine("Some text here to separate the two");
+            builder.AppendLine("```js");
+            builder.AppendLine("public int X = 1;");
+            builder.AppendLine("```");
+            string markdown = builder.ToString();
+
+            var parser = new MarkdownParser();
+
+            /* when */
+            Document result = parser.Parse(markdown);
+
+            /* then */
+            result.Blocks.Count().ShouldBeEquivalentTo(3);
+            result.Blocks.ElementAt(0).As<Codeblock>().Syntax.ToString().ShouldBeEquivalentTo("cs");
+            result.Blocks.ElementAt(1).As<Paragraph>().ToString().ShouldBeEquivalentTo("\r\nSome text here to separate the two\r\n");
+            result.Blocks.ElementAt(2).As<Codeblock>().Syntax.ToString().ShouldBeEquivalentTo("js");
         }
 
         [Fact]

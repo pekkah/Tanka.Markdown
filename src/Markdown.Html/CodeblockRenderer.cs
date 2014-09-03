@@ -10,11 +10,12 @@
             var tag = new HtmlTag("pre");
 
             var code = new HtmlTag("code", tag);
-            //code.Text(block.Code);
+
             code.Text(block.ToString());
-            var syntax = block.Syntax;
-            if (!string.IsNullOrWhiteSpace(syntax))
+
+            if (block.Syntax != null)
             {
+                var syntax = block.Syntax.ToString();
                 code.AddClass(string.Concat("lang-", syntax));
             }
 

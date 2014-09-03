@@ -2,7 +2,6 @@
 {
     using System.Text.RegularExpressions;
     using CSharpVerbalExpressions;
-    using Markdown;
 
     public class CodeblockBuilder : IBlockBuilder
     {
@@ -28,6 +27,16 @@
 
         public Block Build(int start, StringRange content, out int end)
         {
+            // try reading syntax
+            StringRange syntax = null;
+            var endOfStartTag = content.IndexOf("```", start) + 3;
+            var endOfStartTagLine = content.EndOfLine(endOfStartTag);
+
+            if (endOfStartTagLine > endOfStartTag)
+            {
+                syntax = new StringRange(content.Document, endOfStartTag, endOfStartTagLine);
+            }
+
             // start from the actual first line of the content
             var contentStart = content.StartOfNextLine(start);
 
@@ -35,10 +44,10 @@
             var contentEnd = content.IndexOf("```", contentStart) - 1;
 
             // skip line ending
-            end = content.EndOfLine(contentEnd + 1, false);
+            end = content.EndOfLine(contentEnd + 1);
 
             // use the content between ``` and ```
-            return new Codeblock(content, contentStart, contentEnd);
+            return new Codeblock(content, contentStart, contentEnd, syntax);
         }
     }
 }
