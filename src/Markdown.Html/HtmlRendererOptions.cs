@@ -13,12 +13,14 @@
                 {
                     Renderers = new List<IBlockRenderer>
                     {
+                        new BlockQuoteRenderer(),
                         new HeadingRenderer(),
                         new ParagraphRenderer(),
                         new CodeblockRenderer(),
                         new UnorederedListRenderer(),
                         new OrderedListRenderer(),
                         new NullRenderer()
+                        
                     }
                 };
             }

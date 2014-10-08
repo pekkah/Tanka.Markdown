@@ -2,9 +2,12 @@
 {
     public abstract class Span : StringRange
     {
-        protected Span(StringRange parentRange, int start, int end)
+        public bool CleanInput { get; set; }
+
+        protected Span(StringRange parentRange, int start, int end, bool cleanInput =true)
             : base(parentRange.Document, start, end)
         {
+            CleanInput = cleanInput;
         }
     }
 }

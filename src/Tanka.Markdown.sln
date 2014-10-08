@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30110.0
+VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Markdown", "Markdown\Markdown.csproj", "{8298AB0E-89BB-4034-BA7F-C643DEBC87DD}"
 EndProject
@@ -16,6 +16,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C6330601-672C-4BDA-A584-6E45BE3935E0}"
 	ProjectSection(SolutionItems) = preProject
 		Versioning\AssemblyInfo.cs = Versioning\AssemblyInfo.cs
+		..\readme.md = ..\readme.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Markdown.Cmd", "Markdown.Cmd\Markdown.Cmd.csproj", "{FA2E8A7C-9572-48BF-B465-D2857A0BFB53}"
