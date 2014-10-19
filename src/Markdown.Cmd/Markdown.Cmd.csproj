@@ -52,10 +52,6 @@
       <Project>{f5f63c49-2fc2-4e55-b942-8495ffc54a7c}</Project>
       <Name>Markdown.Html</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Markdown.SourceMap\Markdown.SourceMap.csproj">
-      <Project>{d8c0bac3-2fa8-445f-8a1c-8e61c1747f9c}</Project>
-      <Name>Markdown.SourceMap</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Markdown\Markdown.csproj">
       <Project>{8298ab0e-89bb-4034-ba7f-c643debc87dd}</Project>
       <Name>Markdown</Name>
