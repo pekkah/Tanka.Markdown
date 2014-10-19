@@ -26,7 +26,7 @@
                 });
 
             "When markdown is parsed"
-                .When(WhenTheMarkdownIsParsed);
+                .When(()=>WhenTheMarkdownIsParsed());
 
             "Then count of document children should be 1"
                 .Then(() => ThenDocumentChildrenShouldHaveCount(1));

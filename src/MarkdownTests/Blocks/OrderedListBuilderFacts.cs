@@ -15,10 +15,10 @@
             /* given */
             int listEnd;
             var markdown = new StringBuilder();
-            markdown.AppendLine("1. item 1");
-            markdown.AppendLine("2. item");
-            markdown.AppendLine("   this is item two 2");
-            markdown.AppendLine("3. item 3");
+            markdown.Append("1. item 1\n");
+            markdown.Append("2. item\n");
+            markdown.Append("   this is item two 2\n");
+            markdown.Append("3. item 3\n");
             var listRange = new StringRange(markdown.ToString());
 
             var builder = new OrderedListBuilder();
@@ -34,7 +34,7 @@
             item1.ToString().ShouldBeEquivalentTo("item 1");
 
             var item2 = list.Items.ElementAt(1);
-            item2.ToString().ShouldBeEquivalentTo("item\r\n   this is item two 2");
+            item2.ToString().ShouldBeEquivalentTo("item\n   this is item two 2");
 
             var item3 = list.Items.ElementAt(2);
             item3.ToString().ShouldBeEquivalentTo("item 3");

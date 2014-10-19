@@ -12,20 +12,25 @@
         private string _markdown;
         private MarkdownParser _parser;
 
-        public Document Document { get; set; }
+        public Document Document
+        {
+            get;
+            set;
+        }
 
         protected void ThenDocumentChildAtIndexShouldMatch<T>(int index, object expected) where T : Block
         {
             Block child = Document.Blocks.ElementAtOrDefault(index);
-            child.Should().NotBeNull("Should have child block of type {0} at {1}", typeof (T).FullName, index);
+            child.Should().NotBeNull("Should have child block of type {0} at {1}", typeof(T).FullName, index);
 
-            child.ShouldHave().AllRuntimeProperties().EqualTo(expected);
+            child.ShouldBeEquivalentTo(expected, options => options.IncludingAllRuntimeProperties());
+            //child.ShouldHave().AllRuntimeProperties().EqualTo(expected);
         }
 
         protected void ThenDocumentChildAtIndexShould<T>(int index, Action<T> assert) where T : Block
         {
             var child = Document.Blocks.ElementAtOrDefault(index) as T;
-            child.Should().NotBeNull("Should have child block of type {0} at {1}", typeof (T).FullName, index);
+            child.Should().NotBeNull("Should have child block of type {0} at {1}", typeof(T).FullName, index);
 
             assert(child);
         }
@@ -34,9 +39,10 @@
             Expression<Func<T, object>> but) where T : Block
         {
             var child = Document.Blocks.ElementAtOrDefault(index) as T;
-            child.Should().NotBeNull("Should have child block of type {0} at {1}", typeof (T).FullName, index);
+            child.Should().NotBeNull("Should have child block of type {0} at {1}", typeof(T).FullName, index);
 
-            child.ShouldHave().AllPropertiesBut(but).EqualTo(expected);
+            child.ShouldBeEquivalentTo(expected, options => options.IncludingAllRuntimeProperties().Excluding(but));
+            //child.ShouldHave().AllPropertiesBut(but).EqualTo(expected);
         }
 
         protected void ThenDocumentChildAtIndexShouldBe(int index, Type expectedType)
@@ -74,7 +80,7 @@
         protected void ThenListAtIndexShouldMatch(int index, params string[] items)
         {
             var child = Document.Blocks.ElementAtOrDefault(index) as List;
-            child.Should().NotBeNull("Should have child block of type {0} at {1}", typeof (List).FullName, index);
+            child.Should().NotBeNull("Should have child block of type {0} at {1}", typeof(List).FullName, index);
 
             bool hasAll = true;
             foreach (string item in items)

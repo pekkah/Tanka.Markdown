@@ -26,11 +26,8 @@
 
         public Block Build(int start, StringRange content, out int end)
         {
-            // \r\n\r\n or \n\n
+            // \n\n
             end = content.EndOfLine(start, true);
-
-            if (content.HasCharactersAt(end + 1, '\r'))
-                end = content.EndOfLine(end + 1, true);
 
             if (content.HasCharactersAt(end + 1, '\n'))
                 end = content.EndOfLine(end + 1, true);

@@ -157,11 +157,6 @@
             if (indexOfN == -1)
                 return End;
 
-            if (this[indexOfN - 1] == '\r')
-            {
-                return indexOfN - 2;
-            }
-
             if (indexOfN != -1)
             {
                 return indexOfN - 1;

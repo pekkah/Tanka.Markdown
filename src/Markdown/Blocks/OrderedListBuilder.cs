@@ -11,7 +11,7 @@
 
         public OrderedListBuilder()
         {
-            _expression = new Regex(@"\G([0-9]{1,3})(\.)(\s)(.*)(\n|\r\n)");
+            _expression = new Regex(@"\G([0-9]{1,3})(\.)(\s)(.*)(\n)");
             _inlineParser = new InlineParser();
         }
 
@@ -28,7 +28,7 @@
                 int endOfItem = FindEndOfItem(content, startOfItem);
 
                 IEnumerable<Span> spans = _inlineParser.Parse(new StringRange(content, startOfItem, endOfItem));
-                lastItem= new Item(
+                lastItem = new Item(
                     content,
                     startOfItem,
                     endOfItem,
