@@ -14,9 +14,9 @@
         {
             /* given */
             var builder = new StringBuilder();
-            builder.AppendLine("```");
-            builder.AppendLine("public int X = 1;");
-            builder.AppendLine("```");
+            builder.Append("```\n");
+            builder.Append("public int X = 1;\n");
+            builder.Append("```\n");
             var markdown = new StringRange(builder.ToString());
 
             var codeblockBuilder = new CodeblockBuilder();
@@ -26,12 +26,7 @@
             var result = codeblockBuilder.Build(0, markdown, out end);
 
             /* then */
-            result.Start.ShouldBeEquivalentTo(5); // beginning of first line of content
-            result.End.ShouldBeEquivalentTo(23); // end of the line before the last ```
-            result.ToString().ShouldBeEquivalentTo("public int X = 1;\r\n");
-
-            // end of the block
-            end.ShouldBeEquivalentTo(26);
+            result.ToString().ShouldBeEquivalentTo("public int X = 1;\n");
         }
     }
 }

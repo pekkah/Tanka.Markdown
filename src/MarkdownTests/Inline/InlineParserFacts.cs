@@ -148,7 +148,7 @@
 
             result.ElementAt(1).Start.ShouldBeEquivalentTo(1);
             result.ElementAt(1).End.ShouldBeEquivalentTo(24);
-            result.ElementAt(1).ToString().ShouldAllBeEquivalentTo("something important here");
+            result.ElementAt(1).ToString().ShouldBeEquivalentTo("something important here");
 
             result.Last().Start.ShouldBeEquivalentTo(25);
             result.Last().Should().BeOfType<Emphasis>();

@@ -23,13 +23,13 @@
                 });
 
             "When markdown content is parsed"
-                .When(WhenTheMarkdownIsParsed);
+                .When(() => WhenTheMarkdownIsParsed());
 
             "Then should parse headings"
                 .Then(() => ThenDocumentChildAtIndexShould<Heading>(0, heading =>
                 {
                     heading.Level.ShouldBeEquivalentTo(1);
-                    heading.ToString().ShouldAllBeEquivalentTo("The Document");
+                    heading.ToString().ShouldBeEquivalentTo("The Document");
                 }));
             "And paragraphs"
                 .And(() => ThenDocumentChildAtIndexShould<Paragraph>(
@@ -77,11 +77,12 @@
             "And images"
                 .And(
                     () =>
-                        ThenDocumentChildAtIndexShould<Paragraph>(6, p => {
+                        ThenDocumentChildAtIndexShould<Paragraph>(6, p =>
+                        {
                             var span = p.Spans.Last().As<ImageSpan>();
                             span.Title.ToString().ShouldBeEquivalentTo("alt");
                             span.Url.ToString().ShouldBeEquivalentTo("http://image.jpg");
-                            }));
+                        }));
 
             "And reference link should be resolved"
                 .And(() => ThenDocumentChildAtIndexShould<Paragraph>(7,

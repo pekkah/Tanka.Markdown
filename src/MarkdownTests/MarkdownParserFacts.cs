@@ -7,10 +7,33 @@
     using Markdown;
     using Markdown.Blocks;
     using Markdown.Inline;
+    using NSubstitute;
     using Xunit;
 
     public class MarkdownParserFacts
     {
+        [Fact]
+        public void UsePreprocessors()
+        {
+            /* given */
+            var builder = new StringBuilder();
+            builder.AppendLine("paragraph is just text");
+            builder.AppendLine("that can continue for");
+            builder.AppendLine("multiple lines");
+            string markdown = builder.ToString();
+
+            var preprocessor = Substitute.For<IPreprocessor>();
+
+            var parser = new MarkdownParser();
+            parser.Pre.Insert(0, preprocessor);
+
+            /* when */
+            parser.Parse(markdown);
+
+            /* then */
+            preprocessor.Received().Process(Arg.Is(markdown));
+        }
+
         [Fact]
         public void Paragraph()
         {
@@ -30,7 +53,6 @@
             result.Blocks.Should().ContainSingle(block => block.GetType() == typeof (Paragraph));
             var paragraph = result.Blocks.Single() as Paragraph;
             paragraph.Start.ShouldBeEquivalentTo(0);
-            paragraph.Length.ShouldBeEquivalentTo(markdown.Length);
             paragraph.Spans.Should().HaveCount(5);
         }
 
@@ -44,6 +66,26 @@
             builder.AppendLine();
             builder.AppendLine("second paragraph");
             builder.AppendLine("multiple lines");
+            string markdown = builder.ToString();
+
+            var parser = new MarkdownParser();
+
+            /* when */
+            Document result = parser.Parse(markdown);
+
+            /* then */
+            result.Blocks.Should().HaveCount(2);
+            result.Blocks.Should().ContainItemsAssignableTo<Paragraph>();
+        }
+
+        [Fact]
+        public void SimpleMultipleParagraphs()
+        {
+            /* given */
+            var builder = new StringBuilder();
+            builder.AppendLine("p1");
+            builder.AppendLine();
+            builder.AppendLine("p2");
             string markdown = builder.ToString();
 
             var parser = new MarkdownParser();
@@ -116,16 +158,13 @@
             /* then */
             result.Blocks.Should().HaveCount(3);
             var firstParagraph = result.Blocks.First() as Paragraph;
-            firstParagraph.Start.ShouldBeEquivalentTo(0);
-            firstParagraph.End.ShouldBeEquivalentTo(44);
+            firstParagraph.ToString().ShouldBeEquivalentTo("paragraph is just text\nthat can continue for\n");
 
             var emptyLine = result.Blocks.ElementAt(1) as EmptyLine;
-            emptyLine.Start.ShouldBeEquivalentTo(45);
-            emptyLine.Length.ShouldBeEquivalentTo(4);
+            emptyLine.Should().NotBeNull();
 
             var secondParagraph = result.Blocks.Last() as Paragraph;
-            secondParagraph.Start.ShouldBeEquivalentTo(emptyLine.End + 1);
-            secondParagraph.End.ShouldBeEquivalentTo(markdown.Length - 1);
+            secondParagraph.ToString().ShouldBeEquivalentTo("second paragraph\nmultiple lines\n");
         }
 
         [Fact]
@@ -192,7 +231,7 @@
         }
 
         [Fact]
-        public void CodeblocskWithSyntaxIdentifierAndParagraphBetween()
+        public void CodeblocsWithSyntaxIdentifierAndParagraphBetween()
         {
             /* given */
             var builder = new StringBuilder();
@@ -213,7 +252,7 @@
             /* then */
             result.Blocks.Count().ShouldBeEquivalentTo(3);
             result.Blocks.ElementAt(0).As<Codeblock>().Syntax.ToString().ShouldBeEquivalentTo("cs");
-            result.Blocks.ElementAt(1).As<Paragraph>().ToString().ShouldBeEquivalentTo("\r\nSome text here to separate the two\r\n");
+            result.Blocks.ElementAt(1).As<Paragraph>().ToString().ShouldBeEquivalentTo("\nSome text here to separate the two\n");
             result.Blocks.ElementAt(2).As<Codeblock>().Syntax.ToString().ShouldBeEquivalentTo("js");
         }
 
@@ -238,11 +277,11 @@
 
             var headingOne = result.Blocks.First() as Heading;
             headingOne.Level.ShouldBeEquivalentTo(1);
-            headingOne.ToString().ShouldAllBeEquivalentTo("Setext 1");
+            headingOne.ToString().ShouldBeEquivalentTo("Setext 1");
 
             var headingTwo = result.Blocks.Last() as Heading;
             headingTwo.Level.ShouldBeEquivalentTo(2);
-            headingTwo.ToString().ShouldAllBeEquivalentTo("Setext 2");
+            headingTwo.ToString().ShouldBeEquivalentTo("Setext 2");
         }
 
         [Fact]
@@ -270,7 +309,7 @@
                 var heading = result.Blocks.ElementAt(i) as Heading;
 
                 heading.Level.ShouldBeEquivalentTo(i + 1);
-                heading.ToString().ShouldAllBeEquivalentTo(expected);
+                heading.ToString().ShouldBeEquivalentTo(expected);
             }
         }
 
@@ -297,7 +336,7 @@
                 string expected = string.Format("item {0}", i + 1);
                 Item item = list.Items.ElementAt(i);
 
-                item.ToString().ShouldAllBeEquivalentTo(expected);
+                item.ToString().ShouldBeEquivalentTo(expected);
             }
         }
 
@@ -324,7 +363,7 @@
                 string expected = string.Format("item {0}", i + 1);
                 Item item = list.Items.ElementAt(i);
 
-                item.ToString().ShouldAllBeEquivalentTo(expected);
+                item.ToString().ShouldBeEquivalentTo(expected);
             }
         }
 
@@ -373,7 +412,7 @@
 
             var paragaph = (Paragraph) result.Blocks.Single();
             paragaph.Spans.Should().HaveCount(2);
-            paragaph.Spans.OfType<TextSpan>().Single().ToString().ShouldAllBeEquivalentTo("And images ");
+            paragaph.Spans.OfType<TextSpan>().Single().ToString().ShouldBeEquivalentTo("And images ");
             var image = paragaph.Spans.OfType<ImageSpan>().Single();
             image.Title.ToString().ShouldBeEquivalentTo("alt");
             image.Url.ToString().ShouldBeEquivalentTo("http://image.jpg");

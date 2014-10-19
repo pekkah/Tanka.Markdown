@@ -28,6 +28,11 @@
                 new LinkDefinitionListBuilder(),
                 new ParagraphBuilder()
             };
+
+            Pre = new List<IPreprocessor>()
+            {
+                new Normalize()
+            };
         }
 
         public List<IBlockBuilder> Builders
@@ -35,8 +40,15 @@
             get { return _builders; }
         }
 
+        public List<IPreprocessor> Pre { get; private set; }
+
         public Document Parse(string markdown)
         {
+            foreach (IPreprocessor processor in Pre)
+            {
+                markdown = processor.Process(markdown);
+            }
+
             var blocks = new List<Block>();
 
             if (string.IsNullOrWhiteSpace(markdown))
@@ -66,36 +78,6 @@
             return new Document(blocks, markdown);
         }
 
-        private void ResolveReferences(List<Block> blocks)
-        {
-            List<LinkDefinition> linkDefinitions = blocks.OfType<LinkDefinitionList>()
-                .SelectMany(list => list.Definitions).ToList();
-
-            foreach (Paragraph paragraph in blocks.OfType<Paragraph>())
-            {
-                foreach (ReferenceLinkSpan referenceLink in paragraph.Spans.OfType<ReferenceLinkSpan>().ToList())
-                {
-                    string key = referenceLink.Key.ToString().ToLower();
-
-                    LinkDefinition definition =
-                        linkDefinitions.FirstOrDefault(def => def.Key.ToString().ToLower() == key);
-
-                    if (definition == null)
-                        continue;
-
-                    // replace the reference with a link
-                    var link = new LinkSpan(
-                        paragraph,
-                        referenceLink.Start,
-                        referenceLink.End,
-                        referenceLink.Title,
-                        definition.Url);
-
-                    paragraph.Replace(referenceLink, link);
-                }
-            }
-        }
-
         protected IEnumerable<Block> ParseBlocks(StringRange document)
         {
             int paragraphStart = -1;
@@ -103,7 +85,7 @@
             bool paragraphStarted = false;
 
             // there should be one monster builder always in builders
-            var monsterBuilder = _builders.OfType<ParagraphBuilder>().Single();
+            ParagraphBuilder monsterBuilder = _builders.OfType<ParagraphBuilder>().Single();
 
             for (int start = 0; start < document.Length; start++)
             {
@@ -122,6 +104,12 @@
 
                     paragraphEnd = start;
                     continue;
+                }
+
+                if (builder is EmptyLineBuilder && paragraphStarted)
+                {
+                    // include the emtpty line character into the end
+                    paragraphEnd = start;
                 }
 
                 // have to kill the monster so others can
@@ -164,6 +152,36 @@
         private IBlockBuilder GetBuilder(int start, StringRange document)
         {
             return _builders.First(builder => builder.CanBuild(start, document));
+        }
+
+        private void ResolveReferences(List<Block> blocks)
+        {
+            List<LinkDefinition> linkDefinitions = blocks.OfType<LinkDefinitionList>()
+                .SelectMany(list => list.Definitions).ToList();
+
+            foreach (Paragraph paragraph in blocks.OfType<Paragraph>())
+            {
+                foreach (ReferenceLinkSpan referenceLink in paragraph.Spans.OfType<ReferenceLinkSpan>().ToList())
+                {
+                    string key = referenceLink.Key.ToString().ToLower();
+
+                    LinkDefinition definition =
+                        linkDefinitions.FirstOrDefault(def => def.Key.ToString().ToLower() == key);
+
+                    if (definition == null)
+                        continue;
+
+                    // replace the reference with a link
+                    var link = new LinkSpan(
+                        paragraph,
+                        referenceLink.Start,
+                        referenceLink.End,
+                        referenceLink.Title,
+                        definition.Url);
+
+                    paragraph.Replace(referenceLink, link);
+                }
+            }
         }
     }
 }

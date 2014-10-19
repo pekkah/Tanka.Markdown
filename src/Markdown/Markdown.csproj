@@ -65,6 +65,7 @@
     <Compile Include="Inline\EmphasisBuilder.cs" />
     <Compile Include="Inline\NewLineEater.cs" />
     <Compile Include="Inline\NewLineSpanBuilder.cs" />
+    <Compile Include="IPreprocessor.cs" />
     <Compile Include="MarkdownParser.cs" />
     <Compile Include="Blocks\OrderedListBuilder.cs" />
     <Compile Include="Blocks\Paragraph.cs" />
@@ -77,6 +78,7 @@
     <Compile Include="Inline\ImageSpan.cs" />
     <Compile Include="Inline\ImageSpanBuilder.cs" />
     <Compile Include="ParsingException.cs" />
+    <Compile Include="Normalize.cs" />
     <Compile Include="StringRange.cs" />
     <Compile Include="Inline\InlineParser.cs" />
     <Compile Include="Inline\LinkSpan.cs" />

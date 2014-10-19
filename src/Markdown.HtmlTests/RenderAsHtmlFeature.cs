@@ -46,13 +46,13 @@
         {
             // arrange
             var markdown = new StringBuilder();
-            markdown.AppendLine("```");
-            markdown.AppendLine("string name = \"test\";");
-            markdown.AppendLine("```");
+            markdown.Append("```\n");
+            markdown.Append("string name = \"test\";\n");
+            markdown.Append("```\n");
 
             var expectedHtml = new StringBuilder();
             expectedHtml.Append("<pre><code>");
-            expectedHtml.Append("string name = &quot;test&quot;;");
+            expectedHtml.Append("string name = &quot;test&quot;;\n");
             expectedHtml.Append("</code></pre>");
 
             var parser = new MarkdownParser();
@@ -79,7 +79,7 @@
 
             // it looks like the syntax name is prefixed with 'lang' by convention
             expectedHtml.Append("<pre><code class=\"lang-cs\">");
-            expectedHtml.Append("string name = &quot;test&quot;;");
+            expectedHtml.Append("string name = &quot;test&quot;;\n");
             expectedHtml.Append("</code></pre>");
 
             var parser = new MarkdownParser();
@@ -87,7 +87,7 @@
 
             // act
             var document = parser.Parse(markdown.ToString());
-            string html = renderer.Render(document).Replace("\r\n", "");
+            string html = renderer.Render(document);
 
             // assert
             html.ShouldBeEquivalentTo(expectedHtml.ToString());
