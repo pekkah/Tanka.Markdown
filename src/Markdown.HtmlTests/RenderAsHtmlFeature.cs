@@ -8,7 +8,7 @@
     using Tanka.Markdown.Html;
     using Xunit;
 
-    public class RenderAsHtmlFeature
+    public partial class RenderAsHtmlFeature
     {
         [Fact]
         public void RenderHeadings()

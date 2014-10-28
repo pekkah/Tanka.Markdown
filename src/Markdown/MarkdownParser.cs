@@ -26,6 +26,8 @@
                 new UnorderedListBuilder('-'),
                 new OrderedListBuilder(),
                 new LinkDefinitionListBuilder(),
+                new BlockQuoteCodeBlockBuilder(),
+                new BlockQuoteBlockBuilder(),
                 new ParagraphBuilder()
             };
 

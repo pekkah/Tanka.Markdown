@@ -10,7 +10,6 @@
             Blocks = blocks;
             Markdown = markdown;
         }
-
         public IEnumerable<Block> Blocks { get; private set; }
         public string Markdown { get; private set; }
     }

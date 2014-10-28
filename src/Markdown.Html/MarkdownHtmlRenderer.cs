@@ -1,4 +1,6 @@
-﻿namespace Tanka.Markdown.Html
+﻿using System.Collections.Generic;
+
+namespace Tanka.Markdown.Html
 {
     using System;
     using System.Linq;
@@ -29,15 +31,15 @@
             if (!document.Blocks.Any())
                 return string.Empty;
 
-            foreach (Block block in document.Blocks)
+            foreach (var block in document.Blocks)
             {
                 IBlockRenderer renderer = null;
 
                 try
                 {
                     renderer = GetBlockRenderer(block);
-                    HtmlTag rootTag = renderer.Render(document, block);
-                    string html = rootTag.ToHtmlString();
+                    var rootTag = renderer.Render(document, block);
+                    var html = rootTag.ToHtmlString();
 
                     builder.Append(html);
                 }

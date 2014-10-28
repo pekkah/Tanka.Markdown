@@ -59,6 +59,7 @@
     <Compile Include="OrderedListRenderer.cs" />
     <Compile Include="ParagraphRenderer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="BlockQuoteRenderer.cs" />
     <Compile Include="SpanRenderer.cs" />
     <Compile Include="UnorederedListRenderer.cs" />
   </ItemGroup>

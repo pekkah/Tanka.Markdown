@@ -55,6 +55,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BlockQuoteRenderHtmlAsFeature.cs" />
     <Compile Include="ExtendByAddingNewBlockRenderer.cs" />
     <Compile Include="RenderAsHtmlFeature.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

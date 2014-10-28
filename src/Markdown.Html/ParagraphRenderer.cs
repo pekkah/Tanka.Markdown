@@ -22,7 +22,8 @@
 
         public void Render(Span span, StringBuilder builder)
         {
-            var text = CleanInput(span.ToString());
+            var text = span.ToString();
+            if (span.CleanInput) text = CleanInput(text);
             builder.Append(text);
         }
     }

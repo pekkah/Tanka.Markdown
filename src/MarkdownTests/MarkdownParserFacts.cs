@@ -456,5 +456,118 @@
             exception.InnerException.Should().BeOfType<ArgumentNullException>();
             exception.Content.ToString().ShouldBeEquivalentTo("67890");
         }
+
+        /// <summary>
+        /// Block quotes should be wrapped in a paragraph.
+        /// 
+        /// Markdown
+        /// > Foo
+        /// 
+        /// equivalent to
+        /// 
+        /// <blockquote><p>Foo</p></blockquote>
+        /// 
+        /// </summary>
+        [Fact]
+        public void BlockQuoteThatIsSimple()
+        {
+            var contentBuilder = new StringBuilder();
+            contentBuilder.Append("> Foo");
+            var parser = new MarkdownParser();
+            var markdown = parser.Parse(contentBuilder.ToString());
+
+            markdown.Blocks.Should().HaveCount(1);
+            markdown.Blocks.First().Should().BeOfType<BlockQuote>(); // <blockquote>
+            markdown.Blocks.First().As<BlockQuote>().ChildBlocks[0].Should().BeOfType<Paragraph>(); //<p>
+            markdown.Blocks.First().As<BlockQuote>().ChildBlocks[0].ToString().ShouldBeEquivalentTo("Foo"); //<p>Foo</p>
+        }
+
+        [Fact]
+        public void BlockQuoteThatIsEmpty()
+        {
+            var contentBuilder = new StringBuilder();
+            contentBuilder.AppendLine(">");
+            var parser = new MarkdownParser();
+            var markdown = parser.Parse(contentBuilder.ToString());
+
+            markdown.Blocks.Should().HaveCount(1);
+            markdown.Blocks.First().Should().BeOfType<BlockQuote>();
+            markdown.Blocks.First().ToString().ShouldBeEquivalentTo("");
+        }
+
+        [Fact]
+        public void BlockQuoteWithHeading()
+        {
+            var contentBuilder = new StringBuilder();
+            contentBuilder.AppendLine("># Foo");
+            var parser = new MarkdownParser();
+            var markdown = parser.Parse(contentBuilder.ToString());
+
+            markdown.Blocks.Should().HaveCount(1);
+            markdown.Blocks.First().Should().BeOfType<BlockQuote>();
+            markdown.Blocks.First().As<BlockQuote>().ChildBlocks.Should().HaveCount(1);
+        }
+
+        [Fact]
+        public void BlockQuoteWithHeadingPrefixedWithEmpty()
+        {
+            var contentBuilder = new StringBuilder();
+            contentBuilder.AppendLine("> # Foo");
+            var parser = new MarkdownParser();
+            var markdown = parser.Parse(contentBuilder.ToString());
+
+            markdown.Blocks.Should().HaveCount(1);
+            markdown.Blocks.First().Should().BeOfType<BlockQuote>();
+            markdown.Blocks.First().As<BlockQuote>().ChildBlocks.Should().HaveCount(1);
+        }
+
+        [Fact]
+        public void BlockQuoteWithMultline()
+        {
+            var contentBuilder = new StringBuilder();
+            contentBuilder.AppendLine("> Foo");
+            contentBuilder.AppendLine("> Bar");
+            var parser = new MarkdownParser();
+            var markdown = parser.Parse(contentBuilder.ToString());
+
+            markdown.Blocks.Should().HaveCount(1);
+            markdown.Blocks.First().Should().BeOfType<BlockQuote>();
+            //should be a paragraph block
+            markdown.Blocks.First().As<BlockQuote>().ChildBlocks.Should().HaveCount(1);
+            markdown.Blocks.First().As<BlockQuote>().ChildBlocks[0].Should().BeOfType<Paragraph>();
+        }
+
+        [Fact]
+        public void BlockQuoteWithHeadingAndParagraph()
+        {
+            var contentBuilder = new StringBuilder();
+            contentBuilder.AppendLine("># Foo");
+            contentBuilder.AppendLine("> Bar");
+            var parser = new MarkdownParser();
+            var markdown = parser.Parse(contentBuilder.ToString());
+
+            markdown.Blocks.Should().HaveCount(1);
+            markdown.Blocks.First().Should().BeOfType<BlockQuote>();
+            markdown.Blocks.First().As<BlockQuote>().ChildBlocks.Should().HaveCount(2);
+        }
+
+        /// <summary>
+        /// 4 spaces give a <see cref="Codeblock"/>
+        /// </summary>
+        [Fact]
+        public void BlockQuoteIsCodeBlock()
+        {
+            var contentBuilder = new StringBuilder();
+            contentBuilder.AppendLine("    > # Foo");
+            contentBuilder.AppendLine("    >bar");
+            contentBuilder.AppendLine("    >baz");
+
+
+            var parser = new MarkdownParser();
+            var markdown = parser.Parse(contentBuilder.ToString());
+
+            markdown.Blocks.Should().HaveCount(1);
+            markdown.Blocks.First().Should().BeOfType<Codeblock>();
+        }
     }
 }
