@@ -2,6 +2,8 @@
 
 ![Build](https://ci.appveyor.com/api/projects/status/github/pekkah/Tanka.Markdown)
 
+[![Build status](https://ci.appveyor.com/api/projects/status/github/pekkah/Tanka.Markdown?svg=true)](https://ci.appveyor.com/project/pekkah/tanka-markdown)
+
 # Features
 
 * Parse markdown into a document structure
