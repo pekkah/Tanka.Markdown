@@ -31,7 +31,7 @@ Install-Package Tanka.Markdown.Html
 
 ```
 var parser = new MarkdownParser();
-var renderer = new HtmlRenderer();
+var renderer = new MarkdownHtmlRenderer();
 
 // parse markdown into a document 
 Document document = parser.Parse(markdown);
