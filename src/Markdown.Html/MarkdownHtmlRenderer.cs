@@ -56,21 +56,14 @@
             return builder.ToString();
         }
 
+        public string[] RenderMultiple(Document document)
+        {
+            return new[] {Render(document)};
+        }
+
         protected IBlockRenderer GetBlockRenderer(Block block)
         {
             return Options.Renderers.First(r => r.CanRender(block));
         }
-    }
-
-    public class RenderingException : Exception
-    {
-        public RenderingException(string message, Exception inner)
-            : base(message, inner)
-        {
-        }
-
-        public Block Block { get; set; }
-
-        public IBlockRenderer Renderer { get; set; }
     }
 }
