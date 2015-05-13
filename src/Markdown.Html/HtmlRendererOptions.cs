@@ -24,6 +24,25 @@
             }
         }
 
+        public static HtmlRendererOptions NoInlineHtml
+        {
+            get
+            {
+                return new HtmlRendererOptions
+                {
+                    Renderers = new List<IBlockRenderer>
+                    {
+                        new HeadingRenderer(),
+                        new ParagraphRenderer(noInlineHtml: true),
+                        new CodeblockRenderer(),
+                        new UnorederedListRenderer(noInlineHtml: true),
+                        new OrderedListRenderer(noInlineHtml: true),
+                        new NullRenderer()
+                    }
+                };
+            }
+        }
+
         public List<IBlockRenderer> Renderers { get; set; }
 
         public List<ISpanRenderer> SpanRendererss
