@@ -9,9 +9,9 @@
     {
         private readonly ParagraphRenderer _itemRenderer;
 
-        public OrderedListRenderer()
+        public OrderedListRenderer(bool noInlineHtml = false)
         {
-            _itemRenderer = new ParagraphRenderer();
+            _itemRenderer = new ParagraphRenderer(noInlineHtml);
 
             _itemRenderer.SpanRenderers.OfType<TextSpanRenderer>().Single().CleanInput = input =>
             {
