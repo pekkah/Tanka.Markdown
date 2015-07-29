@@ -303,5 +303,57 @@
             exception.Renderer.Should().BeOfType<ThrowErrorOnBlockRenderer>();
             exception.InnerException.Should().BeOfType<ArgumentNullException>();
         }
+
+        [Fact]
+        public void NoInlineHtmlPreventsInlineHtml()
+        {
+            var markdown = new StringBuilder();
+            markdown.AppendLine("Just a paragraph <img src=x />");
+            markdown.AppendLine();
+            markdown.AppendLine("* item 1 <img src=x />");
+            markdown.AppendLine("* item 2 <img src=x />");
+            markdown.AppendLine();
+            markdown.AppendLine("1. item 1 <img src=x />");
+            markdown.AppendLine("1. item 2 <img src=x />");
+
+            var parser = new MarkdownParser();
+            var renderer = new MarkdownHtmlRenderer();
+            // act
+            Document document = parser.Parse(markdown.ToString());
+
+            var expectedHtml = new StringBuilder();
+            expectedHtml.Append("<p>").Append("Just a paragraph <img src=x />").Append("</p>");
+            expectedHtml.Append("<ul>");
+            expectedHtml.Append("<li>").Append("<p>").Append("item 1 <img src=x />").Append("</p>").Append("</li>");
+            expectedHtml.Append("<li>").Append("<p>").Append("item 2 <img src=x />").Append("</p>").Append("</li>");
+            expectedHtml.Append("</ul>");
+            expectedHtml.Append("<ol>");
+            expectedHtml.Append("<li>").Append("<p>").Append("item 1 <img src=x />").Append("</p>").Append("</li>");
+            expectedHtml.Append("<li>").Append("<p>").Append("item 2 <img src=x />").Append("</p>").Append("</li>");
+            expectedHtml.Append("</ol>");
+
+            string html = renderer.Render(document).Replace("\r\n", "");
+
+            // assert
+            html.ShouldBeEquivalentTo(expectedHtml.ToString());
+
+            expectedHtml = new StringBuilder();
+            expectedHtml.Append("<p>").Append("Just a paragraph &lt;img src=x /&gt;").Append("</p>");
+            expectedHtml.Append("<ul>");
+            expectedHtml.Append("<li>").Append("<p>").Append("item 1 &lt;img src=x /&gt;").Append("</p>").Append("</li>");
+            expectedHtml.Append("<li>").Append("<p>").Append("item 2 &lt;img src=x /&gt;").Append("</p>").Append("</li>");
+            expectedHtml.Append("</ul>");
+            expectedHtml.Append("<ol>");
+            expectedHtml.Append("<li>").Append("<p>").Append("item 1 &lt;img src=x /&gt;").Append("</p>").Append("</li>");
+            expectedHtml.Append("<li>").Append("<p>").Append("item 2 &lt;img src=x /&gt;").Append("</p>").Append("</li>");
+            expectedHtml.Append("</ol>");
+
+            var noInlineRenderer = new MarkdownHtmlRenderer(HtmlRendererOptions.NoInlineHtml);
+            document = parser.Parse(markdown.ToString());
+            string noInlineHtml = noInlineRenderer.Render(document).Replace("\r\n", "");
+
+            // assert
+            noInlineHtml.ShouldBeEquivalentTo(expectedHtml.ToString());
+        }
     }
 }

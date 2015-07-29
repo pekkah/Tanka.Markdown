@@ -4,12 +4,20 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
+    using System.Web;
     using Blocks;
     using HtmlTags;
     using Inline;
 
     public class TextSpanRenderer : ISpanRenderer
     {
+        private bool noInlineHtml;
+
+        public TextSpanRenderer(bool noInlineHtml = false)
+        {
+            this.noInlineHtml = noInlineHtml;            
+        }
+
         public Func<string, string> CleanInput = input =>
         {
             return input.Replace("\r", "").Replace("\n", " ");
@@ -23,17 +31,23 @@
         public void Render(Span span, StringBuilder builder)
         {
             var text = CleanInput(span.ToString());
+
+            if (noInlineHtml)
+            {
+                text = HttpUtility.HtmlEncode(text);
+            }
+
             builder.Append(text);
         }
     }
 
     public class ParagraphRenderer : BlockRendererBase<Paragraph>
     {
-        public ParagraphRenderer()
+        public ParagraphRenderer(bool noInlineHtml = false)
         {
             SpanRenderers = new List<ISpanRenderer>
             {
-                new TextSpanRenderer(),
+                new TextSpanRenderer(noInlineHtml),
                 new SpanRenderer<LinkSpan>((link, builder) =>
                 {
                     var linkTag = new LinkTag(link.Title.ToString(), link.Url.ToString());
