@@ -1,3 +1,0 @@
-﻿namespace Tanka.Markdown.Inline
-{
-}
