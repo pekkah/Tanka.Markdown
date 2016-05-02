@@ -1,0 +1,16 @@
+{
+  "version": "2.0.0-*",
+  "buildOptions": {
+    "warningsAsErrors": true
+  },
+  "dependencies": {
+    "NETStandard.Library": {
+      "type": "default",
+      "version": "1.0.0-rc2-*"
+    }
+  },
+  "frameworks": {
+    "netstandard1.0": {
+    }
+  }
+}
