@@ -5,6 +5,5 @@ namespace Tanka.Markdown
     public class Lexer 
     {
         
-    }
-    
+    }  
 }
