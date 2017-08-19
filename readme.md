@@ -1,6 +1,6 @@
 # Markdown parser
 
-Project retired if favor of [Markdig](https://github.com/lunet-io/markdig)
+Project retired in favor of [Markdig](https://github.com/lunet-io/markdig) which does the same thing but better and supports CommonMark.
 
 [![Build status](https://ci.appveyor.com/api/projects/status/github/pekkah/Tanka.Markdown?svg=true)](https://ci.appveyor.com/project/pekkah/tanka-markdown)
 
